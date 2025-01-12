@@ -4,8 +4,12 @@ import {
   Button,
   IconButton,
   Modal,
-  Typography,
-  Backdrop
+  Backdrop,
+  Fade,
+  FormControl,
+  InputBase,
+  Stack,
+  Divider
 } from '@mui/material'
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined'
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined'
@@ -16,6 +20,8 @@ import InboxOutlinedIcon from '@mui/icons-material/InboxOutlined'
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
 import LensBlurOutlinedIcon from '@mui/icons-material/LensBlurOutlined'
+import OutlinedFlagOutlinedIcon from '@mui/icons-material/OutlinedFlagOutlined'
+import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined'
 import { red } from '@mui/material/colors'
 import { useState } from 'react'
 
@@ -37,11 +43,11 @@ const modalStyle = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  maxWidth: 400,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4
+  border: 'none',
+  borderRadius: 2,
+  boxShadow: '0 15px 50px 0 rgba(0, 0, 0, 0.35)'
 }
 const SideBar = () => {
   const [open, setOpen] = useState(false)
@@ -114,9 +120,107 @@ const SideBar = () => {
           backdrop: { sx: { backgroundColor: 'transparent' } }
         }}
       >
-        <Box sx={modalStyle}>
-          <Typography>Modal</Typography>
-        </Box>
+        <Fade in={open}>
+          <Box sx={modalStyle}>
+            <form>
+              <Box sx={{ p: 2 }}>
+                <FormControl fullWidth>
+                  <InputBase
+                    placeholder="Practice math problems daily"
+                    sx={{
+                      '& .MuiInputBase-input': {
+                        fontSize: 20
+                      },
+                      '& .MuiInputBase-input::placeholder': {
+                        color: '#202020',
+
+                        fontWeight: '600'
+                      }
+                    }}
+                  ></InputBase>
+                </FormControl>
+                <FormControl fullWidth>
+                  <InputBase
+                    placeholder="Description"
+                    sx={{
+                      '& .MuiInputBase-input': {
+                        fontSize: 13
+                      },
+                      '& .MuiInputBase-input::placeholder': {
+                        color: '#0006',
+                        fontWeight: '500'
+                      }
+                    }}
+                  ></InputBase>
+                </FormControl>
+                <Stack spacing={2} direction="row">
+                  <Button
+                    variant="outlined"
+                    startIcon={
+                      <CalendarTodayOutlinedIcon
+                        style={{ fontSize: 14, marginBottom: 1 }}
+                      />
+                    }
+                    sx={{
+                      textTransform: 'none',
+                      border: '1px solid #e6e6e6',
+                      color: '#666',
+                      fontWeight: '400',
+                      fontSize: 14
+                    }}
+                  >
+                    Date
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    startIcon={
+                      <OutlinedFlagOutlinedIcon
+                        style={{ fontSize: 14, marginBottom: 1 }}
+                      />
+                    }
+                    sx={{
+                      textTransform: 'none',
+                      border: '1px solid #e6e6e6',
+                      color: '#666',
+                      fontWeight: '400'
+                    }}
+                  >
+                    Priority
+                  </Button>
+                </Stack>
+              </Box>
+              <Divider sx={{ m: 0 }} />
+              <Box
+                sx={{
+                  p: 2,
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  gap: 1
+                }}
+              >
+                <Button
+                  sx={{
+                    textTransform: 'none',
+                    color: '#444',
+                    bgcolor: '#f5f5f5'
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  sx={{
+                    textTransform: 'none',
+                    color: '#fff',
+                    bgcolor: '#a4a9b0'
+                  }}
+                >
+                  Add task
+                </Button>
+              </Box>
+            </form>
+          </Box>
+        </Fade>
       </Modal>
       {/* Main filters */}
       <Box
