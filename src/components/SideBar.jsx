@@ -24,6 +24,7 @@ import OutlinedFlagOutlinedIcon from '@mui/icons-material/OutlinedFlagOutlined'
 import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined'
 import { red } from '@mui/material/colors'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const mainFiltersStyle = {
   textTransform: 'none',
@@ -57,6 +58,8 @@ const SideBar = () => {
   const handleClose = () => {
     setOpen(false)
   }
+
+  const navigate = useNavigate()
   return (
     <nav>
       {/* Sidebar header */}
@@ -238,18 +241,21 @@ const SideBar = () => {
         <Button
           sx={mainFiltersStyle}
           startIcon={<InboxOutlinedIcon sx={iconStyle} />}
+          onClick={() => navigate('/inbox')}
         >
           Inbox
         </Button>
         <Button
           sx={mainFiltersStyle}
           startIcon={<EventAvailableOutlinedIcon sx={iconStyle} />}
+          onClick={() => navigate('/today')}
         >
           Today
         </Button>
         <Button
           sx={mainFiltersStyle}
           startIcon={<CalendarMonthOutlinedIcon sx={iconStyle} />}
+          onClick={() => navigate('/upcoming')}
         >
           Upcoming
         </Button>

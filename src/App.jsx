@@ -20,7 +20,7 @@ const Layout = () => {
       >
         <SideBar />
       </Grid2>
-      <Grid2>
+      <Grid2 sx={{ flexGrow: 1, p: 4 }}>
         <Outlet />
       </Grid2>
     </Grid2>
@@ -33,6 +33,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Today />} />
           <Route path="upcoming" element={<Upcoming />} />
+          <Route path="today" element={<Today />} />
           <Route path="inbox" element={<Inbox />} />
         </Route>
       </Routes>
