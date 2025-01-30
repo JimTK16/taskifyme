@@ -6,7 +6,7 @@ const TaskCircleIcon = () => {
     <Checkbox
       sx={{ p: 0, mb: 2 }}
       icon={<PanoramaFishEye />}
-      checkedIcon={<CheckCircleOutline color="success" />}
+      checkedIcon={<CheckCircleOutline color='success' />}
     />
   )
 }
@@ -15,10 +15,10 @@ const TaskItem = ({ task }) => {
     <Stack direction={'row'}>
       <TaskCircleIcon />
       <Stack direction={'column'} sx={{ ml: 1 }}>
-        <Typography variant="body1" sx={{ color: 'black' }}>
+        <Typography variant='body1' sx={{ color: 'black' }}>
           {task.title}
         </Typography>
-        <Typography variant="body2" sx={{ color: 'gray' }}>
+        <Typography variant='body2' sx={{ color: 'gray' }}>
           {task.description}
         </Typography>
       </Stack>

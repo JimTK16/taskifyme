@@ -5,9 +5,10 @@ import { BrowserRouter, Route, Outlet, Routes, Navigate } from 'react-router'
 import Today from './components/Today'
 import Upcoming from './components/Upcoming'
 import Inbox from './components/Inbox'
-import Login from './components/auth/Login'
-import Register from './components/auth/Register'
+import Login from './components/auth/login/SignIn'
+import Register from './components/auth/signup/SignUp'
 import ProtectedRoute from './components/auth/ProtectedRoute'
+import SignIn from './components/auth/login/SignIn'
 const Layout = () => {
   return (
     <Grid2 container>
@@ -32,14 +33,14 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path='/signin' element={<SignIn />} />
+        <Route path='/signup' element={<Register />} />
         <Route element={<ProtectedRoute />}>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Navigate to="today" replace />} />
-            <Route path="upcoming" element={<Upcoming />} />
-            <Route path="today" element={<Today />} />
-            <Route path="inbox" element={<Inbox />} />
+          <Route path='/' element={<Layout />}>
+            <Route index element={<Navigate to='today' replace />} />
+            <Route path='upcoming' element={<Upcoming />} />
+            <Route path='today' element={<Today />} />
+            <Route path='inbox' element={<Inbox />} />
           </Route>
         </Route>
       </Routes>
