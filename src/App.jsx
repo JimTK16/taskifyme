@@ -9,6 +9,7 @@ import Login from './components/auth/login/SignIn'
 import Register from './components/auth/signup/SignUp'
 import ProtectedRoute from './components/auth/ProtectedRoute'
 import SignIn from './components/auth/login/SignIn'
+import Redirecting from './components/auth/signup/Redirecting'
 const Layout = () => {
   return (
     <Grid2 container>
@@ -34,6 +35,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/signin' element={<SignIn />} />
+        <Route path='/redirect' element={<Redirecting />} />
         <Route path='/signup' element={<Register />} />
         <Route element={<ProtectedRoute />}>
           <Route path='/' element={<Layout />}>

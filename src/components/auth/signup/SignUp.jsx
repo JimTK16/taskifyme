@@ -1,4 +1,3 @@
-import * as React from 'react'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Checkbox from '@mui/material/Checkbox'
@@ -14,6 +13,8 @@ import Stack from '@mui/material/Stack'
 import MuiCard from '@mui/material/Card'
 import AppTheme from '../login/AppTheme'
 import { styled } from '@mui/material/styles'
+import { redirect, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -58,21 +59,19 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
 }))
 
 const Register = (props) => {
-  const [emailError, setEmailError] = React.useState(false)
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState('')
-  const [passwordError, setPasswordError] = React.useState(false)
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('')
-  const [nameError, setNameError] = React.useState(false)
-  const [nameErrorMessage, setNameErrorMessage] = React.useState('')
+  let navigate = useNavigate()
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [emailError, setEmailError] = useState(false)
+  const [emailErrorMessage, setEmailErrorMessage] = useState('')
+  const [passwordError, setPasswordError] = useState(false)
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState('')
 
   const validateInputs = () => {
-    const email = document.getElementById('email')
-    const password = document.getElementById('password')
-    const name = document.getElementById('name')
-
     let isValid = true
 
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
       setEmailError(true)
       setEmailErrorMessage('Please enter a valid email address.')
       isValid = false
@@ -81,7 +80,7 @@ const Register = (props) => {
       setEmailErrorMessage('')
     }
 
-    if (!password.value || password.value.length < 6) {
+    if (!password || password.length < 6) {
       setPasswordError(true)
       setPasswordErrorMessage('Password must be at least 6 characters long.')
       isValid = false
@@ -90,30 +89,22 @@ const Register = (props) => {
       setPasswordErrorMessage('')
     }
 
-    if (!name.value || name.value.length < 1) {
-      setNameError(true)
-      setNameErrorMessage('Name is required.')
-      isValid = false
-    } else {
-      setNameError(false)
-      setNameErrorMessage('')
-    }
-
     return isValid
   }
 
   const handleSubmit = (event) => {
-    if (nameError || emailError || passwordError) {
-      event.preventDefault()
-      return
-    }
+    event.preventDefault()
+    // if (nameError || emailError || passwordError) {
+    //   event.preventDefault()
+    //   return
+    // }
     const data = new FormData(event.currentTarget)
     console.log({
-      name: data.get('name'),
-      lastName: data.get('lastName'),
-      email: data.get('email'),
-      password: data.get('password')
+      email: email,
+      password: password
     })
+
+    navigate('/redirect')
   }
 
   return (
@@ -137,11 +128,13 @@ const Register = (props) => {
             <FormControl>
               <FormLabel htmlFor='email'>Email</FormLabel>
               <TextField
-                required
+                // required
                 fullWidth
                 id='email'
                 placeholder='your@email.com'
                 name='email'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 autoComplete='email'
                 variant='outlined'
                 error={emailError}
@@ -152,9 +145,11 @@ const Register = (props) => {
             <FormControl>
               <FormLabel htmlFor='password'>Password</FormLabel>
               <TextField
-                required
+                // required
                 fullWidth
                 name='password'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder='••••••'
                 type='password'
                 id='password'
@@ -170,7 +165,7 @@ const Register = (props) => {
               type='submit'
               fullWidth
               variant='contained'
-              onClick={validateInputs}
+              // onClick={validateInputs}
             >
               Sign up
             </Button>
