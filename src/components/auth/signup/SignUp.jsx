@@ -1,9 +1,7 @@
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import Checkbox from '@mui/material/Checkbox'
 import CssBaseline from '@mui/material/CssBaseline'
 import Divider from '@mui/material/Divider'
-import FormControlLabel from '@mui/material/FormControlLabel'
 import FormLabel from '@mui/material/FormLabel'
 import FormControl from '@mui/material/FormControl'
 import Link from '@mui/material/Link'
@@ -13,8 +11,9 @@ import Stack from '@mui/material/Stack'
 import MuiCard from '@mui/material/Card'
 import AppTheme from '../login/AppTheme'
 import { styled } from '@mui/material/styles'
-import { redirect, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import { signUpAPI } from '~/services/index'
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -63,6 +62,7 @@ const Register = (props) => {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(true)
   const [emailError, setEmailError] = useState(false)
   const [emailErrorMessage, setEmailErrorMessage] = useState('')
   const [passwordError, setPasswordError] = useState(false)
@@ -92,19 +92,19 @@ const Register = (props) => {
     return isValid
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    // if (nameError || emailError || passwordError) {
-    //   event.preventDefault()
-    //   return
-    // }
-    const data = new FormData(event.currentTarget)
-    console.log({
-      email: email,
-      password: password
-    })
+    if (validateInputs()) {
+      const data = { email, password }
+      try {
+        await signUpAPI(data)
 
-    navigate('/redirect')
+        navigate('/redirect')
+      } catch (error) {
+        setEmailError(true)
+        setEmailErrorMessage('Email already exists.')
+      }
+    }
   }
 
   return (
@@ -128,7 +128,7 @@ const Register = (props) => {
             <FormControl>
               <FormLabel htmlFor='email'>Email</FormLabel>
               <TextField
-                // required
+                required
                 fullWidth
                 id='email'
                 placeholder='your@email.com'
@@ -145,13 +145,13 @@ const Register = (props) => {
             <FormControl>
               <FormLabel htmlFor='password'>Password</FormLabel>
               <TextField
-                // required
+                required
                 fullWidth
                 name='password'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder='••••••'
-                type='password'
+                type={showPassword ? 'text' : 'password'}
                 id='password'
                 autoComplete='new-password'
                 variant='outlined'
@@ -161,12 +161,7 @@ const Register = (props) => {
               />
             </FormControl>
 
-            <Button
-              type='submit'
-              fullWidth
-              variant='contained'
-              // onClick={validateInputs}
-            >
+            <Button type='submit' fullWidth variant='contained'>
               Sign up
             </Button>
           </Box>

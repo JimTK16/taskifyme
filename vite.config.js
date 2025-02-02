@@ -8,5 +8,8 @@ export default defineConfig({
     'process.env': process.env
   },
 
-  plugins: [react(), svgr()]
+  plugins: [react(), svgr()],
+  resolve: {
+    alias: [{ find: '~', replacement: '/src' }]
+  }
 })

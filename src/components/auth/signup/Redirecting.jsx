@@ -1,11 +1,19 @@
 import { CircularProgress, Container, Typography } from '@mui/material'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const Redirecting = () => {
   let navigate = useNavigate()
-  setTimeout(() => {
-    navigate('/signin')
-  }, 3500)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigate('/signin')
+    }, 3000)
+
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [navigate])
   return (
     <Container
       sx={{
