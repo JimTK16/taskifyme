@@ -14,6 +14,8 @@ import { styled } from '@mui/material/styles'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { signUpAPI } from '~/services/index'
+import { IconButton, InputAdornment, OutlinedInput } from '@mui/material'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -62,7 +64,7 @@ const Register = (props) => {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [showPassword, setShowPassword] = useState(true)
+  const [showPassword, setShowPassword] = useState(false)
   const [emailError, setEmailError] = useState(false)
   const [emailErrorMessage, setEmailErrorMessage] = useState('')
   const [passwordError, setPasswordError] = useState(false)
@@ -105,6 +107,17 @@ const Register = (props) => {
         setEmailErrorMessage('Email already exists.')
       }
     }
+  }
+
+  const handleClickShowPassword = () =>
+    setShowPassword((prevState) => !prevState)
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault()
+  }
+
+  const handleMouseUpPassword = (event) => {
+    event.preventDefault()
   }
 
   return (
@@ -158,6 +171,34 @@ const Register = (props) => {
                 error={passwordError}
                 helperText={passwordErrorMessage}
                 color={passwordError ? 'error' : 'primary'}
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position='end'>
+                        <IconButton
+                          sx={{
+                            border: 'none',
+                            backgroundColor: 'transparent',
+                            '&:hover': {
+                              backgroundColor: 'transparent'
+                            }
+                          }}
+                          aria-label={
+                            showPassword
+                              ? 'hide the password'
+                              : 'display the password'
+                          }
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          onMouseUp={handleMouseUpPassword}
+                          edge='end'
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }
+                }}
               />
             </FormControl>
 
