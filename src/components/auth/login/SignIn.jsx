@@ -71,10 +71,9 @@ export default function SignIn(props) {
   const [emailErrorMessage, setEmailErrorMessage] = useState('')
   const [passwordError, setPasswordError] = useState(false)
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('')
-  const [isLoading, setIsLoadingg] = useState(false)
   const [open, setOpen] = useState(false)
 
-  const { signIn, guestSignIn } = useAuth()
+  const { signIn, guestSignIn, isSigningIn, isGuestSigningIn } = useAuth()
   let navigate = useNavigate()
 
   const handleClickOpen = () => {
@@ -223,12 +222,22 @@ export default function SignIn(props) {
               label='Remember me'
             />
             <ForgotPassword open={open} handleClose={handleClose} />
-            <Button type='submit' fullWidth variant='contained'>
-              Sign in
+            <Button
+              type='submit'
+              fullWidth
+              variant='contained'
+              disabled={isSigningIn}
+            >
+              {isSigningIn ? 'Signing in...' : 'Sign in'}
             </Button>
 
-            <Button fullWidth variant='contained' onClick={handleGuestSignIn}>
-              Guest Sign in
+            <Button
+              fullWidth
+              variant='contained'
+              onClick={handleGuestSignIn}
+              disabled={isGuestSigningIn}
+            >
+              {isGuestSigningIn ? 'Signing in...' : 'Sign in as a guest'}
             </Button>
             <Link
               component='button'

@@ -1,50 +1,82 @@
-import { useState, useCallback, createContext } from 'react'
+import { useState, useCallback, createContext, useEffect } from 'react'
 import { signInAPI, signInAsGuestAPI } from '~/services'
+import axios from 'axios'
 
 export const AuthContext = createContext(null)
 
 const AuthContextProvider = ({ children }) => {
-  const [user, setUser] = useState(null)
+  const [userDetails, setUserDetails] = useState(() => {
+    const storedUser = localStorage.getItem('user')
+    return storedUser ? JSON.parse(storedUser) : null
+  })
   const [token, setToken] = useState(localStorage.getItem('token'))
+  const [isLoading, setIsLoading] = useState(true)
+  const [isSigningIn, setIsSigningIn] = useState(false)
+  const [isGuestSigningIn, setIsGuestSigningIn] = useState(false)
+
+  useEffect(() => {
+    const interceptor = axios.interceptors.request.use((config) => {
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+      }
+
+      return config
+    })
+    setIsLoading(false)
+    return () => {
+      axios.interceptors.request.eject(interceptor)
+    }
+  }, [token])
 
   const storeUserDetails = (response) => {
     const { user, token } = response
-    setUser(user)
+    setUserDetails(user)
     setToken(token)
     localStorage.setItem('token', token)
+    localStorage.setItem('user', JSON.stringify(user))
   }
 
   const signIn = useCallback(async (email, password) => {
     try {
+      setIsSigningIn(true)
       const response = await signInAPI({ email, password })
       storeUserDetails(response)
     } catch (error) {
       throw error
+    } finally {
+      setIsSigningIn(false)
     }
   }, [])
 
   const guestSignIn = useCallback(async () => {
     try {
+      setIsGuestSigningIn(true)
       const response = await signInAsGuestAPI()
       storeUserDetails(response)
     } catch (error) {
       throw error
+    } finally {
+      setIsGuestSigningIn(false)
     }
   }, [])
 
   const signOut = useCallback(() => {
-    setUser(null)
+    setUserDetails(null)
     setToken(null)
     localStorage.removeItem('token')
+    localStorage.removeItem('user')
   }, [])
 
   const value = {
-    user,
+    userDetails,
     token,
     signIn,
     signOut,
     guestSignIn,
-    isAuthenticated: !!token
+    isAuthenticated: !!token,
+    isLoading,
+    isSigningIn,
+    isGuestSigningIn
   }
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

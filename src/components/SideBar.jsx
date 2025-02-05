@@ -9,7 +9,8 @@ import {
   FormControl,
   InputBase,
   Stack,
-  Divider
+  Divider,
+  Tooltip
 } from '@mui/material'
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined'
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined'
@@ -22,9 +23,17 @@ import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined
 import LensBlurOutlinedIcon from '@mui/icons-material/LensBlurOutlined'
 import OutlinedFlagOutlinedIcon from '@mui/icons-material/OutlinedFlagOutlined'
 import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
+import ListItemIcon from '@mui/material/ListItemIcon'
+
+import PersonAdd from '@mui/icons-material/PersonAdd'
+import Settings from '@mui/icons-material/Settings'
+import Logout from '@mui/icons-material/Logout'
 import { red } from '@mui/material/colors'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '~/hooks/useAuth'
 
 const mainFiltersStyle = {
   textTransform: 'none',
@@ -51,12 +60,21 @@ const modalStyle = {
   boxShadow: '0 15px 50px 0 rgba(0, 0, 0, 0.35)'
 }
 const SideBar = () => {
-  const [open, setOpen] = useState(false)
-  const handleOpen = () => {
-    setOpen(true)
+  const [modalOpen, setModalOpen] = useState(false)
+  const [anchorEl, setAnchorEl] = useState(null)
+  const open = Boolean(anchorEl)
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget)
   }
-  const handleClose = () => {
-    setOpen(false)
+  const handleMenuClose = () => {
+    setAnchorEl(null)
+  }
+  const { userDetails, signOut } = useAuth()
+  const handleModalOpen = () => {
+    setModalOpen(true)
+  }
+  const handleModalClose = () => {
+    setModalOpen(false)
   }
 
   const navigate = useNavigate()
@@ -64,30 +82,55 @@ const SideBar = () => {
     <nav>
       {/* Sidebar header */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Button
-          variant='text'
-          startIcon={
-            <Avatar
-              sx={{
-                bgcolor: red[500],
-                width: 24,
-                height: 24,
-                marginRight: 0.5
-              }}
-            >
-              J
-            </Avatar>
-          }
-          endIcon={<KeyboardArrowDownOutlinedIcon />}
-          sx={{
-            textTransform: 'none',
-            color: 'gray',
-            '&:hover': { bgcolor: '#f0f0f0' },
-            fontSize: 13
-          }}
+        <Tooltip title={userDetails.email}>
+          <Button
+            variant='text'
+            startIcon={
+              <Avatar
+                sx={{
+                  bgcolor: red[500],
+                  width: 24,
+                  height: 24,
+                  marginRight: 0.5
+                }}
+              >
+                {userDetails.email.charAt(0).toUpperCase()}
+              </Avatar>
+            }
+            endIcon={<KeyboardArrowDownOutlinedIcon onClick={handleMenuOpen} />}
+            sx={{
+              textTransform: 'none',
+              color: 'gray',
+              '&:hover': { bgcolor: '#f0f0f0' },
+              fontSize: 13
+            }}
+          >
+            {`${userDetails.email.slice(0, 6)}.....`}
+          </Button>
+        </Tooltip>
+        <Menu
+          anchorEl={anchorEl}
+          id='account-menu'
+          open={open}
+          onClose={handleMenuClose}
+          onClick={handleMenuClose}
+          transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+          sx={{ mt: 1 }}
         >
-          Duy
-        </Button>
+          <MenuItem>
+            <ListItemIcon>
+              <Settings fontSize='small' />
+            </ListItemIcon>
+            Settings
+          </MenuItem>
+          <MenuItem onClick={signOut}>
+            <ListItemIcon>
+              <Logout fontSize='small' />
+            </ListItemIcon>
+            Logout
+          </MenuItem>
+        </Menu>
         <Box>
           <IconButton aria-label='notification' sx={{ borderRadius: '10%' }}>
             <NotificationsNoneOutlinedIcon fontSize='small' />
@@ -109,21 +152,21 @@ const SideBar = () => {
           justifyContent: 'flex-start'
         }}
         startIcon={<AddCircleIcon sx={iconStyle} />}
-        onClick={handleOpen}
+        onClick={handleModalOpen}
       >
         Add new task
       </Button>
 
       {/* Modal */}
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={modalOpen}
+        onClose={handleModalClose}
         slots={{ backdrop: Backdrop }}
         slotProps={{
           backdrop: { sx: { backgroundColor: 'transparent' } }
         }}
       >
-        <Fade in={open}>
+        <Fade in={modalOpen}>
           <Box sx={modalStyle}>
             <form>
               <Box sx={{ p: 2 }}>
@@ -208,7 +251,7 @@ const SideBar = () => {
                     color: '#444',
                     bgcolor: '#f5f5f5'
                   }}
-                  onClick={handleClose}
+                  onClick={handleModalClose}
                 >
                   Cancel
                 </Button>
