@@ -16,6 +16,7 @@ import { useState } from 'react'
 import { signUpAPI } from '~/services/index'
 import { IconButton, InputAdornment, OutlinedInput } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
+import { validateInputs } from '~/utils/helpers'
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -70,33 +71,18 @@ const Register = (props) => {
   const [passwordError, setPasswordError] = useState(false)
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('')
 
-  const validateInputs = () => {
-    let isValid = true
-
-    if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      setEmailError(true)
-      setEmailErrorMessage('Please enter a valid email address.')
-      isValid = false
-    } else {
-      setEmailError(false)
-      setEmailErrorMessage('')
-    }
-
-    if (!password || password.length < 6) {
-      setPasswordError(true)
-      setPasswordErrorMessage('Password must be at least 6 characters long.')
-      isValid = false
-    } else {
-      setPasswordError(false)
-      setPasswordErrorMessage('')
-    }
-
-    return isValid
-  }
-
   const handleSubmit = async (event) => {
     event.preventDefault()
-    if (validateInputs()) {
+    if (
+      validateInputs(
+        email,
+        password,
+        setEmailError,
+        setEmailErrorMessage,
+        setPasswordError,
+        setPasswordErrorMessage
+      )
+    ) {
       const data = { email, password }
       try {
         await signUpAPI(data)
@@ -177,6 +163,7 @@ const Register = (props) => {
                       <InputAdornment position='end'>
                         <IconButton
                           sx={{
+                            color: '#cccccc',
                             border: 'none',
                             backgroundColor: 'transparent',
                             '&:hover': {
@@ -206,6 +193,7 @@ const Register = (props) => {
               Sign up
             </Button>
           </Box>
+
           <Divider>
             <Typography sx={{ color: 'text.secondary' }}>or</Typography>
           </Divider>

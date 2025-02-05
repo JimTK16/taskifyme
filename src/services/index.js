@@ -8,9 +8,17 @@ export const signUpAPI = async (userData) => {
   return response.data
 }
 
-export const signInAPI = async () => {}
+export const signInAPI = async (userData) => {
+  const response = await axios.post(`${API_ROOT}/v1/users/signin`, userData)
+  console.log(response)
+  return response.data
+}
 
-export const signInAsGuest = async () => {}
+export const signInAsGuestAPI = async () => {
+  const response = await axios.post(`${API_ROOT}/v1/users/guest`)
+  console.log(response)
+  return response.data
+}
 
 export const signOutAPI = async () => {}
 

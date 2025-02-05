@@ -1,4 +1,3 @@
-import * as React from 'react'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Checkbox from '@mui/material/Checkbox'
@@ -15,6 +14,12 @@ import MuiCard from '@mui/material/Card'
 import { styled } from '@mui/material/styles'
 import ForgotPassword from './ForgotPassword'
 import AppTheme from './AppTheme'
+import { useState } from 'react'
+import { IconButton, InputAdornment } from '@mui/material'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
+import { validateInputs } from '~/utils/helpers'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '~/hooks/useAuth'
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -59,11 +64,18 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }))
 
 export default function SignIn(props) {
-  const [emailError, setEmailError] = React.useState(false)
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState('')
-  const [passwordError, setPasswordError] = React.useState(false)
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('')
-  const [open, setOpen] = React.useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [emailError, setEmailError] = useState(false)
+  const [emailErrorMessage, setEmailErrorMessage] = useState('')
+  const [passwordError, setPasswordError] = useState(false)
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState('')
+  const [isLoading, setIsLoadingg] = useState(false)
+  const [open, setOpen] = useState(false)
+
+  const { signIn, guestSignIn } = useAuth()
+  let navigate = useNavigate()
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -73,45 +85,49 @@ export default function SignIn(props) {
     setOpen(false)
   }
 
-  const handleSubmit = (event) => {
-    if (emailError || passwordError) {
-      event.preventDefault()
-      return
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    if (
+      validateInputs(
+        email,
+        password,
+        setEmailError,
+        setEmailErrorMessage,
+        setPasswordError,
+        setPasswordErrorMessage
+      )
+    ) {
+      try {
+        await signIn(email, password)
+        navigate('/')
+      } catch (error) {
+        setEmailError(true)
+        setEmailErrorMessage('Invalid email or password.')
+      }
     }
-    const data = new FormData(event.currentTarget)
-    console.log({
-      email: data.get('email'),
-      password: data.get('password')
-    })
   }
 
-  const validateInputs = () => {
-    const email = document.getElementById('email')
-    const password = document.getElementById('password')
-
-    let isValid = true
-
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-      setEmailError(true)
-      setEmailErrorMessage('Please enter a valid email address.')
-      isValid = false
-    } else {
-      setEmailError(false)
-      setEmailErrorMessage('')
+  const handleGuestSignIn = async (event) => {
+    event.preventDefault()
+    try {
+      await guestSignIn()
+      navigate('/')
+    } catch (error) {
+      console.log(error)
     }
-
-    if (!password.value || password.value.length < 6) {
-      setPasswordError(true)
-      setPasswordErrorMessage('Password must be at least 6 characters long.')
-      isValid = false
-    } else {
-      setPasswordError(false)
-      setPasswordErrorMessage('')
-    }
-
-    return isValid
+    console.log('guest sign in')
   }
 
+  const handleClickShowPassword = () =>
+    setShowPassword((prevState) => !prevState)
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault()
+  }
+
+  const handleMouseUpPassword = (event) => {
+    event.preventDefault()
+  }
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
@@ -143,6 +159,8 @@ export default function SignIn(props) {
                 id='email'
                 type='email'
                 name='email'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder='your@email.com'
                 autoComplete='email'
                 autoFocus
@@ -159,14 +177,45 @@ export default function SignIn(props) {
                 helperText={passwordErrorMessage}
                 name='password'
                 placeholder='••••••'
-                type='password'
+                type={showPassword ? 'text' : 'password'}
                 id='password'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 autoComplete='current-password'
                 autoFocus
                 required
                 fullWidth
                 variant='outlined'
                 color={passwordError ? 'error' : 'primary'}
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position='end'>
+                        <IconButton
+                          sx={{
+                            color: '#cccccc',
+                            border: 'none',
+                            backgroundColor: 'transparent',
+                            '&:hover': {
+                              backgroundColor: 'transparent'
+                            }
+                          }}
+                          aria-label={
+                            showPassword
+                              ? 'hide the password'
+                              : 'display the password'
+                          }
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          onMouseUp={handleMouseUpPassword}
+                          edge='end'
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }
+                }}
               />
             </FormControl>
             <FormControlLabel
@@ -174,13 +223,12 @@ export default function SignIn(props) {
               label='Remember me'
             />
             <ForgotPassword open={open} handleClose={handleClose} />
-            <Button
-              type='submit'
-              fullWidth
-              variant='contained'
-              onClick={validateInputs}
-            >
+            <Button type='submit' fullWidth variant='contained'>
               Sign in
+            </Button>
+
+            <Button fullWidth variant='contained' onClick={handleGuestSignIn}>
+              Guest Sign in
             </Button>
             <Link
               component='button'

@@ -65,7 +65,7 @@ const SideBar = () => {
       {/* Sidebar header */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Button
-          variant="text"
+          variant='text'
           startIcon={
             <Avatar
               sx={{
@@ -89,11 +89,11 @@ const SideBar = () => {
           Duy
         </Button>
         <Box>
-          <IconButton aria-label="notification" sx={{ borderRadius: '10%' }}>
-            <NotificationsNoneOutlinedIcon fontSize="small" />
+          <IconButton aria-label='notification' sx={{ borderRadius: '10%' }}>
+            <NotificationsNoneOutlinedIcon fontSize='small' />
           </IconButton>
-          <IconButton aria-label="toggle sidebar" sx={{ borderRadius: '10%' }}>
-            <ViewSidebarOutlinedIcon fontSize="small" />
+          <IconButton aria-label='toggle sidebar' sx={{ borderRadius: '10%' }}>
+            <ViewSidebarOutlinedIcon fontSize='small' />
           </IconButton>
         </Box>
       </Box>
@@ -129,7 +129,7 @@ const SideBar = () => {
               <Box sx={{ p: 2 }}>
                 <FormControl fullWidth>
                   <InputBase
-                    placeholder="Practice math problems daily"
+                    placeholder='Practice math problems daily'
                     sx={{
                       '& .MuiInputBase-input': {
                         fontSize: 20
@@ -144,7 +144,7 @@ const SideBar = () => {
                 </FormControl>
                 <FormControl fullWidth>
                   <InputBase
-                    placeholder="Description"
+                    placeholder='Description'
                     sx={{
                       '& .MuiInputBase-input': {
                         fontSize: 13
@@ -156,9 +156,9 @@ const SideBar = () => {
                     }}
                   ></InputBase>
                 </FormControl>
-                <Stack spacing={2} direction="row">
+                <Stack spacing={2} direction='row'>
                   <Button
-                    variant="outlined"
+                    variant='outlined'
                     startIcon={
                       <CalendarTodayOutlinedIcon
                         style={{ fontSize: 14, marginBottom: 1 }}
@@ -175,8 +175,8 @@ const SideBar = () => {
                     Date
                   </Button>
                   <Button
-                    variant="outlined"
-                    size="small"
+                    variant='outlined'
+                    size='small'
                     startIcon={
                       <OutlinedFlagOutlinedIcon
                         style={{ fontSize: 14, marginBottom: 1 }}
@@ -208,6 +208,7 @@ const SideBar = () => {
                     color: '#444',
                     bgcolor: '#f5f5f5'
                   }}
+                  onClick={handleClose}
                 >
                   Cancel
                 </Button>
