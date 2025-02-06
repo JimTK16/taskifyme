@@ -14,7 +14,7 @@ import MuiCard from '@mui/material/Card'
 import { styled } from '@mui/material/styles'
 import ForgotPassword from './ForgotPassword'
 import AppTheme from './AppTheme'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { IconButton, InputAdornment } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { validateInputs } from '~/utils/helpers'
@@ -72,8 +72,12 @@ export default function SignIn(props) {
   const [passwordError, setPasswordError] = useState(false)
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('')
   const [open, setOpen] = useState(false)
+  const [rememberMe, setRememberMe] = useState(() => {
+    return JSON.parse(localStorage.getItem('rememberMePreference')) || false
+  })
 
   const { signIn, guestSignIn, isSigningIn, isGuestSigningIn } = useAuth()
+
   let navigate = useNavigate()
 
   const handleClickOpen = () => {
@@ -83,6 +87,16 @@ export default function SignIn(props) {
   const handleClose = () => {
     setOpen(false)
   }
+
+  useEffect(() => {
+    if (localStorage.getItem('rememberedEmail')) {
+      setEmail(localStorage.getItem('rememberedEmail'))
+    }
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('rememberMePreference', JSON.stringify(rememberMe))
+  }, [rememberMe])
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -96,6 +110,12 @@ export default function SignIn(props) {
         setPasswordErrorMessage
       )
     ) {
+      if (rememberMe) {
+        localStorage.setItem('rememberedEmail', email)
+      } else {
+        localStorage.removeItem('rememberedEmail')
+      }
+
       try {
         await signIn(email, password)
         navigate('/')
@@ -126,6 +146,10 @@ export default function SignIn(props) {
 
   const handleMouseUpPassword = (event) => {
     event.preventDefault()
+  }
+
+  const handleRememberMeClick = () => {
+    setRememberMe(!rememberMe)
   }
   return (
     <AppTheme {...props}>
@@ -218,7 +242,14 @@ export default function SignIn(props) {
               />
             </FormControl>
             <FormControlLabel
-              control={<Checkbox value='remember' color='primary' />}
+              control={
+                <Checkbox
+                  value='remember'
+                  color='primary'
+                  onChange={handleRememberMeClick}
+                  checked={rememberMe}
+                />
+              }
               label='Remember me'
             />
             <ForgotPassword open={open} handleClose={handleClose} />
