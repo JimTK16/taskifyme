@@ -20,8 +20,6 @@ export const signInAsGuestAPI = async () => {
   return response.data
 }
 
-export const signOutAPI = async () => {}
-
 // Task API
 
 export const createNewTaskAPI = async () => {}
@@ -30,7 +28,7 @@ export const deleteTaskAPI = async () => {}
 
 export const updateTaskAPI = async () => {}
 
-export const getTasksByUserid = async (userId) => {
+export const getTasksByUserId = async (userId) => {
   const response = await axios.get(`${API_ROOT}/v1/tasks`)
 
   return response.data

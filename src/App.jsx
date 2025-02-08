@@ -10,6 +10,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute'
 import SignIn from './components/auth/login/SignIn'
 import Redirecting from './components/auth/signup/Redirecting'
 import AuthContextProvider from './context/AuthContext'
+import TaskContextProvider from './context/TaskContext'
 const Layout = () => {
   return (
     <Grid2 container>
@@ -33,21 +34,23 @@ const Layout = () => {
 function App() {
   return (
     <AuthContextProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/signin' element={<SignIn />} />
-          <Route path='/redirect' element={<Redirecting />} />
-          <Route path='/signup' element={<Register />} />
-          <Route element={<ProtectedRoute />}>
-            <Route path='/' element={<Layout />}>
-              <Route index element={<Navigate to='today' replace />} />
-              <Route path='upcoming' element={<Upcoming />} />
-              <Route path='today' element={<Today />} />
-              <Route path='inbox' element={<Inbox />} />
+      <TaskContextProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path='/signin' element={<SignIn />} />
+            <Route path='/redirect' element={<Redirecting />} />
+            <Route path='/signup' element={<Register />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path='/' element={<Layout />}>
+                <Route index element={<Navigate to='today' replace />} />
+                <Route path='upcoming' element={<Upcoming />} />
+                <Route path='today' element={<Today />} />
+                <Route path='inbox' element={<Inbox />} />
+              </Route>
             </Route>
-          </Route>
-        </Routes>
-      </BrowserRouter>
+          </Routes>
+        </BrowserRouter>
+      </TaskContextProvider>
     </AuthContextProvider>
   )
 }

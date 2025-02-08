@@ -1,8 +1,7 @@
-import { useState, useCallback, createContext, useEffect } from 'react'
+import { useState, useCallback, createContext, useEffect, useRef } from 'react'
 import { signInAPI, signInAsGuestAPI } from '~/services'
 import axios from 'axios'
-
-export const AuthContext = createContext(null)
+import { AuthContext } from './context'
 
 const AuthContextProvider = ({ children }) => {
   const [userDetails, setUserDetails] = useState(() => {
@@ -10,14 +9,22 @@ const AuthContextProvider = ({ children }) => {
     return storedUser ? JSON.parse(storedUser) : null
   })
   const [token, setToken] = useState(localStorage.getItem('token'))
+  console.log('token:', token)
+  const tokenRef = useRef(token)
   const [isLoading, setIsLoading] = useState(true)
   const [isSigningIn, setIsSigningIn] = useState(false)
   const [isGuestSigningIn, setIsGuestSigningIn] = useState(false)
 
   useEffect(() => {
+    tokenRef.current = token
+  }, [token])
+
+  useEffect(() => {
     const interceptor = axios.interceptors.request.use((config) => {
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`
+      const currentToken = tokenRef.current
+
+      if (currentToken) {
+        config.headers.Authorization = `Bearer ${currentToken}`
       }
 
       return config
@@ -26,7 +33,7 @@ const AuthContextProvider = ({ children }) => {
     return () => {
       axios.interceptors.request.eject(interceptor)
     }
-  }, [token])
+  }, [])
 
   const storeUserDetails = (response) => {
     const { user, token } = response
