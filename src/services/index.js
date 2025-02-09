@@ -28,7 +28,7 @@ export const deleteTaskAPI = async () => {}
 
 export const updateTaskAPI = async () => {}
 
-export const getTasksByUserId = async (userId) => {
+export const getTasks = async () => {
   const response = await axios.get(`${API_ROOT}/v1/tasks`)
 
   return response.data

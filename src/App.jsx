@@ -1,5 +1,5 @@
 import './App.css'
-import SideBar from './components/SideBar'
+import SideBar from './components/sidebar/SideBar'
 import { Grid2 } from '@mui/material'
 import { BrowserRouter, Route, Outlet, Routes, Navigate } from 'react-router'
 import Today from './components/Today'

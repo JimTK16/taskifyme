@@ -1,13 +1,14 @@
 import { useState, useEffect, useContext } from 'react'
 
-import { getTasksByUserId } from '~/services'
+import { getTasks } from '~/services'
 import { TaskContext } from './context'
 import { useAuth } from '~/hooks/useAuth'
 
 export default function TaskContextProvider({ children }) {
   const { userDetails, isLoading } = useAuth()
-  console.log(userDetails)
+
   const [tasks, setTasks] = useState([])
+  const [isLoadingTasks, setIsLoadingTasks] = useState(true)
 
   useEffect(() => {
     if (isLoading) return
@@ -15,18 +16,21 @@ export default function TaskContextProvider({ children }) {
 
     const fetchTasks = async () => {
       try {
-        const response = await getTasksByUserId(userDetails.userId)
-        console.log(response)
+        setIsLoadingTasks(true)
+        const response = await getTasks(userDetails.userId)
         setTasks(response)
       } catch (error) {
         console.error(error)
+      } finally {
+        setIsLoadingTasks(false)
       }
     }
     fetchTasks()
   }, [userDetails, isLoading])
 
   const value = {
-    tasks
+    tasks,
+    isLoadingTasks
   }
   return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>
 }

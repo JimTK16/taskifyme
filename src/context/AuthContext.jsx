@@ -9,7 +9,6 @@ const AuthContextProvider = ({ children }) => {
     return storedUser ? JSON.parse(storedUser) : null
   })
   const [token, setToken] = useState(localStorage.getItem('token'))
-  console.log('token:', token)
   const tokenRef = useRef(token)
   const [isLoading, setIsLoading] = useState(true)
   const [isSigningIn, setIsSigningIn] = useState(false)

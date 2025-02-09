@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, Skeleton, Stack, Typography } from '@mui/material'
 import TaskItem from './TaskItem'
 import { useContext, useEffect } from 'react'
 import { TaskContext } from '~/context/context'
@@ -42,8 +42,8 @@ import { TaskContext } from '~/context/context'
 // ]
 
 const Today = () => {
-  const { tasks } = useContext(TaskContext)
-  console.log(tasks)
+  const { tasks, isLoadingTasks } = useContext(TaskContext)
+  const tasksCount = `${tasks.length} task${tasks.length > 1 ? 's' : ''}`
 
   return (
     <>
@@ -53,13 +53,16 @@ const Today = () => {
         </Typography>
         <Stack direction={'row'}>
           <Typography variant='body2' sx={{ color: 'gray' }}>
-            {tasks.length} task{tasks.length > 1 ? 's' : ''}
+            {isLoadingTasks ? (
+              <Skeleton variant='text' width={30} />
+            ) : (
+              tasksCount
+            )}
           </Typography>
         </Stack>
         <Stack sx={{ mt: 4 }} direction='column' spacing={2}>
-          {tasks.map((task) => (
-            <TaskItem key={task._id} task={task} />
-          ))}
+          {!isLoadingTasks &&
+            tasks.map((task) => <TaskItem key={task._id} task={task} />)}
         </Stack>
       </Box>
     </>
