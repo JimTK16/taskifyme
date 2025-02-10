@@ -11,7 +11,9 @@ import {
 } from '@mui/material'
 import OutlinedFlagOutlinedIcon from '@mui/icons-material/OutlinedFlagOutlined'
 import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { createNewTaskAPI } from '~/services'
+import { TaskContext } from '~/context/context'
 
 const modalStyle = {
   position: 'absolute',
@@ -25,6 +27,22 @@ const modalStyle = {
   boxShadow: '0 15px 50px 0 rgba(0, 0, 0, 0.35)'
 }
 const AddTaskModal = ({ open, onClose }) => {
+  const [taskTitle, setTaskTitle] = useState('')
+  const [taskDescription, setTaskDescription] = useState('')
+  const { tasks, setTasks } = useContext(TaskContext)
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    console.log('Task submitted:', taskTitle, taskDescription)
+    const newTask = {
+      title: taskTitle,
+      description: taskDescription
+    }
+    const response = await createNewTaskAPI(newTask)
+    setTasks([...tasks, response])
+    setTaskTitle('')
+    setTaskDescription('')
+    onClose()
+  }
   return (
     <Modal
       open={open}
@@ -36,7 +54,7 @@ const AddTaskModal = ({ open, onClose }) => {
     >
       <Fade in={open}>
         <Box sx={modalStyle}>
-          <form>
+          <form onSubmit={handleSubmit}>
             <Box sx={{ p: 2 }}>
               <FormControl fullWidth>
                 <InputBase
@@ -51,6 +69,8 @@ const AddTaskModal = ({ open, onClose }) => {
                       fontWeight: '600'
                     }
                   }}
+                  onChange={(e) => setTaskTitle(e.target.value)}
+                  value={taskTitle}
                 ></InputBase>
               </FormControl>
               <FormControl fullWidth>
@@ -65,6 +85,8 @@ const AddTaskModal = ({ open, onClose }) => {
                       fontWeight: '500'
                     }
                   }}
+                  onChange={(e) => setTaskDescription(e.target.value)}
+                  value={taskDescription}
                 ></InputBase>
               </FormControl>
               <Stack spacing={2} direction='row'>
@@ -129,6 +151,7 @@ const AddTaskModal = ({ open, onClose }) => {
                   color: '#fff',
                   bgcolor: '#a4a9b0'
                 }}
+                type='submit'
               >
                 Add task
               </Button>

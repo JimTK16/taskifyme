@@ -30,7 +30,8 @@ export default function TaskContextProvider({ children }) {
 
   const value = {
     tasks,
-    isLoadingTasks
+    isLoadingTasks,
+    setTasks
   }
   return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>
 }

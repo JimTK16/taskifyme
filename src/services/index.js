@@ -21,7 +21,10 @@ export const signInAsGuestAPI = async () => {
 
 // Task API
 
-export const createNewTaskAPI = async () => {}
+export const createNewTaskAPI = async (newTaskData) => {
+  const response = await axios.post(`${API_ROOT}/v1/tasks`, newTaskData)
+  return response.data
+}
 
 export const deleteTaskAPI = async () => {}
 
