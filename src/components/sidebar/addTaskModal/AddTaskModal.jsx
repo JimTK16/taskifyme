@@ -9,11 +9,15 @@ import {
   Stack,
   Divider
 } from '@mui/material'
-import OutlinedFlagOutlinedIcon from '@mui/icons-material/OutlinedFlagOutlined'
 import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined'
 import { useContext, useState } from 'react'
 import { createNewTaskAPI } from '~/services'
 import { TaskContext } from '~/context/context'
+import PriorityMenu from './PriorityMenu'
+
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 
 const modalStyle = {
   position: 'absolute',
@@ -30,8 +34,15 @@ const AddTaskModal = ({ open, onClose }) => {
   const [taskTitle, setTaskTitle] = useState('')
   const [taskDescription, setTaskDescription] = useState('')
   const { tasks, setTasks } = useContext(TaskContext)
+
+  const handleCloseModal = () => {
+    onClose()
+    setTaskTitle('')
+    setTaskDescription('')
+  }
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (taskTitle === '') return
     console.log('Task submitted:', taskTitle, taskDescription)
     const newTask = {
       title: taskTitle,
@@ -39,14 +50,12 @@ const AddTaskModal = ({ open, onClose }) => {
     }
     const response = await createNewTaskAPI(newTask)
     setTasks([...tasks, response])
-    setTaskTitle('')
-    setTaskDescription('')
-    onClose()
+    handleCloseModal()
   }
   return (
     <Modal
       open={open}
-      onClose={onClose}
+      onClose={handleCloseModal}
       slots={{ backdrop: Backdrop }}
       slotProps={{
         backdrop: { sx: { backgroundColor: 'transparent' } }
@@ -90,7 +99,7 @@ const AddTaskModal = ({ open, onClose }) => {
                 ></InputBase>
               </FormControl>
               <Stack spacing={2} direction='row'>
-                <Button
+                {/* <Button
                   variant='outlined'
                   startIcon={
                     <CalendarTodayOutlinedIcon
@@ -106,24 +115,11 @@ const AddTaskModal = ({ open, onClose }) => {
                   }}
                 >
                   Date
-                </Button>
-                <Button
-                  variant='outlined'
-                  size='small'
-                  startIcon={
-                    <OutlinedFlagOutlinedIcon
-                      style={{ fontSize: 14, marginBottom: 1 }}
-                    />
-                  }
-                  sx={{
-                    textTransform: 'none',
-                    border: '1px solid #e6e6e6',
-                    color: '#666',
-                    fontWeight: '400'
-                  }}
-                >
-                  Priority
-                </Button>
+                </Button> */}
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker />
+                </LocalizationProvider>
+                <PriorityMenu />
               </Stack>
             </Box>
             <Divider sx={{ m: 0 }} />
@@ -141,15 +137,20 @@ const AddTaskModal = ({ open, onClose }) => {
                   color: '#444',
                   bgcolor: '#f5f5f5'
                 }}
-                onClick={onClose}
+                onClick={handleCloseModal}
               >
                 Cancel
               </Button>
               <Button
                 sx={{
                   textTransform: 'none',
-                  color: '#fff',
-                  bgcolor: '#a4a9b0'
+                  color: 'white',
+                  bgcolor: taskTitle === '' ? 'gray' : '#39485e',
+                  position: 'relative',
+                  '&:hover': {
+                    bgcolor: taskTitle === '' ? 'gray' : '#2a374a'
+                  },
+                  cursor: taskTitle === '' ? 'not-allowed' : 'pointer'
                 }}
                 type='submit'
               >
