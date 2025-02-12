@@ -9,7 +9,6 @@ import {
   Stack,
   Divider
 } from '@mui/material'
-import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined'
 import { useContext, useState } from 'react'
 import { createNewTaskAPI } from '~/services'
 import { TaskContext } from '~/context/context'
@@ -18,6 +17,8 @@ import PriorityMenu from './PriorityMenu'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { DesktopDatePicker, MobileDatePicker } from '@mui/x-date-pickers'
+import CustomizedDatePicker from './CustomizedDatePicker'
 
 const modalStyle = {
   position: 'absolute',
@@ -92,33 +93,15 @@ const AddTaskModal = ({ open, onClose }) => {
                     '& .MuiInputBase-input::placeholder': {
                       color: '#0006',
                       fontWeight: '500'
-                    }
+                    },
+                    mb: 2
                   }}
                   onChange={(e) => setTaskDescription(e.target.value)}
                   value={taskDescription}
                 ></InputBase>
               </FormControl>
-              <Stack spacing={2} direction='row'>
-                {/* <Button
-                  variant='outlined'
-                  startIcon={
-                    <CalendarTodayOutlinedIcon
-                      style={{ fontSize: 14, marginBottom: 1 }}
-                    />
-                  }
-                  sx={{
-                    textTransform: 'none',
-                    border: '1px solid #e6e6e6',
-                    color: '#666',
-                    fontWeight: '400',
-                    fontSize: 14
-                  }}
-                >
-                  Date
-                </Button> */}
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker />
-                </LocalizationProvider>
+              <Stack spacing={2} direction='row' alignItems='center'>
+                <CustomizedDatePicker />
                 <PriorityMenu />
               </Stack>
             </Box>

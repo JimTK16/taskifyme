@@ -25,7 +25,16 @@ const PriorityMenu = () => {
           value={priority}
           id='priority-select'
           onChange={handleChange}
-          sx={{ fontSize: '13px' }}
+          sx={{
+            fontSize: '13px',
+            height: '40px',
+            '& .MuiSelect-select': {
+              display: 'flex',
+              alignItems: 'center',
+              paddingTop: '8px',
+              paddingBottom: '8px'
+            }
+          }}
         >
           <MenuItem value=''>Priority</MenuItem>
           {priorityOptions.map((option) => (

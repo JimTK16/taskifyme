@@ -11,24 +11,28 @@ import SignIn from './components/auth/login/SignIn'
 import Redirecting from './components/auth/signup/Redirecting'
 import AuthContextProvider from './context/AuthContext'
 import TaskContextProvider from './context/TaskContext'
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 const Layout = () => {
   return (
-    <Grid2 container>
-      <Grid2
-        sx={{
-          p: 1,
-          height: '100vh',
-          width: 280,
-          bgcolor: '#FAFAFA',
-          display: { xs: 'none', sm: 'block' }
-        }}
-      >
-        <SideBar />
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <Grid2 container>
+        <Grid2
+          sx={{
+            p: 1,
+            height: '100vh',
+            width: 280,
+            bgcolor: '#FAFAFA',
+            display: { xs: 'none', sm: 'block' }
+          }}
+        >
+          <SideBar />
+        </Grid2>
+        <Grid2 sx={{ flexGrow: 1, p: 4 }}>
+          <Outlet />
+        </Grid2>
       </Grid2>
-      <Grid2 sx={{ flexGrow: 1, p: 4 }}>
-        <Outlet />
-      </Grid2>
-    </Grid2>
+    </LocalizationProvider>
   )
 }
 function App() {
