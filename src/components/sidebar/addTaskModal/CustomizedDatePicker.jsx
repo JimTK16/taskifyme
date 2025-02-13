@@ -1,37 +1,49 @@
 import { DatePicker } from '@mui/x-date-pickers'
 import dayjs from 'dayjs'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const currentYear = dayjs().year()
 
-const CustomizedDatePicker = () => {
-  const [date, setDate] = useState(null)
-  console.log(date)
+const CustomizedDatePicker = ({ value, onChange }) => {
   const getDateFormat = () => {
-    if (!date) return 'MMM D'
+    if (!value) return 'MMM D'
 
-    const selectedYear = dayjs(date).year()
+    const selectedYear = dayjs(value).year()
     return selectedYear === currentYear ? 'MMM D' : 'MMM D YYYY'
   }
+
+  const [cleared, setCleared] = useState(false)
+
+  useEffect(() => {
+    if (cleared) {
+      const timeout = setTimeout(() => {
+        setCleared(false)
+      }, 1500)
+      return () => clearTimeout(timeout)
+    }
+    return () => {}
+  }, [cleared])
   return (
     <DatePicker
-      value={date}
-      onChange={(newValue) => {
-        setDate(newValue)
-      }}
-      format={getDateFormat(date)}
+      value={value}
+      onChange={onChange}
+      format={getDateFormat(value)}
       slotProps={{
         textField: {
           placeholder: 'Date',
           size: 'small',
           sx: {
-            maxWidth: 200,
+            maxWidth: 180,
             height: '40px',
             '& .MuiInputBase-root': {
               fontSize: '13px',
               height: '40px'
             }
           }
+        },
+        field: {
+          clearable: true,
+          onClear: () => setCleared(true)
         },
 
         openPickerIcon: {

@@ -13,12 +13,8 @@ import { useContext, useState } from 'react'
 import { createNewTaskAPI } from '~/services'
 import { TaskContext } from '~/context/context'
 import PriorityMenu from './PriorityMenu'
-
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-import { DesktopDatePicker, MobileDatePicker } from '@mui/x-date-pickers'
 import CustomizedDatePicker from './CustomizedDatePicker'
+import dayjs from 'dayjs'
 
 const modalStyle = {
   position: 'absolute',
@@ -26,6 +22,7 @@ const modalStyle = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   maxWidth: 400,
+  minWidth: 280,
   bgcolor: 'background.paper',
   border: 'none',
   borderRadius: 2,
@@ -34,20 +31,27 @@ const modalStyle = {
 const AddTaskModal = ({ open, onClose }) => {
   const [taskTitle, setTaskTitle] = useState('')
   const [taskDescription, setTaskDescription] = useState('')
+  const [priority, setPriority] = useState('Priority 3')
+  const [dueDate, setDueDate] = useState(null)
   const { tasks, setTasks } = useContext(TaskContext)
 
   const handleCloseModal = () => {
     onClose()
     setTaskTitle('')
     setTaskDescription('')
+    setPriority('Priority 3')
+    setDueDate(null)
   }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (taskTitle === '') return
     console.log('Task submitted:', taskTitle, taskDescription)
     const newTask = {
       title: taskTitle,
-      description: taskDescription
+      description: taskDescription,
+      priority,
+      dueDate: dueDate ? dayjs(dueDate).toISOString() : null
     }
     const response = await createNewTaskAPI(newTask)
     setTasks([...tasks, response])
@@ -101,8 +105,11 @@ const AddTaskModal = ({ open, onClose }) => {
                 ></InputBase>
               </FormControl>
               <Stack spacing={2} direction='row' alignItems='center'>
-                <CustomizedDatePicker />
-                <PriorityMenu />
+                <CustomizedDatePicker
+                  value={dueDate}
+                  onChange={(newValue) => setDueDate(newValue)}
+                />
+                <PriorityMenu value={priority} onChange={setPriority} />
               </Stack>
             </Box>
             <Divider sx={{ m: 0 }} />

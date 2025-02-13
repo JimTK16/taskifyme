@@ -1,19 +1,27 @@
 import { CheckCircleOutline, PanoramaFishEye } from '@mui/icons-material'
-import { Checkbox, Stack, Typography } from '@mui/material'
+import { Box, Checkbox, Stack, Typography } from '@mui/material'
+import { priorityOptions } from './sidebar/addTaskModal/PriorityMenu'
+import { dateFormatter } from '~/utils/helpers'
 
-const TaskCircleIcon = () => {
+const TaskCircleIcon = ({ iconColor }) => {
   return (
     <Checkbox
-      sx={{ p: 0, mb: 2 }}
+      sx={{ p: 0, mb: 2, color: iconColor }}
       icon={<PanoramaFishEye />}
       checkedIcon={<CheckCircleOutline color='success' />}
     />
   )
 }
 const TaskItem = ({ task }) => {
+  const option = priorityOptions.find(
+    (option) => option.value === task.priority
+  )
+  const iconColor = option ? option.color : 'gray'
   return (
     <Stack direction={'row'}>
-      <TaskCircleIcon />
+      <Box>
+        <TaskCircleIcon iconColor={iconColor} />
+      </Box>
       <Stack direction={'column'} sx={{ ml: 1 }}>
         <Typography variant='body1' sx={{ color: 'black' }}>
           {task.title}
@@ -21,6 +29,11 @@ const TaskItem = ({ task }) => {
         <Typography variant='body2' sx={{ color: 'gray' }}>
           {task.description}
         </Typography>
+        {task.dueDate && (
+          <Typography sx={{ color: 'gray', fontSize: '12px' }}>
+            {dateFormatter(task.dueDate)}
+          </Typography>
+        )}
       </Stack>
     </Stack>
   )

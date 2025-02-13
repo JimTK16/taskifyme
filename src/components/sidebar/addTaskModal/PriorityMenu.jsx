@@ -1,20 +1,17 @@
-import { Box, Button, FormControl, InputLabel, Select } from '@mui/material'
+import { Box, FormControl, Select } from '@mui/material'
 import MenuItem from '@mui/material/MenuItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
-import FlagIcon from '@mui/icons-material/Flag'
 import TourIcon from '@mui/icons-material/Tour'
-import { useState } from 'react'
 
-const priorityOptions = [
-  { value: 'Priority 1', color: '#ff6600' },
-  { value: 'Priority 2', color: '#0099ff' },
-  { value: 'Priority 3', color: 'gray' }
+export const priorityOptions = [
+  { value: 'Priority 1', label: 'Priority 1', color: '#ff6600' },
+  { value: 'Priority 2', label: 'Priority 2', color: '#0099ff' },
+  { value: 'Priority 3', label: 'Priority 3', color: 'gray' }
 ]
 
-const PriorityMenu = () => {
-  const [priority, setPriority] = useState('')
+const PriorityMenu = ({ value, onChange }) => {
   const handleChange = (event) => {
-    setPriority(event.target.value)
+    onChange(event.target.value)
   }
 
   return (
@@ -22,7 +19,7 @@ const PriorityMenu = () => {
       <FormControl fullWidth size='small'>
         <Select
           displayEmpty
-          value={priority}
+          value={value}
           id='priority-select'
           onChange={handleChange}
           sx={{
@@ -36,7 +33,6 @@ const PriorityMenu = () => {
             }
           }}
         >
-          <MenuItem value=''>Priority</MenuItem>
           {priorityOptions.map((option) => (
             <MenuItem key={option.value} value={option.value}>
               <ListItemIcon
@@ -48,7 +44,7 @@ const PriorityMenu = () => {
                 }}
               >
                 <TourIcon fontSize='small' />
-                {option.value}
+                {option.label}
               </ListItemIcon>
             </MenuItem>
           ))}

@@ -28,3 +28,8 @@ export const validateInputs = (
 
   return isValid
 }
+
+export const dateFormatter = (date) => {
+  const options = { year: 'numeric', month: 'short', day: 'numeric' }
+  return new Date(date).toLocaleDateString(undefined, options)
+}
