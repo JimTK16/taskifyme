@@ -8,7 +8,7 @@ import LensBlurOutlinedIcon from '@mui/icons-material/LensBlurOutlined'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import UserMenu from './UserMenu'
-import AddTaskModal from './addTaskModal/AddTaskModal'
+import AddTaskModal from '../addTaskModal/AddTaskModal'
 import NotificationIcons from './NotificationIcons'
 import NavButton from './NavButton'
 

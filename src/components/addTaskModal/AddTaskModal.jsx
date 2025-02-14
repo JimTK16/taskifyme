@@ -17,6 +17,7 @@ import CustomizedDatePicker from './CustomizedDatePicker'
 import dayjs from 'dayjs'
 
 const modalStyle = {
+  outline: 'none',
   position: 'absolute',
   top: '50%',
   left: '50%',
@@ -62,8 +63,9 @@ const AddTaskModal = ({ open, onClose }) => {
       open={open}
       onClose={handleCloseModal}
       slots={{ backdrop: Backdrop }}
+      closeAfterTransition
       slotProps={{
-        backdrop: { sx: { backgroundColor: 'transparent' } }
+        backdrop: { invisible: true }
       }}
     >
       <Fade in={open}>

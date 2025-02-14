@@ -33,3 +33,15 @@ export const dateFormatter = (date) => {
   const options = { year: 'numeric', month: 'short', day: 'numeric' }
   return new Date(date).toLocaleDateString(undefined, options)
 }
+
+export const isDueToday = (dueDate) => {
+  const today = new Date()
+  const dueDateObj = new Date(dueDate)
+  today.setHours(0, 0, 0, 0)
+
+  return (
+    dueDateObj.getFullYear() === today.getFullYear() &&
+    dueDateObj.getMonth() === today.getMonth() &&
+    dueDateObj.getDate() === today.getDate()
+  )
+}
