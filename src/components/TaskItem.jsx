@@ -61,6 +61,7 @@ const TaskItem = ({ task }) => {
         showDeleteModal={showDeleteModal}
         setShowDeleteModal={setShowDeleteModal}
         title={task.title}
+        taskId={task._id}
       />
       <Divider />
     </>

@@ -26,7 +26,11 @@ export const createNewTaskAPI = async (newTaskData) => {
   return response.data
 }
 
-export const deleteTaskAPI = async () => {}
+export const deleteTaskAPI = async (taskId) => {
+  const response = await axios.delete(`${API_ROOT}/v1/tasks/${taskId}`)
+
+  return response.data
+}
 
 export const updateTaskAPI = async () => {}
 
