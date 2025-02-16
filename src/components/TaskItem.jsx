@@ -6,6 +6,7 @@ import { priorityOptions } from './addTaskModal/PriorityMenu'
 import { dateFormatter } from '~/utils/helpers'
 import { useState } from 'react'
 import DeleteTaskModal from './DeleteTaskModal'
+import AppSnackBar from './AppSnackBar'
 
 const TaskCircleIcon = ({ iconColor }) => {
   return (

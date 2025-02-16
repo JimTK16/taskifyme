@@ -7,10 +7,11 @@ import { TaskContext } from '~/context/context'
 const DeleteTaskModal = ({
   showDeleteModal,
   setShowDeleteModal,
+
   title,
   taskId
 }) => {
-  const { tasks, setTasks } = useContext(TaskContext)
+  const { tasks, setTasks, setShowSnackBar } = useContext(TaskContext)
 
   const handleDelete = async () => {
     try {
@@ -21,6 +22,7 @@ const DeleteTaskModal = ({
       console.error('Deletion failed:', error)
     } finally {
       setShowDeleteModal(false)
+      setShowSnackBar(true)
     }
   }
   return (

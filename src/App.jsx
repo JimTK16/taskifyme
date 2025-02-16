@@ -13,9 +13,29 @@ import AuthContextProvider from './context/AuthContext'
 import TaskContextProvider from './context/TaskContext'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import AppSnackBar from './components/AppSnackBar'
+import { useContext } from 'react'
+import { TaskContext } from './context/context'
 const Layout = () => {
+  const { setShowSnackBar, showSnackBar } = useContext(TaskContext)
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <AppSnackBar
+        setShowSnackBar={setShowSnackBar}
+        showSnackBar={showSnackBar}
+        sx={{
+          width: '260px', // 20px less than sidebar
+          position: 'fixed',
+          left: '20px', // Matches sidebar padding
+          bottom: '20px',
+          zIndex: 1400, // Higher than sidebar (MUI default is 1400)
+          '& .MuiSnackbarContent-root': {
+            width: '100%',
+            bgcolor: '#39485e', // Match your theme
+            color: 'red'
+          }
+        }}
+      />
       <Grid2 container>
         <Grid2
           sx={{
