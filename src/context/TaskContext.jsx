@@ -10,6 +10,7 @@ export default function TaskContextProvider({ children }) {
   const [tasks, setTasks] = useState([])
   const [isLoadingTasks, setIsLoadingTasks] = useState(true)
   const [showSnackBar, setShowSnackBar] = useState(false)
+  const [lastDeletedTaskId, setLastDeletedTaskId] = useState(null)
 
   useEffect(() => {
     if (isLoading) return
@@ -34,7 +35,9 @@ export default function TaskContextProvider({ children }) {
     isLoadingTasks,
     setTasks,
     showSnackBar,
-    setShowSnackBar
+    setShowSnackBar,
+    lastDeletedTaskId,
+    setLastDeletedTaskId
   }
   return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>
 }

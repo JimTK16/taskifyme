@@ -31,9 +31,10 @@ const Upcoming = () => {
         </Stack>
         <Stack sx={{ mt: 4 }} direction='column' spacing={2}>
           {!isLoadingTasks &&
-            upcomingTasks.map((task) => (
-              <TaskItem key={task._id} task={task} />
-            ))}
+            upcomingTasks.map((task) => {
+              if (task.deletedAt) return null
+              return <TaskItem key={task._id} task={task} />
+            })}
         </Stack>
       </Box>
     </Container>

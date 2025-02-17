@@ -32,7 +32,10 @@ export const deleteTaskAPI = async (taskId) => {
   return response.data
 }
 
-export const updateTaskAPI = async () => {}
+export const updateTaskAPI = async (taskId, updateData) => {
+  const response = await axios.put(`${API_ROOT}/v1/tasks/${taskId}`, updateData)
+  return response.data
+}
 
 export const getTasks = async () => {
   const response = await axios.get(`${API_ROOT}/v1/tasks`)

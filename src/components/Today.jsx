@@ -28,7 +28,10 @@ const Today = () => {
         </Stack>
         <Stack sx={{ mt: 4 }} direction='column' spacing={2}>
           {!isLoadingTasks &&
-            todayTasks.map((task) => <TaskItem key={task._id} task={task} />)}
+            todayTasks.map((task) => {
+              if (task.deletedAt) return null
+              return <TaskItem key={task._id} task={task} />
+            })}
         </Stack>
       </Box>
     </Container>

@@ -1,8 +1,33 @@
 import { Snackbar, Button, IconButton } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
+import { updateTaskAPI } from '~/services'
+import { useContext } from 'react'
+import { TaskContext } from '~/context/context'
 
 export default function AppSnackBar({ showSnackBar, setShowSnackBar }) {
+  const { lastDeletedTaskId, setLastDeletedTaskId, tasks, setTasks } =
+    useContext(TaskContext)
   const handleClose = () => setShowSnackBar(false)
+  const handleUndo = async () => {
+    try {
+      const undoneTask = await updateTaskAPI(lastDeletedTaskId, {
+        deletedAt: null
+      })
+
+      const updatedTasks = tasks.map((task) => {
+        if (task._id === undoneTask._id) {
+          return { ...undoneTask }
+        }
+        return task
+      })
+      setTasks(updatedTasks)
+    } catch (error) {
+      console.error('Undo failed:', error)
+    } finally {
+      setShowSnackBar(false)
+      setLastDeletedTaskId(null)
+    }
+  }
 
   return (
     <Snackbar
@@ -29,7 +54,7 @@ export default function AppSnackBar({ showSnackBar, setShowSnackBar }) {
               minWidth: '60px',
               fontSize: '0.8rem'
             }}
-            onClick={handleClose}
+            onClick={handleUndo}
           >
             UNDO
           </Button>

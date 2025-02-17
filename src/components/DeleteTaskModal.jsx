@@ -7,21 +7,28 @@ import { TaskContext } from '~/context/context'
 const DeleteTaskModal = ({
   showDeleteModal,
   setShowDeleteModal,
-
   title,
   taskId
 }) => {
-  const { tasks, setTasks, setShowSnackBar } = useContext(TaskContext)
+  const { tasks, setTasks, setShowSnackBar, setLastDeletedTaskId } =
+    useContext(TaskContext)
 
   const handleDelete = async () => {
     try {
-      await deleteTaskAPI(taskId)
-      const updatedTasks = tasks.filter((task) => task._id !== taskId)
+      const response = await deleteTaskAPI(taskId)
+      const updatedTasks = tasks.map((task) => {
+        if (task._id.toString() === taskId) {
+          return { ...response }
+        }
+        return task
+      })
+
       setTasks(updatedTasks)
     } catch (error) {
       console.error('Deletion failed:', error)
     } finally {
       setShowDeleteModal(false)
+      setLastDeletedTaskId(taskId)
       setShowSnackBar(true)
     }
   }
