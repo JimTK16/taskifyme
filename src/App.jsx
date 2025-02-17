@@ -20,22 +20,6 @@ const Layout = () => {
   const { setShowSnackBar, showSnackBar } = useContext(TaskContext)
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <AppSnackBar
-        setShowSnackBar={setShowSnackBar}
-        showSnackBar={showSnackBar}
-        sx={{
-          width: '260px', // 20px less than sidebar
-          position: 'fixed',
-          left: '20px', // Matches sidebar padding
-          bottom: '20px',
-          zIndex: 1400, // Higher than sidebar (MUI default is 1400)
-          '& .MuiSnackbarContent-root': {
-            width: '100%',
-            bgcolor: '#39485e', // Match your theme
-            color: 'red'
-          }
-        }}
-      />
       <Grid2 container>
         <Grid2
           sx={{
@@ -52,6 +36,10 @@ const Layout = () => {
           <Outlet />
         </Grid2>
       </Grid2>
+      <AppSnackBar
+        setShowSnackBar={setShowSnackBar}
+        showSnackBar={showSnackBar}
+      />
     </LocalizationProvider>
   )
 }
