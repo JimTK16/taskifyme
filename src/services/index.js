@@ -32,8 +32,15 @@ export const deleteTaskAPI = async (taskId) => {
   return response.data
 }
 
-export const updateTaskAPI = async (taskId, updateData) => {
-  const response = await axios.put(`${API_ROOT}/v1/tasks/${taskId}`, updateData)
+export const updateTaskAPI = async (
+  taskId,
+  updateData,
+  isUndeleting = false
+) => {
+  const response = await axios.put(
+    `${API_ROOT}/v1/tasks/${taskId}?undoing=${isUndeleting}`,
+    updateData
+  )
   return response.data
 }
 

@@ -1,9 +1,6 @@
 let apiRoot = ''
 
-console.log('process.env.BUILD_MODE', process.env.BUILD_MODE)
-
 if (process.env.BUILD_MODE === 'dev') {
-  console.log('dev mode')
   apiRoot = 'http://localhost:8017'
 }
 

@@ -8,11 +8,17 @@ export default function AppSnackBar({ showSnackBar, setShowSnackBar }) {
   const { lastDeletedTaskId, setLastDeletedTaskId, tasks, setTasks } =
     useContext(TaskContext)
   const handleClose = () => setShowSnackBar(false)
+
   const handleUndo = async () => {
     try {
-      const undoneTask = await updateTaskAPI(lastDeletedTaskId, {
-        deletedAt: null
-      })
+      const undoneTask = await updateTaskAPI(
+        lastDeletedTaskId,
+        {
+          deletedAt: null,
+          updatedAt: Date.now()
+        },
+        true
+      )
 
       const updatedTasks = tasks.map((task) => {
         if (task._id === undoneTask._id) {

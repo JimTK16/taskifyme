@@ -7,7 +7,9 @@ import { isDueToday } from '~/utils/helpers'
 const Upcoming = () => {
   const { tasks, isLoadingTasks } = useContext(TaskContext)
   const upcomingTasks = tasks
-    .filter((task) => task.dueDate && !isDueToday(task.dueDate))
+    .filter(
+      (task) => task.dueDate && !isDueToday(task.dueDate) && !task.deletedAt
+    )
     .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
 
   const tasksCount = `${upcomingTasks.length} task${
@@ -32,7 +34,6 @@ const Upcoming = () => {
         <Stack sx={{ mt: 4 }} direction='column' spacing={2}>
           {!isLoadingTasks &&
             upcomingTasks.map((task) => {
-              if (task.deletedAt) return null
               return <TaskItem key={task._id} task={task} />
             })}
         </Stack>

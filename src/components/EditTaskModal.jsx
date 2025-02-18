@@ -7,49 +7,59 @@ import {
   Divider
 } from '@mui/material'
 import { useContext, useState } from 'react'
-import { createNewTaskAPI } from '~/services'
+import { updateTaskAPI } from '~/services'
 import { TaskContext } from '~/context/context'
-import BaseModal from '../BaseModal'
-import PriorityMenu from './PriorityMenu'
-import CustomizedDatePicker from './CustomizedDatePicker'
+import BaseModal from './BaseModal'
+import PriorityMenu from './addTaskModal/PriorityMenu'
+import CustomizedDatePicker from './addTaskModal/CustomizedDatePicker'
 import dayjs from 'dayjs'
 
-const AddTaskModal = ({ open, onClose }) => {
-  const [taskTitle, setTaskTitle] = useState('')
-  const [taskDescription, setTaskDescription] = useState('')
-  const [priority, setPriority] = useState('Priority 3')
-  const [dueDate, setDueDate] = useState(null)
+const EditTaskModal = ({ showEditModal, setShowEditModal, task }) => {
+  const [taskTitle, setTaskTitle] = useState(task.title)
+  const [taskDescription, setTaskDescription] = useState(task.description)
+  const [priority, setPriority] = useState(task.priority)
+  const [dueDate, setDueDate] = useState(
+    task.dueDate ? dayjs(task.dueDate) : null
+  )
   const { tasks, setTasks } = useContext(TaskContext)
 
   const handleCloseModal = () => {
-    onClose()
-    setTaskTitle('')
-    setTaskDescription('')
-    setPriority('Priority 3')
-    setDueDate(null)
+    setShowEditModal(false)
+    setTaskTitle(task.title)
+    setTaskDescription(task.description)
+    setPriority(task.priority)
+    setDueDate(task.dueDate ? dayjs(task.dueDate) : null)
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (taskTitle === '') return
-    console.log('Task submitted:', taskTitle, taskDescription)
+    console.log('Task saved:', taskTitle, taskDescription)
     const newTask = {
+      ...task,
       title: taskTitle,
       description: taskDescription,
       priority,
       dueDate: dueDate ? dayjs(dueDate).startOf('day').toISOString() : null
     }
     try {
-      const response = await createNewTaskAPI(newTask)
-      setTasks([...tasks, response])
+      const response = await updateTaskAPI(task._id, newTask)
+      const updatedTasks = tasks.map((task) => {
+        if (task._id === response._id) {
+          return response
+        }
+        return task
+      })
+      console.log('Updated tasks:', updatedTasks)
+      setTasks(updatedTasks)
     } catch (error) {
-      console.error('Error creating task:', error)
+      console.error('Error saving task:', error)
     } finally {
       handleCloseModal()
     }
   }
   return (
-    <BaseModal open={open} onClose={handleCloseModal}>
+    <BaseModal open={showEditModal} onClose={handleCloseModal}>
       <form onSubmit={handleSubmit}>
         <Box sx={{ p: 2 }}>
           <FormControl fullWidth>
@@ -126,7 +136,7 @@ const AddTaskModal = ({ open, onClose }) => {
             }}
             type='submit'
           >
-            Add task
+            Save
           </Button>
         </Box>
       </form>
@@ -134,4 +144,4 @@ const AddTaskModal = ({ open, onClose }) => {
   )
 }
 
-export default AddTaskModal
+export default EditTaskModal

@@ -5,7 +5,10 @@ import { TaskContext } from '~/context/context'
 
 const Inbox = () => {
   const { tasks, isLoadingTasks } = useContext(TaskContext)
-  const tasksCount = `${tasks.length} task${tasks.length > 1 ? 's' : ''}`
+  const tasksToDisplay = tasks.filter((task) => !task.deletedAt)
+  const tasksCount = `${tasksToDisplay.length} task${
+    tasksToDisplay.length > 1 ? 's' : ''
+  }`
 
   return (
     <Container maxWidth='lg'>
@@ -24,8 +27,7 @@ const Inbox = () => {
         </Stack>
         <Stack sx={{ mt: 4 }} direction='column' spacing={2}>
           {!isLoadingTasks &&
-            tasks.map((task) => {
-              if (task.deletedAt) return null
+            tasksToDisplay.map((task) => {
               return <TaskItem key={task._id} task={task} />
             })}
         </Stack>

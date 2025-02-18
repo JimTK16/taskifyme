@@ -6,7 +6,7 @@ import { isDueToday } from '~/utils/helpers'
 
 const Today = () => {
   const { tasks, isLoadingTasks } = useContext(TaskContext)
-  const todayTasks = tasks.filter((task) => isDueToday(task.dueDate))
+  const todayTasks = tasks.filter((task) => isDueToday(task.dueDate) &&  !task.deletedAt)
   const tasksCount = `${todayTasks.length} task${
     todayTasks.length > 1 ? 's' : ''
   }`
@@ -29,7 +29,6 @@ const Today = () => {
         <Stack sx={{ mt: 4 }} direction='column' spacing={2}>
           {!isLoadingTasks &&
             todayTasks.map((task) => {
-              if (task.deletedAt) return null
               return <TaskItem key={task._id} task={task} />
             })}
         </Stack>

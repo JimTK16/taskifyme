@@ -6,7 +6,7 @@ import { priorityOptions } from './addTaskModal/PriorityMenu'
 import { dateFormatter } from '~/utils/helpers'
 import { useState } from 'react'
 import DeleteTaskModal from './DeleteTaskModal'
-import AppSnackBar from './AppSnackBar'
+import EditTaskModal from './EditTaskModal'
 
 const TaskCircleIcon = ({ iconColor }) => {
   return (
@@ -26,6 +26,7 @@ const TaskItem = ({ task }) => {
 
   const [showOptions, setShowOptions] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [showEditModal, setShowEditModal] = useState(false)
   return (
     <>
       <Stack
@@ -53,7 +54,7 @@ const TaskItem = ({ task }) => {
         </Stack>
         {showOptions && (
           <Stack direction={'row'} sx={{ ml: 'auto', color: 'gray', gap: 2 }}>
-            <EditOutlinedIcon onClick={() => console.log('edit')} />
+            <EditOutlinedIcon onClick={() => setShowEditModal(true)} />
             <DeleteSweepOutlinedIcon onClick={() => setShowDeleteModal(true)} />
           </Stack>
         )}
@@ -63,6 +64,11 @@ const TaskItem = ({ task }) => {
         setShowDeleteModal={setShowDeleteModal}
         title={task.title}
         taskId={task._id}
+      />
+      <EditTaskModal
+        setShowEditModal={setShowEditModal}
+        showEditModal={showEditModal}
+        task={task}
       />
       <Divider />
     </>
