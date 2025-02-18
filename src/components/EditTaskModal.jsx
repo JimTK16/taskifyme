@@ -23,7 +23,7 @@ const EditTaskModal = ({ showEditModal, setShowEditModal, task }) => {
   )
   const { tasks, setTasks } = useContext(TaskContext)
 
-  const handleCloseModal = () => {
+  const handleCancel = () => {
     setShowEditModal(false)
     setTaskTitle(task.title)
     setTaskDescription(task.description)
@@ -34,7 +34,6 @@ const EditTaskModal = ({ showEditModal, setShowEditModal, task }) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (taskTitle === '') return
-    console.log('Task saved:', taskTitle, taskDescription)
     const newTask = {
       ...task,
       title: taskTitle,
@@ -50,16 +49,15 @@ const EditTaskModal = ({ showEditModal, setShowEditModal, task }) => {
         }
         return task
       })
-      console.log('Updated tasks:', updatedTasks)
       setTasks(updatedTasks)
     } catch (error) {
       console.error('Error saving task:', error)
     } finally {
-      handleCloseModal()
+      setShowEditModal(false)
     }
   }
   return (
-    <BaseModal open={showEditModal} onClose={handleCloseModal}>
+    <BaseModal open={showEditModal} onClose={handleCancel}>
       <form onSubmit={handleSubmit}>
         <Box sx={{ p: 2 }}>
           <FormControl fullWidth>
@@ -119,7 +117,7 @@ const EditTaskModal = ({ showEditModal, setShowEditModal, task }) => {
               color: '#444',
               bgcolor: '#f5f5f5'
             }}
-            onClick={handleCloseModal}
+            onClick={handleCancel}
           >
             Cancel
           </Button>
