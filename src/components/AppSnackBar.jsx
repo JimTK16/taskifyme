@@ -38,7 +38,7 @@ export default function AppSnackBar({ showSnackBar, setShowSnackBar }) {
   return (
     <Snackbar
       open={showSnackBar}
-      autoHideDuration={1600000}
+      autoHideDuration={6000}
       onClose={handleClose}
       message='1 task deleted'
       anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}

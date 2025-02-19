@@ -37,7 +37,7 @@ const AddTaskModal = ({ open, onClose }) => {
       title: taskTitle,
       description: taskDescription,
       priority,
-      dueDate: dueDate ? dayjs(dueDate).startOf('day').toISOString() : null
+      dueDate: dueDate ? new Date(dueDate).getTime() : null
     }
     try {
       const response = await createNewTaskAPI(newTask)

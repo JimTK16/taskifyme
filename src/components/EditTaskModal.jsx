@@ -39,7 +39,7 @@ const EditTaskModal = ({ showEditModal, setShowEditModal, task }) => {
       title: taskTitle,
       description: taskDescription,
       priority,
-      dueDate: dueDate ? dayjs(dueDate).startOf('day').toISOString() : null
+      dueDate: dueDate ? new Date(dueDate).getTime() : null
     }
     try {
       const response = await updateTaskAPI(task._id, newTask)

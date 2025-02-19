@@ -7,13 +7,15 @@ import { dateFormatter } from '~/utils/helpers'
 import { useState } from 'react'
 import DeleteTaskModal from './DeleteTaskModal'
 import EditTaskModal from './EditTaskModal'
+import { toggleCompletedAPI } from '~/services'
 
-const TaskCircleIcon = ({ iconColor }) => {
+const TaskCircleIcon = ({ iconColor, isCompleted, handleToggleCompleted }) => {
   return (
     <Checkbox
       sx={{ p: 0, mb: 2, color: iconColor }}
       icon={<PanoramaFishEye />}
-      onClick={() => console.log('clicked')}
+      onClick={handleToggleCompleted}
+      checked={isCompleted}
       checkedIcon={<CheckCircleOutline color='success' />}
     />
   )
@@ -27,6 +29,22 @@ const TaskItem = ({ task }) => {
   const [showOptions, setShowOptions] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
+  const [isCompleted, setIsCompleted] = useState(task.isCompleted)
+  const [isToggling, setIsToggling] = useState(false)
+  const handleToggleCompleted = async () => {
+    if (isToggling) return
+    const newIsCompleted = !isCompleted
+    setIsToggling(true)
+
+    try {
+      await toggleCompletedAPI(task._id, { isCompleted: newIsCompleted })
+      setIsCompleted(newIsCompleted)
+    } catch (error) {
+      console.error('Error toggling completion:', error)
+    } finally {
+      setIsToggling(false)
+    }
+  }
   return (
     <>
       <Stack
@@ -36,7 +54,11 @@ const TaskItem = ({ task }) => {
         onMouseLeave={() => setShowOptions(false)}
       >
         <Box>
-          <TaskCircleIcon iconColor={iconColor} />
+          <TaskCircleIcon
+            iconColor={iconColor}
+            isCompleted={isCompleted}
+            handleToggleCompleted={handleToggleCompleted}
+          />
         </Box>
 
         <Stack direction={'column'} sx={{ ml: 1 }}>

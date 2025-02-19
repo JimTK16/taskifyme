@@ -44,6 +44,14 @@ export const updateTaskAPI = async (
   return response.data
 }
 
+export const toggleCompletedAPI = async (taskId, updateData) => {
+  const response = await axios.patch(
+    `${API_ROOT}/v1/tasks/${taskId}/toggle-completed`,
+    updateData
+  )
+  return response.data
+}
+
 export const getTasks = async () => {
   const response = await axios.get(`${API_ROOT}/v1/tasks`)
 
