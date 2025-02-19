@@ -7,7 +7,12 @@ import { TaskContext } from '~/context/context'
 export default function AppSnackBar({ showSnackBar, setShowSnackBar }) {
   const { lastDeletedTaskId, setLastDeletedTaskId, tasks, setTasks } =
     useContext(TaskContext)
-  const handleClose = () => setShowSnackBar(false)
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+    setShowSnackBar(false)
+  }
 
   const handleUndo = async () => {
     try {
@@ -37,8 +42,9 @@ export default function AppSnackBar({ showSnackBar, setShowSnackBar }) {
 
   return (
     <Snackbar
+      key={lastDeletedTaskId}
       open={showSnackBar}
-      autoHideDuration={6000}
+      autoHideDuration={4500}
       onClose={handleClose}
       message='1 task deleted'
       anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
