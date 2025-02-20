@@ -16,6 +16,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import AppSnackBar from './components/AppSnackBar'
 import { useContext } from 'react'
 import { TaskContext } from './context/context'
+import CompletedTasks from './components/CompletedTasks'
 const Layout = () => {
   const { setShowSnackBar, showSnackBar } = useContext(TaskContext)
   return (
@@ -58,6 +59,7 @@ function App() {
                 <Route path='upcoming' element={<Upcoming />} />
                 <Route path='today' element={<Today />} />
                 <Route path='inbox' element={<Inbox />} />
+                <Route path='completed' element={<CompletedTasks />} />
               </Route>
             </Route>
           </Routes>

@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import UserMenu from './UserMenu'
 import AddTaskModal from '../addTaskModal/AddTaskModal'
 import NotificationIcons from './NotificationIcons'
+import TaskAltIcon from '@mui/icons-material/TaskAlt'
 import NavButton from './NavButton'
 import { TaskContext } from '~/context/context'
 
@@ -22,10 +23,16 @@ const SideBar = () => {
     { icon: SearchOutlinedIcon, label: 'Search' },
     { icon: InboxOutlinedIcon, label: 'Inbox', navigateTo: '/inbox' },
     { icon: EventAvailableOutlinedIcon, label: 'Today', navigateTo: '/today' },
+
     {
       icon: CalendarMonthOutlinedIcon,
       label: 'Upcoming',
       navigateTo: '/upcoming'
+    },
+    {
+      icon: TaskAltIcon,
+      label: 'Completed Tasks',
+      navigateTo: '/completed'
     },
     { icon: LensBlurOutlinedIcon, label: 'Filters & Labels' }
   ]

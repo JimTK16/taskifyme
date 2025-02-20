@@ -4,15 +4,16 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import DeleteSweepOutlinedIcon from '@mui/icons-material/DeleteSweepOutlined'
 import { priorityOptions } from './addTaskModal/PriorityMenu'
 import { dateFormatter } from '~/utils/helpers'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import DeleteTaskModal from './DeleteTaskModal'
 import EditTaskModal from './EditTaskModal'
 import { toggleCompletedAPI } from '~/services'
+import { TaskContext } from '~/context/context'
 
 const TaskCircleIcon = ({ iconColor, isCompleted, handleToggleCompleted }) => {
   return (
     <Checkbox
-      sx={{ p: 0, mb: 2, color: iconColor }}
+      sx={{ p: 0, color: iconColor }}
       icon={<PanoramaFishEye />}
       onClick={handleToggleCompleted}
       checked={isCompleted}
@@ -31,13 +32,25 @@ const TaskItem = ({ task }) => {
   const [showEditModal, setShowEditModal] = useState(false)
   const [isCompleted, setIsCompleted] = useState(task.isCompleted)
   const [isToggling, setIsToggling] = useState(false)
+
+  const { tasks, setTasks } = useContext(TaskContext)
+
   const handleToggleCompleted = async () => {
     if (isToggling) return
     const newIsCompleted = !isCompleted
     setIsToggling(true)
 
     try {
-      await toggleCompletedAPI(task._id, { isCompleted: newIsCompleted })
+      const response = await toggleCompletedAPI(task._id, {
+        isCompleted: newIsCompleted
+      })
+      const updatedTasks = tasks.map((task) => {
+        if (task._id === response._id) {
+          return response
+        }
+        return task
+      })
+      setTasks(updatedTasks)
       setIsCompleted(newIsCompleted)
     } catch (error) {
       console.error('Error toggling completion:', error)
@@ -45,8 +58,9 @@ const TaskItem = ({ task }) => {
       setIsToggling(false)
     }
   }
+
   return (
-    <>
+    <Box sx={{ mb: 2 }}>
       <Stack
         direction={'row'}
         sx={{ cursor: 'pointer' }}
@@ -61,7 +75,7 @@ const TaskItem = ({ task }) => {
           />
         </Box>
 
-        <Stack direction={'column'} sx={{ ml: 1 }}>
+        <Stack direction={'column'} sx={{ ml: 1, gap: 0.25 }}>
           <Typography variant='body1' sx={{ color: 'black' }}>
             {task.title}
           </Typography>
@@ -92,8 +106,8 @@ const TaskItem = ({ task }) => {
         showEditModal={showEditModal}
         task={task}
       />
-      <Divider />
-    </>
+      <Divider sx={{ mt: 1 }} />
+    </Box>
   )
 }
 export default TaskItem
