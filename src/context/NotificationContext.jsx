@@ -7,6 +7,9 @@ const NotificationContextProvider = ({ children }) => {
   const [notifications, setNotifications] = useState([])
   const [isLoadingNotifications, setIsLoadingNotifications] = useState(true)
   const { userDetails, isLoading: isLoadingUser } = useAuth()
+  const unreadCount = notifications.filter(
+    (notification) => !notification.isRead
+  ).length
 
   useEffect(() => {
     if (isLoadingUser) return
@@ -16,7 +19,7 @@ const NotificationContextProvider = ({ children }) => {
       try {
         setIsLoadingNotifications(true)
         const response = await getNotifications()
-        console.log(response)
+
         setNotifications(response)
       } catch (error) {
         console.error(error)
@@ -27,7 +30,12 @@ const NotificationContextProvider = ({ children }) => {
     fetchNotifications()
   }, [userDetails, isLoadingUser])
 
-  const value = { notifications, setNotifications, isLoadingNotifications }
+  const value = {
+    notifications,
+    unreadCount,
+    setNotifications,
+    isLoadingNotifications
+  }
   return (
     <NotificationContext.Provider value={value}>
       {children}

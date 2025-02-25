@@ -45,3 +45,34 @@ export const isDueToday = (dueDate) => {
     dueDateObj.getDate() === today.getDate()
   )
 }
+
+export const formatRelativeTime = (createdAt) => {
+  // Create dates for now and the created timestamp.
+  const now = new Date()
+  const createdDate = new Date(createdAt)
+
+  // Calculate the difference in milliseconds.
+  const diffInMs = now - createdDate
+
+  // Convert milliseconds into days.
+  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24))
+
+  // If the notification was created today.
+  if (diffInDays === 0) {
+    return 'Today'
+  }
+
+  // If the notification was created yesterday.
+  if (diffInDays === 1) {
+    return 'Yesterday'
+  }
+
+  // If it's less than a week old, show the number of days.
+  if (diffInDays < 7) {
+    return `${diffInDays} days ago`
+  }
+
+  // Otherwise, calculate how many full weeks have passed.
+  const diffInWeeks = Math.floor(diffInDays / 7)
+  return diffInWeeks === 1 ? '1 week ago' : `${diffInWeeks} weeks ago`
+}

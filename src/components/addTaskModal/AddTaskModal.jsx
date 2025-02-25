@@ -32,7 +32,6 @@ const AddTaskModal = ({ open, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (taskTitle === '') return
-    console.log('Task submitted:', taskTitle, taskDescription)
     const newTask = {
       title: taskTitle,
       description: taskDescription,

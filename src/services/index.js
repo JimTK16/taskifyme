@@ -4,7 +4,7 @@ import { API_ROOT } from '../utils/constants'
 // User API
 export const signUpAPI = async (userData) => {
   const response = await axios.post(`${API_ROOT}/v1/users/signup`, userData)
-  console.log(response)
+
   return response.data
 }
 

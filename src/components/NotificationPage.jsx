@@ -3,6 +3,7 @@ import { useContext, useState } from 'react'
 import NotificationItem from './NotificationItem'
 import { NotificationContext } from '~/context/context'
 import { TransitionGroup } from 'react-transition-group'
+import NotificationModal from './NotificationModal'
 
 const ToggleButton = ({ label, isSelected, onClick, unreadCount }) => {
   return (
@@ -26,15 +27,24 @@ const ToggleButton = ({ label, isSelected, onClick, unreadCount }) => {
 
 const NotificationPage = () => {
   const [selectAll, setSelectAll] = useState(true)
-  const { notifications } = useContext(NotificationContext)
-  const unreadCount = notifications.filter(
-    (notification) => !notification.isRead
-  ).length
+  const [activeModal, setActiveModal] = useState({
+    isOpen: false,
+    message: null,
+    modalTitle: null
+  })
+  const { notifications, unreadCount } = useContext(NotificationContext)
 
   const notificationsToShow = selectAll
     ? notifications
     : notifications.filter((notification) => !notification.isRead)
 
+  const handleOpenModal = (message, modalTitle) => {
+    setActiveModal({ isOpen: true, message, modalTitle })
+  }
+
+  const handleCloseModal = () => {
+    setActiveModal({ isOpen: false, message: null, modalTitle: null })
+  }
   return (
     <Container maxWidth='md'>
       <Box>
@@ -75,12 +85,20 @@ const NotificationPage = () => {
                   message={notification.message}
                   isRead={notification.isRead}
                   id={notification._id}
+                  createdAt={notification.createdAt}
+                  onOpenModal={handleOpenModal}
                 />
               </Collapse>
             ))}
           </TransitionGroup>
         </Box>
       </Box>
+      <NotificationModal
+        modalTitle={activeModal.modalTitle}
+        message={activeModal.message}
+        showNotificationModal={activeModal.isOpen}
+        handleCloseNotificationModal={handleCloseModal}
+      />
     </Container>
   )
 }
