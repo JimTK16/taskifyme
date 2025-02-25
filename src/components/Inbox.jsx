@@ -10,6 +10,7 @@ import TaskItem from './TaskItem'
 import { useContext } from 'react'
 import { TaskContext } from '~/context/context'
 import { TransitionGroup } from 'react-transition-group'
+import ImageComponent from './ImageComponent'
 
 const Inbox = () => {
   const { tasks, isLoadingTasks } = useContext(TaskContext)
@@ -36,6 +37,13 @@ const Inbox = () => {
           </Typography>
         </Stack>
         <Stack sx={{ mt: 4 }} direction='column' spacing={2}>
+          {tasksToDisplay.length === 0 && (
+            <ImageComponent
+              imgSrc={'/src/assets/inboxPage.jpg'}
+              text='Your inbox awaits fresh ideas — start jotting down your next big thought!'
+              altText='Group meeting image'
+            />
+          )}
           <TransitionGroup>
             {!isLoadingTasks &&
               tasksToDisplay.map((task) => {

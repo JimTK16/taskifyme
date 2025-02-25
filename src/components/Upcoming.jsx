@@ -11,6 +11,7 @@ import { useContext } from 'react'
 import { TaskContext } from '~/context/context'
 import { isDueToday } from '~/utils/helpers'
 import { TransitionGroup } from 'react-transition-group'
+import ImageComponent from './ImageComponent'
 
 const Upcoming = () => {
   const { tasks, isLoadingTasks } = useContext(TaskContext)
@@ -44,6 +45,13 @@ const Upcoming = () => {
           </Typography>
         </Stack>
         <Stack sx={{ mt: 4 }} direction='column' spacing={2}>
+          {upcomingTasks.length === 0 && (
+            <ImageComponent
+              imgSrc={'/src/assets/upcomingPage.jpg'}
+              text='Your future is waiting. Plan your next steps and make the most of your time!'
+              altText='Group meeting image'
+            />
+          )}
           <TransitionGroup>
             {!isLoadingTasks &&
               upcomingTasks.map((task) => {

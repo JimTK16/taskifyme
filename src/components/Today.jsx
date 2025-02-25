@@ -11,6 +11,7 @@ import { useContext } from 'react'
 import { TaskContext } from '~/context/context'
 import { isDueToday } from '~/utils/helpers'
 import { TransitionGroup } from 'react-transition-group'
+import ImageComponent from './ImageComponent'
 
 const Today = () => {
   const { tasks, isLoadingTasks } = useContext(TaskContext)
@@ -37,6 +38,13 @@ const Today = () => {
           </Typography>
         </Stack>
         <Stack sx={{ mt: 4 }} direction='column' spacing={2}>
+          {todayTasks.length === 0 && (
+            <ImageComponent
+              imgSrc={'/src/assets/todayPage.jpg'}
+              text='Nothing scheduled for today. Enjoy the calm or seize the chance to spark something new!'
+              altText='Group meeting image'
+            />
+          )}
           <TransitionGroup>
             {!isLoadingTasks &&
               todayTasks.map((task) => {

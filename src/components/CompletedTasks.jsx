@@ -10,6 +10,7 @@ import TaskItem from './TaskItem'
 import { useContext } from 'react'
 import { TaskContext } from '~/context/context'
 import { TransitionGroup } from 'react-transition-group'
+import ImageComponent from './ImageComponent'
 
 const CompletedTasks = () => {
   const { tasks, isLoadingTasks } = useContext(TaskContext)
@@ -35,7 +36,15 @@ const CompletedTasks = () => {
             )}
           </Typography>
         </Stack>
-        <Stack sx={{ mt: 4 }} direction='column' spacing={2}>
+        <Stack sx={{ mt: 4 }} direction='column' spacing={3}>
+          {tasksToDisplay.length === 0 && (
+            <ImageComponent
+              imgSrc={'/src/assets/completedPage.jpg'}
+              text='Your success story starts here. Complete a task to see your progress shine!'
+              altText='Group meeting image'
+            />
+          )}
+
           <TransitionGroup>
             {!isLoadingTasks &&
               tasksToDisplay.map((task) => {
