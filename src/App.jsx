@@ -9,6 +9,7 @@ import Register from './components/auth/signup/SignUp'
 import ProtectedRoute from './components/auth/ProtectedRoute'
 import SignIn from './components/auth/login/SignIn'
 import Redirecting from './components/auth/signup/Redirecting'
+import NotificationPage from './components/NotificationPage'
 import AuthContextProvider from './context/AuthContext'
 import TaskContextProvider from './context/TaskContext'
 import { LocalizationProvider } from '@mui/x-date-pickers'
@@ -17,6 +18,7 @@ import AppSnackBar from './components/AppSnackBar'
 import { useContext } from 'react'
 import { TaskContext } from './context/context'
 import CompletedTasks from './components/CompletedTasks'
+import NotificationContextProvider from './context/NotificationContext'
 const Layout = () => {
   const { setShowSnackBar, showSnackBar } = useContext(TaskContext)
   return (
@@ -48,22 +50,25 @@ function App() {
   return (
     <AuthContextProvider>
       <TaskContextProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path='/signin' element={<SignIn />} />
-            <Route path='/redirect' element={<Redirecting />} />
-            <Route path='/signup' element={<Register />} />
-            <Route element={<ProtectedRoute />}>
-              <Route path='/' element={<Layout />}>
-                <Route index element={<Navigate to='today' replace />} />
-                <Route path='upcoming' element={<Upcoming />} />
-                <Route path='today' element={<Today />} />
-                <Route path='inbox' element={<Inbox />} />
-                <Route path='completed' element={<CompletedTasks />} />
+        <NotificationContextProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path='/signin' element={<SignIn />} />
+              <Route path='/redirect' element={<Redirecting />} />
+              <Route path='/signup' element={<Register />} />
+              <Route element={<ProtectedRoute />}>
+                <Route path='/' element={<Layout />}>
+                  <Route index element={<Navigate to='today' replace />} />
+                  <Route path='notifications' element={<NotificationPage />} />
+                  <Route path='upcoming' element={<Upcoming />} />
+                  <Route path='today' element={<Today />} />
+                  <Route path='inbox' element={<Inbox />} />
+                  <Route path='completed' element={<CompletedTasks />} />
+                </Route>
               </Route>
-            </Route>
-          </Routes>
-        </BrowserRouter>
+            </Routes>
+          </BrowserRouter>
+        </NotificationContextProvider>
       </TaskContextProvider>
     </AuthContextProvider>
   )

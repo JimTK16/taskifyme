@@ -19,7 +19,7 @@ export default function TaskContextProvider({ children }) {
     const fetchTasks = async () => {
       try {
         setIsLoadingTasks(true)
-        const response = await getTasks(userDetails.userId)
+        const response = await getTasks()
         setTasks(response)
       } catch (error) {
         console.error(error)

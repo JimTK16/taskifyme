@@ -1,4 +1,4 @@
-import { useState, useCallback, createContext, useEffect, useRef } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { signInAPI, signInAsGuestAPI } from '~/services'
 import axios from 'axios'
 import { AuthContext } from './context'

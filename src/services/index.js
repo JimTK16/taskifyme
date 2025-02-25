@@ -59,3 +59,17 @@ export const getTasks = async () => {
 }
 
 export const getOne = async () => {}
+
+// Notification API
+export const getNotifications = async () => {
+  const response = await axios.get(`${API_ROOT}/v1/notifications`)
+  return response.data
+}
+
+export const toggleIsRead = async (notificationId, updateData) => {
+  const response = await axios.patch(
+    `${API_ROOT}/v1/notifications/${notificationId}/toggle-isRead`,
+    updateData
+  )
+  return response.data
+}
