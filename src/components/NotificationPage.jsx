@@ -4,6 +4,7 @@ import NotificationItem from './NotificationItem'
 import { NotificationContext } from '~/context/context'
 import { TransitionGroup } from 'react-transition-group'
 import NotificationModal from './NotificationModal'
+import ImageComponent from './ImageComponent'
 
 const ToggleButton = ({ label, isSelected, onClick, unreadCount }) => {
   return (
@@ -75,6 +76,13 @@ const NotificationPage = () => {
           />
         </Box>
         <Box sx={{ mt: 2 }}>
+          {unreadCount === 0 && !selectAll && (
+            <ImageComponent
+              imgSrc={'/src/assets/notificationPage.jpg'}
+              text={"Nice work! You're all caught up!"}
+              altText={'Group of colorful trees'}
+            />
+          )}
           <TransitionGroup>
             {notificationsToShow.map((notification) => (
               <Collapse key={notification._id}>

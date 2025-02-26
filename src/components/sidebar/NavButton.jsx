@@ -1,5 +1,5 @@
 import { Button } from '@mui/material'
-const NavButton = ({ icon, label, onClick, navigateTo }) => {
+const NavButton = ({ icon, label, onClick, navigateTo, onNavItemClick }) => {
   const IconComponent = icon
   return (
     <Button
@@ -12,7 +12,12 @@ const NavButton = ({ icon, label, onClick, navigateTo }) => {
         '&:hover': { bgcolor: '#f0f0f0' }
       }}
       startIcon={<IconComponent sx={{ width: 24, height: 24 }} />}
-      onClick={() => navigateTo && onClick(navigateTo)}
+      onClick={() => {
+        if (navigateTo) {
+          onClick(navigateTo)
+          onNavItemClick()
+        }
+      }}
     >
       {label}
     </Button>

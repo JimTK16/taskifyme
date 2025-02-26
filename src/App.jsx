@@ -1,6 +1,6 @@
 import './App.css'
 import SideBar from './components/sidebar/SideBar'
-import { Grid2 } from '@mui/material'
+import { Grid2, Slide } from '@mui/material'
 import { BrowserRouter, Route, Outlet, Routes, Navigate } from 'react-router'
 import Today from './components/Today'
 import Upcoming from './components/Upcoming'
@@ -12,40 +12,9 @@ import Redirecting from './components/auth/signup/Redirecting'
 import NotificationPage from './components/NotificationPage'
 import AuthContextProvider from './context/AuthContext'
 import TaskContextProvider from './context/TaskContext'
-import { LocalizationProvider } from '@mui/x-date-pickers'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import AppSnackBar from './components/AppSnackBar'
-import { useContext } from 'react'
-import { TaskContext } from './context/context'
 import CompletedTasks from './components/CompletedTasks'
 import NotificationContextProvider from './context/NotificationContext'
-const Layout = () => {
-  const { setShowSnackBar, showSnackBar } = useContext(TaskContext)
-  return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Grid2 container>
-        <Grid2
-          sx={{
-            p: 1,
-            height: '100vh',
-            width: 280,
-            bgcolor: '#FAFAFA',
-            display: { xs: 'none', sm: 'block' }
-          }}
-        >
-          <SideBar />
-        </Grid2>
-        <Grid2 sx={{ flexGrow: 1, p: 4 }}>
-          <Outlet />
-        </Grid2>
-      </Grid2>
-      <AppSnackBar
-        setShowSnackBar={setShowSnackBar}
-        showSnackBar={showSnackBar}
-      />
-    </LocalizationProvider>
-  )
-}
+import Layout from './components/Layout'
 function App() {
   return (
     <AuthContextProvider>

@@ -12,9 +12,8 @@ import AddTaskModal from '../addTaskModal/AddTaskModal'
 import NotificationIcons from './NotificationIcons'
 import TaskAltIcon from '@mui/icons-material/TaskAlt'
 import NavButton from './NavButton'
-import { TaskContext } from '~/context/context'
 
-const SideBar = () => {
+const SideBar = ({ onNavItemClick }) => {
   const [modalOpen, setModalOpen] = useState(false)
 
   const navigate = useNavigate()
@@ -43,7 +42,7 @@ const SideBar = () => {
         {/* Sidebar header */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <UserMenu />
-          <NotificationIcons />
+          <NotificationIcons onNavItemClick={onNavItemClick} />
         </Box>
 
         {/* Add task button */}
@@ -78,6 +77,7 @@ const SideBar = () => {
               label={item.label}
               onClick={navigate}
               navigateTo={item.navigateTo}
+              onNavItemClick={onNavItemClick}
             />
           ))}
         </Box>

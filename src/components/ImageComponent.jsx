@@ -2,7 +2,7 @@ import { Box, Typography } from '@mui/material'
 
 const ImageComponent = ({ imgSrc, text, altText }) => {
   return (
-    <>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
       <Box
         sx={{
           display: 'flex',
@@ -21,7 +21,7 @@ const ImageComponent = ({ imgSrc, text, altText }) => {
       >
         {text}
       </Typography>
-    </>
+    </Box>
   )
 }
 
