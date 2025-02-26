@@ -2,6 +2,7 @@ import {
   Box,
   Collapse,
   Container,
+  Fade,
   Skeleton,
   Stack,
   Typography
@@ -46,22 +47,20 @@ const Upcoming = () => {
         </Stack>
         <Stack sx={{ mt: 4 }} direction='column' spacing={2}>
           {upcomingTasks.length === 0 && (
-            <ImageComponent
-              imgSrc={'/src/assets/upcomingPage.jpg'}
-              text='Your future is waiting. Plan your next steps and make the most of your time!'
-              altText='Group meeting image'
-            />
+            <Fade in={upcomingTasks.length === 0}>
+              <Box>
+                <ImageComponent
+                  imgSrc={'/src/assets/upcomingPage.jpg'}
+                  text='Your future is waiting. Plan your next steps and make the most of your time!'
+                  altText='Group meeting image'
+                />
+              </Box>
+            </Fade>
           )}
-          <TransitionGroup>
-            {!isLoadingTasks &&
-              upcomingTasks.map((task) => {
-                return (
-                  <Collapse key={task._id}>
-                    <TaskItem key={task._id} task={task} />
-                  </Collapse>
-                )
-              })}
-          </TransitionGroup>
+          {!isLoadingTasks &&
+            upcomingTasks.map((task) => {
+              return <TaskItem key={task._id} task={task} />
+            })}
         </Stack>
       </Box>
     </Container>

@@ -1,4 +1,11 @@
-import { Box, Container, Typography, Button, Collapse } from '@mui/material'
+import {
+  Box,
+  Container,
+  Typography,
+  Button,
+  Collapse,
+  Fade
+} from '@mui/material'
 import { useContext, useState } from 'react'
 import NotificationItem from './NotificationItem'
 import { NotificationContext } from '~/context/context'
@@ -77,28 +84,29 @@ const NotificationPage = () => {
         </Box>
         <Box sx={{ mt: 2 }}>
           {unreadCount === 0 && !selectAll && (
-            <ImageComponent
-              imgSrc={'/src/assets/notificationPage.jpg'}
-              text={"Nice work! You're all caught up!"}
-              altText={'Group of colorful trees'}
-            />
-          )}
-          <TransitionGroup>
-            {notificationsToShow.map((notification) => (
-              <Collapse key={notification._id}>
-                <NotificationItem
-                  key={notification._id}
-                  listTitle={notification.listTitle}
-                  modalTitle={notification.modalTitle}
-                  message={notification.message}
-                  isRead={notification.isRead}
-                  id={notification._id}
-                  createdAt={notification.createdAt}
-                  onOpenModal={handleOpenModal}
+            <Fade in={unreadCount === 0 && !selectAll}>
+              <Box>
+                <ImageComponent
+                  imgSrc={'/src/assets/notificationPage.jpg'}
+                  text={"Nice work! You're all caught up!"}
+                  altText={'Group of colorful trees'}
                 />
-              </Collapse>
-            ))}
-          </TransitionGroup>
+              </Box>
+            </Fade>
+          )}
+
+          {notificationsToShow.map((notification) => (
+            <NotificationItem
+              key={notification._id}
+              listTitle={notification.listTitle}
+              modalTitle={notification.modalTitle}
+              message={notification.message}
+              isRead={notification.isRead}
+              id={notification._id}
+              createdAt={notification.createdAt}
+              onOpenModal={handleOpenModal}
+            />
+          ))}
         </Box>
       </Box>
       <NotificationModal

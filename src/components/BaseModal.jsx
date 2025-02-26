@@ -26,7 +26,7 @@ const BaseModal = ({
       open={open}
       onClose={onClose}
       slots={{ backdrop: Backdrop }}
-      closeAfterTransition
+      closeAfterTransition={false}
       slotProps={{
         backdrop: { invisible: true }
       }}

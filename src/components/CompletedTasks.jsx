@@ -2,6 +2,7 @@ import {
   Box,
   Collapse,
   Container,
+  Fade,
   Skeleton,
   Stack,
   Typography
@@ -38,23 +39,21 @@ const CompletedTasks = () => {
         </Stack>
         <Stack sx={{ mt: 4 }} direction='column' spacing={3}>
           {tasksToDisplay.length === 0 && (
-            <ImageComponent
-              imgSrc={'/src/assets/completedPage.jpg'}
-              text='Your success story starts here. Complete a task to see your progress shine!'
-              altText='Group meeting image'
-            />
+            <Fade in={tasksToDisplay.length === 0}>
+              <Box>
+                <ImageComponent
+                  imgSrc={'/src/assets/completedPage.jpg'}
+                  text='Your success story starts here. Complete a task to see your progress shine!'
+                  altText='Group meeting image'
+                />
+              </Box>
+            </Fade>
           )}
 
-          <TransitionGroup>
-            {!isLoadingTasks &&
-              tasksToDisplay.map((task) => {
-                return (
-                  <Collapse key={task._id}>
-                    <TaskItem key={task._id} task={task} />
-                  </Collapse>
-                )
-              })}
-          </TransitionGroup>
+          {!isLoadingTasks &&
+            tasksToDisplay.map((task) => {
+              return <TaskItem key={task._id} task={task} />
+            })}
         </Stack>
       </Box>
     </Container>

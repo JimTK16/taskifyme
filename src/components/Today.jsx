@@ -2,6 +2,7 @@ import {
   Box,
   Collapse,
   Container,
+  Fade,
   Skeleton,
   Stack,
   Typography
@@ -39,22 +40,20 @@ const Today = () => {
         </Stack>
         <Stack sx={{ mt: 4 }} direction='column' spacing={2}>
           {todayTasks.length === 0 && (
-            <ImageComponent
-              imgSrc={'/src/assets/todayPage.jpg'}
-              text='Nothing scheduled for today. Enjoy the calm or seize the chance to spark something new!'
-              altText='Group meeting image'
-            />
+            <Fade in={todayTasks.length === 0}>
+              <Box>
+                <ImageComponent
+                  imgSrc={'/src/assets/todayPage.jpg'}
+                  text='Nothing scheduled for today. Enjoy the calm or seize the chance to spark something new!'
+                  altText='Group meeting image'
+                />
+              </Box>
+            </Fade>
           )}
-          <TransitionGroup>
-            {!isLoadingTasks &&
-              todayTasks.map((task) => {
-                return (
-                  <Collapse key={task._id}>
-                    <TaskItem key={task._id} task={task} />
-                  </Collapse>
-                )
-              })}
-          </TransitionGroup>
+          {!isLoadingTasks &&
+            todayTasks.map((task) => {
+              return <TaskItem key={task._id} task={task} />
+            })}
         </Stack>
       </Box>
     </Container>

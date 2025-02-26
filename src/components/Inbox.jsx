@@ -1,7 +1,7 @@
 import {
   Box,
-  Collapse,
   Container,
+  Fade,
   Skeleton,
   Stack,
   Typography
@@ -38,22 +38,21 @@ const Inbox = () => {
         </Stack>
         <Stack sx={{ mt: 4 }} direction='column' spacing={2}>
           {tasksToDisplay.length === 0 && (
-            <ImageComponent
-              imgSrc={'/src/assets/inboxPage.jpg'}
-              text='Your inbox awaits fresh ideas — start jotting down your next big thought!'
-              altText='Group meeting image'
-            />
+            <Fade in={tasksToDisplay.length === 0}>
+              <Box>
+                <ImageComponent
+                  imgSrc={'/src/assets/inboxPage.jpg'}
+                  text='Your inbox awaits fresh ideas — start jotting down your next big thought!'
+                  altText='Group meeting image'
+                />
+              </Box>
+            </Fade>
           )}
-          <TransitionGroup>
-            {!isLoadingTasks &&
-              tasksToDisplay.map((task) => {
-                return (
-                  <Collapse key={task._id}>
-                    <TaskItem key={task._id} task={task} />
-                  </Collapse>
-                )
-              })}
-          </TransitionGroup>
+
+          {!isLoadingTasks &&
+            tasksToDisplay.map((task) => {
+              return <TaskItem key={task._id} task={task} />
+            })}
         </Stack>
       </Box>
     </Container>
