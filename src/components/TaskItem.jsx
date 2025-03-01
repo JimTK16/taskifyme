@@ -21,7 +21,7 @@ const TaskCircleIcon = ({ iconColor, isCompleted, handleToggleCompleted }) => {
     />
   )
 }
-const TaskItem = ({ task }) => {
+const TaskItem = ({ task, inSearchModal, handleCloseSearchModal }) => {
   const option = priorityOptions.find(
     (option) => option.value === task.priority
   )
@@ -29,11 +29,11 @@ const TaskItem = ({ task }) => {
 
   const [showOptions, setShowOptions] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
-  const [showEditModal, setShowEditModal] = useState(false)
+
   const [isCompleted, setIsCompleted] = useState(task.isCompleted)
   const [isToggling, setIsToggling] = useState(false)
 
-  const { tasks, setTasks } = useContext(TaskContext)
+  const { tasks, setTasks, setEditingTask } = useContext(TaskContext)
 
   const handleToggleCompleted = async () => {
     if (isToggling) return
@@ -60,12 +60,18 @@ const TaskItem = ({ task }) => {
   }
 
   return (
-    <Box sx={{ mb: 2 }}>
+    <Box>
       <Stack
         direction={'row'}
         sx={{ cursor: 'pointer' }}
-        onMouseOver={() => setShowOptions(true)}
-        onMouseLeave={() => setShowOptions(false)}
+        onMouseOver={() => !inSearchModal && setShowOptions(true)}
+        onMouseLeave={() => !inSearchModal && setShowOptions(false)}
+        onClick={() => {
+          if (inSearchModal) {
+            handleCloseSearchModal()
+            setEditingTask(task)
+          }
+        }}
       >
         <Box>
           <TaskCircleIcon
@@ -76,13 +82,13 @@ const TaskItem = ({ task }) => {
         </Box>
 
         <Stack direction={'column'} sx={{ ml: 1, gap: 0.25 }}>
-          <Typography variant='body1' sx={{ color: 'black' }}>
+          <Typography sx={{ color: 'black', fontSize: '14px' }}>
             {task.title}
           </Typography>
-          <Typography variant='body2' sx={{ color: 'gray' }}>
+          <Typography sx={{ color: 'gray', fontSize: '12px' }}>
             {task.description}
           </Typography>
-          {task.dueDate && (
+          {task.dueDate && !inSearchModal && (
             <Typography sx={{ color: 'gray', fontSize: '12px' }}>
               {dateFormatter(task.dueDate)}
             </Typography>
@@ -90,7 +96,7 @@ const TaskItem = ({ task }) => {
         </Stack>
         {showOptions && (
           <Stack direction={'row'} sx={{ ml: 'auto', color: 'gray', gap: 2 }}>
-            <EditOutlinedIcon onClick={() => setShowEditModal(true)} />
+            <EditOutlinedIcon onClick={() => setEditingTask(task)} />
             <DeleteSweepOutlinedIcon onClick={() => setShowDeleteModal(true)} />
           </Stack>
         )}
@@ -101,12 +107,12 @@ const TaskItem = ({ task }) => {
         title={task.title}
         taskId={task._id}
       />
-      <EditTaskModal
+      {/* <EditTaskModal
         setShowEditModal={setShowEditModal}
         showEditModal={showEditModal}
         task={task}
-      />
-      <Divider sx={{ mt: 1 }} />
+      /> */}
+      {!inSearchModal && <Divider sx={{ mt: 1 }} />}
     </Box>
   )
 }

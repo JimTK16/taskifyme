@@ -6,12 +6,16 @@ const modalStyle = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  maxWidth: 400,
-  minWidth: 280,
+  width: '90vw',
+  maxWidth: 650,
+  minWidth: 300,
+  maxHeight: '80vh',
+  overflow: 'hidden',
   bgcolor: 'background.paper',
   border: 'none',
   borderRadius: 2,
-  boxShadow: '0 15px 50px 0 rgba(0, 0, 0, 0.35)'
+  boxShadow: '0 15px 50px 0 rgba(0, 0, 0, 0.35)',
+  transition: 'all 0.3s ease'
 }
 
 const BaseModal = ({

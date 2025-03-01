@@ -12,14 +12,18 @@ import AddTaskModal from '../addTaskModal/AddTaskModal'
 import NotificationIcons from './NotificationIcons'
 import TaskAltIcon from '@mui/icons-material/TaskAlt'
 import NavButton from './NavButton'
+import SearchModal from '../SearchModal'
+import EditTaskModal from '../EditTaskModal'
+import { TaskContext } from '~/context/context'
 
 const SideBar = ({ onNavItemClick }) => {
-  const [modalOpen, setModalOpen] = useState(false)
+  const [addTaskModalOpen, setAddTaskModalOpen] = useState(false)
+  const [searchModalOpen, setSearchModalOpen] = useState(false)
+  const { editingTask, setEditingTask } = useContext(TaskContext)
 
   const navigate = useNavigate()
 
   const NAV_ITEMS = [
-    { icon: SearchOutlinedIcon, label: 'Search' },
     { icon: InboxOutlinedIcon, label: 'Inbox', navigateTo: '/inbox' },
     { icon: EventAvailableOutlinedIcon, label: 'Today', navigateTo: '/today' },
 
@@ -46,7 +50,6 @@ const SideBar = ({ onNavItemClick }) => {
         </Box>
 
         {/* Add task button */}
-
         <Button
           sx={{
             color: '#39485e',
@@ -56,13 +59,47 @@ const SideBar = ({ onNavItemClick }) => {
             justifyContent: 'flex-start'
           }}
           startIcon={<AddCircleIcon sx={{ width: 24, height: 24 }} />}
-          onClick={() => setModalOpen(true)}
+          onClick={() => setAddTaskModalOpen(true)}
         >
           Add new task
         </Button>
 
-        {/* Modal */}
-        <AddTaskModal open={modalOpen} onClose={() => setModalOpen(false)} />
+        {/* Search Button */}
+        <Button
+          sx={{
+            color: '#202020',
+            textTransform: 'none',
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'flex-start'
+          }}
+          startIcon={<SearchOutlinedIcon sx={{ width: 24, height: 24 }} />}
+          onClick={() => setSearchModalOpen(true)}
+        >
+          Search
+        </Button>
+
+        {/* Modals */}
+        <AddTaskModal
+          open={addTaskModalOpen}
+          onClose={() => setAddTaskModalOpen(false)}
+        />
+        <SearchModal
+          open={searchModalOpen}
+          onClose={() => {
+            setSearchModalOpen(false)
+            onNavItemClick()
+          }}
+          setSearchModalOpen={setSearchModalOpen}
+          onEditTask={setEditingTask}
+        />
+        {editingTask && (
+          <EditTaskModal
+            open={true}
+            task={editingTask}
+            setEditingTask={setEditingTask}
+          />
+        )}
         {/* Main filters */}
         <Box
           sx={{

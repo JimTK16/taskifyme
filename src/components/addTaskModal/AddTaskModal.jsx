@@ -12,7 +12,6 @@ import { TaskContext } from '~/context/context'
 import BaseModal from '../BaseModal'
 import PriorityMenu from './PriorityMenu'
 import CustomizedDatePicker from './CustomizedDatePicker'
-import dayjs from 'dayjs'
 
 const AddTaskModal = ({ open, onClose }) => {
   const [taskTitle, setTaskTitle] = useState('')

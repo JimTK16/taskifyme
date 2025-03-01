@@ -28,7 +28,7 @@ const CustomizedDatePicker = ({ value, onChange }) => {
       value={value}
       onChange={onChange}
       format={getDateFormat(value)}
-      disablePast={true}
+      disablePast={false}
       slotProps={{
         textField: {
           placeholder: 'Date',

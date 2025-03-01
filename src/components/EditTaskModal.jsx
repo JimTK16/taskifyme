@@ -14,17 +14,24 @@ import PriorityMenu from './addTaskModal/PriorityMenu'
 import CustomizedDatePicker from './addTaskModal/CustomizedDatePicker'
 import dayjs from 'dayjs'
 
-const EditTaskModal = ({ showEditModal, setShowEditModal, task }) => {
-  const [taskTitle, setTaskTitle] = useState(task.title)
-  const [taskDescription, setTaskDescription] = useState(task.description)
-  const [priority, setPriority] = useState(task.priority)
+const EditTaskModal = ({ open, setEditingTask, task }) => {
+  const safeTask = task || {
+    title: '',
+    description: '',
+    priority: 'Priority 3',
+    dueDate: null
+  }
+
+  const [taskTitle, setTaskTitle] = useState(safeTask.title)
+  const [taskDescription, setTaskDescription] = useState(safeTask.description)
+  const [priority, setPriority] = useState(safeTask.priority)
   const [dueDate, setDueDate] = useState(
-    task.dueDate ? dayjs(task.dueDate) : null
+    safeTask.dueDate ? dayjs(safeTask.dueDate) : null
   )
   const { tasks, setTasks } = useContext(TaskContext)
 
   const handleCancel = () => {
-    setShowEditModal(false)
+    setEditingTask(null)
     setTaskTitle(task.title)
     setTaskDescription(task.description)
     setPriority(task.priority)
@@ -53,11 +60,11 @@ const EditTaskModal = ({ showEditModal, setShowEditModal, task }) => {
     } catch (error) {
       console.error('Error saving task:', error)
     } finally {
-      setShowEditModal(false)
+      setEditingTask(null)
     }
   }
   return (
-    <BaseModal open={showEditModal} onClose={handleCancel}>
+    <BaseModal open={open} onClose={handleCancel}>
       <form onSubmit={handleSubmit}>
         <Box sx={{ p: 2 }}>
           <FormControl fullWidth>
