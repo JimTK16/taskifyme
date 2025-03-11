@@ -51,7 +51,6 @@ const AddTaskModal = ({ open, onClose }) => {
 
     try {
       const response = await createNewTaskAPI(newTask)
-      console.log('Task created:', response)
       setTasks([...tasks, response])
     } catch (error) {
       console.error('Error creating task:', error)

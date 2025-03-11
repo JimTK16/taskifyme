@@ -15,7 +15,6 @@ export const signInAPI = async (userData) => {
 
 export const signInAsGuestAPI = async () => {
   const response = await axios.post(`${API_ROOT}/v1/users/guest`)
-  // console.log(response)
   return response.data
 }
 

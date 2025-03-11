@@ -17,7 +17,6 @@ const InboxPage = () => {
     (task) => !task.deletedAt && !task.isCompleted
   )
 
-  console.log('tasktoDisplay', tasksToDisplay)
   const tasksCount = `${tasksToDisplay.length} task${
     tasksToDisplay.length > 1 ? 's' : ''
   }`

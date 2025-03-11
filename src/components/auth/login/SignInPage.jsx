@@ -134,7 +134,6 @@ export default function SignInPage(props) {
     } catch (error) {
       console.log(error)
     }
-    console.log('guest sign in')
   }
 
   const handleClickShowPassword = () =>
