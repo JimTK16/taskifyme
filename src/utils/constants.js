@@ -5,7 +5,7 @@ if (process.env.BUILD_MODE === 'dev') {
 }
 
 if (process.env.BUILD_MODE === 'production') {
-  apiRoot = 'http://localhost:8017'
+  apiRoot = 'https://taskify-backend-v89k.onrender.com'
 }
 
 export const API_ROOT = apiRoot
