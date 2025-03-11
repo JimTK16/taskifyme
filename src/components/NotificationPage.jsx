@@ -9,9 +9,9 @@ import {
 import { useContext, useState } from 'react'
 import NotificationItem from './NotificationItem'
 import { NotificationContext } from '~/context/context'
-import { TransitionGroup } from 'react-transition-group'
 import NotificationModal from './NotificationModal'
 import ImageComponent from './ImageComponent'
+import notificationPage from '~/assets/notificationPage.jpg'
 
 const ToggleButton = ({ label, isSelected, onClick, unreadCount }) => {
   return (
@@ -87,7 +87,7 @@ const NotificationPage = () => {
             <Fade in={unreadCount === 0 && !selectAll}>
               <Box>
                 <ImageComponent
-                  imgSrc={'/src/assets/notificationPage.jpg'}
+                  imgSrc={notificationPage}
                   text={"Nice work! You're all caught up!"}
                   altText={'Group of colorful trees'}
                 />
