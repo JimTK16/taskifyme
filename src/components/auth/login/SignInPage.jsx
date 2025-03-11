@@ -63,7 +63,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   }
 }))
 
-export default function SignIn(props) {
+export default function SignInPage(props) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)

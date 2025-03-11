@@ -2,14 +2,12 @@ import { CheckCircleOutline, PanoramaFishEye } from '@mui/icons-material'
 import { Box, Checkbox, Divider, Stack, Typography } from '@mui/material'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import DeleteSweepOutlinedIcon from '@mui/icons-material/DeleteSweepOutlined'
-import { priorityOptions } from './addTaskModal/PriorityMenu'
+import { priorityOptions } from './taskModals/PriorityMenu'
 import { dateFormatter } from '~/utils/helpers'
 import { useContext, useState } from 'react'
-import DeleteTaskModal from './DeleteTaskModal'
-import EditTaskModal from './EditTaskModal'
 import { toggleCompletedAPI } from '~/services'
 import { TaskContext } from '~/context/context'
-
+import SellOutlinedIcon from '@mui/icons-material/SellOutlined'
 const TaskCircleIcon = ({ iconColor, isCompleted, handleToggleCompleted }) => {
   return (
     <Checkbox
@@ -26,14 +24,12 @@ const TaskItem = ({ task, inSearchModal, handleCloseSearchModal }) => {
     (option) => option.value === task.priority
   )
   const iconColor = option ? option.color : 'gray'
-
   const [showOptions, setShowOptions] = useState(false)
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
-
   const [isCompleted, setIsCompleted] = useState(task.isCompleted)
   const [isToggling, setIsToggling] = useState(false)
 
-  const { tasks, setTasks, setEditingTask } = useContext(TaskContext)
+  const { tasks, setTasks, setEditingTask, setDeletingTask } =
+    useContext(TaskContext)
 
   const handleToggleCompleted = async () => {
     if (isToggling) return
@@ -93,25 +89,35 @@ const TaskItem = ({ task, inSearchModal, handleCloseSearchModal }) => {
               {dateFormatter(task.dueDate)}
             </Typography>
           )}
+          {task.labelDetails?.length > 0 && (
+            <Box sx={{ display: 'flex', gap: 1 }}>
+              {task.labelDetails?.map((item) => (
+                <Box
+                  key={item._id}
+                  sx={{ display: 'flex', gap: 0.25, alignItems: 'center' }}
+                >
+                  <SellOutlinedIcon
+                    sx={{
+                      color: item.color,
+                      transform: 'rotate(90deg)',
+                      width: '12px',
+                      height: '12px'
+                    }}
+                  />
+                  <Typography sx={{ fontSize: '12px' }}>{item.name}</Typography>
+                </Box>
+              ))}
+            </Box>
+          )}
         </Stack>
         {showOptions && (
           <Stack direction={'row'} sx={{ ml: 'auto', color: 'gray', gap: 2 }}>
             <EditOutlinedIcon onClick={() => setEditingTask(task)} />
-            <DeleteSweepOutlinedIcon onClick={() => setShowDeleteModal(true)} />
+            <DeleteSweepOutlinedIcon onClick={() => setDeletingTask(task)} />
           </Stack>
         )}
       </Stack>
-      <DeleteTaskModal
-        showDeleteModal={showDeleteModal}
-        setShowDeleteModal={setShowDeleteModal}
-        title={task.title}
-        taskId={task._id}
-      />
-      {/* <EditTaskModal
-        setShowEditModal={setShowEditModal}
-        showEditModal={showEditModal}
-        task={task}
-      /> */}
+
       {!inSearchModal && <Divider sx={{ mt: 1 }} />}
     </Box>
   )

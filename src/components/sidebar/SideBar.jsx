@@ -8,18 +8,15 @@ import LensBlurOutlinedIcon from '@mui/icons-material/LensBlurOutlined'
 import { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import UserMenu from './UserMenu'
-import AddTaskModal from '../addTaskModal/AddTaskModal'
 import NotificationIcons from './NotificationIcons'
 import TaskAltIcon from '@mui/icons-material/TaskAlt'
 import NavButton from './NavButton'
 import SearchModal from '../SearchModal'
-import EditTaskModal from '../EditTaskModal'
 import { TaskContext } from '~/context/context'
 
 const SideBar = ({ onNavItemClick }) => {
-  const [addTaskModalOpen, setAddTaskModalOpen] = useState(false)
   const [searchModalOpen, setSearchModalOpen] = useState(false)
-  const { editingTask, setEditingTask } = useContext(TaskContext)
+  const { setEditingTask, setAddingTask } = useContext(TaskContext)
 
   const navigate = useNavigate()
 
@@ -37,7 +34,7 @@ const SideBar = ({ onNavItemClick }) => {
       label: 'Completed Tasks',
       navigateTo: '/completed'
     },
-    { icon: LensBlurOutlinedIcon, label: 'Filters & Labels' }
+    { icon: LensBlurOutlinedIcon, label: 'Labels', navigateTo: '/labels' }
   ]
 
   return (
@@ -59,7 +56,7 @@ const SideBar = ({ onNavItemClick }) => {
             justifyContent: 'flex-start'
           }}
           startIcon={<AddCircleIcon sx={{ width: 24, height: 24 }} />}
-          onClick={() => setAddTaskModalOpen(true)}
+          onClick={() => setAddingTask(true)}
         >
           Add new task
         </Button>
@@ -80,10 +77,7 @@ const SideBar = ({ onNavItemClick }) => {
         </Button>
 
         {/* Modals */}
-        <AddTaskModal
-          open={addTaskModalOpen}
-          onClose={() => setAddTaskModalOpen(false)}
-        />
+
         <SearchModal
           open={searchModalOpen}
           onClose={() => {
@@ -93,13 +87,7 @@ const SideBar = ({ onNavItemClick }) => {
           setSearchModalOpen={setSearchModalOpen}
           onEditTask={setEditingTask}
         />
-        {editingTask && (
-          <EditTaskModal
-            open={true}
-            task={editingTask}
-            setEditingTask={setEditingTask}
-          />
-        )}
+
         {/* Main filters */}
         <Box
           sx={{

@@ -4,7 +4,8 @@ import {
   FormControl,
   InputBase,
   Stack,
-  Divider
+  Divider,
+  Chip
 } from '@mui/material'
 import { useContext, useState } from 'react'
 import { createNewTaskAPI } from '~/services'
@@ -12,12 +13,14 @@ import { TaskContext } from '~/context/context'
 import BaseModal from '../BaseModal'
 import PriorityMenu from './PriorityMenu'
 import CustomizedDatePicker from './CustomizedDatePicker'
+import LabelSelect from './LabelSelect'
 
 const AddTaskModal = ({ open, onClose }) => {
   const [taskTitle, setTaskTitle] = useState('')
   const [taskDescription, setTaskDescription] = useState('')
   const [priority, setPriority] = useState('Priority 3')
   const [dueDate, setDueDate] = useState(null)
+  const [selectedLabels, setSelectedLabels] = useState([])
   const { tasks, setTasks } = useContext(TaskContext)
 
   const handleCloseModal = () => {
@@ -26,19 +29,29 @@ const AddTaskModal = ({ open, onClose }) => {
     setTaskDescription('')
     setPriority('Priority 3')
     setDueDate(null)
+    setSelectedLabels([])
   }
 
+  const handleRemoveLabel = (labelId) => {
+    setSelectedLabels((prevLabels) =>
+      prevLabels.filter((label) => label._id !== labelId)
+    )
+  }
   const handleSubmit = async (e) => {
     e.preventDefault()
+
     if (taskTitle === '') return
     const newTask = {
       title: taskTitle,
       description: taskDescription,
+      labels: selectedLabels.map((label) => label._id),
       priority,
       dueDate: dueDate ? new Date(dueDate).getTime() : null
     }
+
     try {
       const response = await createNewTaskAPI(newTask)
+      console.log('Task created:', response)
       setTasks([...tasks, response])
     } catch (error) {
       console.error('Error creating task:', error)
@@ -59,7 +72,6 @@ const AddTaskModal = ({ open, onClose }) => {
                 },
                 '& .MuiInputBase-input::placeholder': {
                   color: '#202020',
-
                   fontWeight: '600'
                 }
               }}
@@ -84,12 +96,33 @@ const AddTaskModal = ({ open, onClose }) => {
               value={taskDescription}
             ></InputBase>
           </FormControl>
+          {selectedLabels.length > 0 && (
+            <Stack spacing={1} direction='row' sx={{ mb: 1 }}>
+              {selectedLabels.map((label) => (
+                <Chip
+                  key={label._id}
+                  label={label.name}
+                  variant='outlined'
+                  size='small'
+                  onDelete={() => handleRemoveLabel(label._id)}
+                  sx={{
+                    borderColor: label.color,
+                    fontSize: 13
+                  }}
+                ></Chip>
+              ))}
+            </Stack>
+          )}
           <Stack spacing={2} direction='row' alignItems='center'>
             <CustomizedDatePicker
               value={dueDate}
               onChange={(newValue) => setDueDate(newValue)}
             />
             <PriorityMenu value={priority} onChange={setPriority} />
+            <LabelSelect
+              selectedLabels={selectedLabels}
+              setSelectedLabels={setSelectedLabels}
+            />
           </Stack>
         </Box>
         <Divider sx={{ m: 0 }} />

@@ -23,13 +23,23 @@ const PriorityMenu = ({ value, onChange }) => {
           id='priority-select'
           onChange={handleChange}
           sx={{
-            fontSize: '13px',
-            height: '40px',
             '& .MuiSelect-select': {
               display: 'flex',
+              gap: 1,
               alignItems: 'center',
-              paddingTop: '8px',
-              paddingBottom: '8px'
+              padding: '4px 8px',
+              fontSize: '14px'
+            }
+          }}
+          MenuProps={{
+            sx: {
+              '& .MuiMenuItem-root': {
+                display: 'flex',
+                gap: 1,
+                alignItems: 'center',
+                padding: '4px 8px',
+                fontSize: '14px'
+              }
             }
           }}
         >

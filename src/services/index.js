@@ -73,3 +73,27 @@ export const toggleIsRead = async (notificationId, updateData) => {
   )
   return response.data
 }
+
+// Label API
+export const getLabelsAPI = async () => {
+  const response = await axios.get(`${API_ROOT}/v1/labels`)
+  return response.data
+}
+
+export const createNewLabelAPI = async (newLabelData) => {
+  const response = await axios.post(`${API_ROOT}/v1/labels`, newLabelData)
+  return response.data
+}
+
+export const deleteLabelAPI = async (labelId) => {
+  const response = await axios.delete(`${API_ROOT}/v1/labels/${labelId}`)
+  return response.data
+}
+
+export const updateLabelAPI = async (labelId, updateData) => {
+  const response = await axios.put(
+    `${API_ROOT}/v1/labels/${labelId}`,
+    updateData
+  )
+  return response.data
+}

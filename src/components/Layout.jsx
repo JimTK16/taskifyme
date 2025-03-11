@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import { Fade, Grid2, Slide, useMediaQuery, useTheme } from '@mui/material'
 import { useState, useContext, useEffect } from 'react'
-import { TaskContext } from '~/context/context'
+import { LabelContext, TaskContext } from '~/context/context'
 import SideBar from './sidebar/SideBar'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -9,8 +9,31 @@ import AppSnackBar from './AppSnackBar'
 
 import { IconButton } from '@mui/material'
 import ViewSidebarOutlinedIcon from '@mui/icons-material/ViewSidebarOutlined'
+import AddLabelModal from './labelModals/AddLabelModal'
+import EditLabelModal from './labelModals/EditLabelModal'
+import DeleteLabelModal from './labelModals/DeleteLabelModal'
+import AddTaskModal from './taskModals/AddTaskModal'
+import EditTaskModal from './taskModals/EditTaskModal'
+import DeleteTaskModal from './taskModals/DeleteTaskModal'
 const Layout = () => {
-  const { setShowSnackBar, showSnackBar } = useContext(TaskContext)
+  const {
+    setShowSnackBar,
+    showSnackBar,
+    editingTask,
+    setEditingTask,
+    addingTask,
+    setAddingTask,
+    deletingTask,
+    setDeletingTask
+  } = useContext(TaskContext)
+  const {
+    addingLabel,
+    setAddingLabel,
+    editingLabel,
+    setEditingLabel,
+    deletingLabel,
+    setDeletingLabel
+  } = useContext(LabelContext)
   const [showSideBar, setShowSideBar] = useState(true)
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
@@ -126,6 +149,36 @@ const Layout = () => {
         setShowSnackBar={setShowSnackBar}
         showSnackBar={showSnackBar}
       />
+      {addingLabel && (
+        <AddLabelModal open={true} onClose={() => setAddingLabel(false)} />
+      )}
+      {editingLabel && (
+        <EditLabelModal
+          open={true}
+          onClose={() => setEditingLabel(null)}
+          editingLabel={editingLabel}
+        />
+      )}
+      {deletingLabel && (
+        <DeleteLabelModal
+          open={true}
+          onClose={() => setDeletingLabel(null)}
+          deletingLabel={deletingLabel}
+        />
+      )}
+      {editingTask && (
+        <EditTaskModal
+          open={true}
+          task={editingTask}
+          onClose={() => setEditingTask(null)}
+        />
+      )}
+      {addingTask && (
+        <AddTaskModal open={true} onClose={() => setAddingTask(false)} />
+      )}
+      {deletingTask && (
+        <DeleteTaskModal open={true} onClose={() => setDeletingTask(null)} />
+      )}
     </LocalizationProvider>
   )
 }

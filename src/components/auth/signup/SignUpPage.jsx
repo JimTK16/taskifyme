@@ -60,7 +60,7 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
   }
 }))
 
-const Register = (props) => {
+const SignUpPage = (props) => {
   let navigate = useNavigate()
 
   const [email, setEmail] = useState('')
@@ -211,4 +211,4 @@ const Register = (props) => {
   )
 }
 
-export default Register
+export default SignUpPage

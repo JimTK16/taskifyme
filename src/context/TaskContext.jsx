@@ -7,6 +7,8 @@ import { useAuth } from '~/hooks/useAuth'
 export default function TaskContextProvider({ children }) {
   const { userDetails, isLoading } = useAuth()
   const [editingTask, setEditingTask] = useState(null)
+  const [addingTask, setAddingTask] = useState(false)
+  const [deletingTask, setDeletingTask] = useState(null)
   const [tasks, setTasks] = useState([])
   const [isLoadingTasks, setIsLoadingTasks] = useState(true)
   const [showSnackBar, setShowSnackBar] = useState(false)
@@ -39,7 +41,11 @@ export default function TaskContextProvider({ children }) {
     lastDeletedTaskId,
     setLastDeletedTaskId,
     editingTask,
-    setEditingTask
+    setEditingTask,
+    addingTask,
+    setAddingTask,
+    deletingTask,
+    setDeletingTask
   }
   return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>
 }

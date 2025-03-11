@@ -9,3 +9,4 @@ if (process.env.BUILD_MODE === 'production') {
 }
 
 export const API_ROOT = apiRoot
+export const MAX_LABEL_NAME_LENGTH = 30

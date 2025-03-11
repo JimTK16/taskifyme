@@ -1,6 +1,5 @@
 import {
   Box,
-  Collapse,
   Container,
   Fade,
   Skeleton,
@@ -10,24 +9,22 @@ import {
 import TaskItem from './TaskItem'
 import { useContext } from 'react'
 import { TaskContext } from '~/context/context'
-import { isDueToday } from '~/utils/helpers'
-import { TransitionGroup } from 'react-transition-group'
 import ImageComponent from './ImageComponent'
 
-const Today = () => {
+const CompletedTasksPage = () => {
   const { tasks, isLoadingTasks } = useContext(TaskContext)
-  const todayTasks = tasks.filter(
-    (task) => isDueToday(task.dueDate) && !task.deletedAt && !task.isCompleted
+  const tasksToDisplay = tasks.filter(
+    (task) => task.isCompleted && !task.deletedAt
   )
-  const tasksCount = `${todayTasks.length} task${
-    todayTasks.length > 1 ? 's' : ''
+  const tasksCount = `${tasksToDisplay.length} task${
+    tasksToDisplay.length > 1 ? 's' : ''
   }`
 
   return (
     <Container maxWidth='md'>
       <Box>
         <Typography variant='h5' sx={{ fontWeight: 'bold' }}>
-          Today
+          Completed Tasks
         </Typography>
         <Stack direction={'row'}>
           <Typography variant='body2' sx={{ color: 'gray' }}>
@@ -38,20 +35,21 @@ const Today = () => {
             )}
           </Typography>
         </Stack>
-        <Stack sx={{ mt: 4 }} direction='column' spacing={2}>
-          {todayTasks.length === 0 && (
-            <Fade in={todayTasks.length === 0}>
+        <Stack sx={{ mt: 4 }} direction='column' spacing={3}>
+          {tasksToDisplay.length === 0 && (
+            <Fade in={tasksToDisplay.length === 0}>
               <Box>
                 <ImageComponent
-                  imgSrc={'/src/assets/todayPage.jpg'}
-                  text='Nothing scheduled for today. Enjoy the calm or seize the chance to spark something new!'
+                  imgSrc={'/src/assets/completedPage.jpg'}
+                  text='Your success story starts here. Complete a task to see your progress shine!'
                   altText='Group meeting image'
                 />
               </Box>
             </Fade>
           )}
+
           {!isLoadingTasks &&
-            todayTasks.map((task) => {
+            tasksToDisplay.map((task) => {
               return <TaskItem key={task._id} task={task} />
             })}
         </Stack>
@@ -59,4 +57,4 @@ const Today = () => {
     </Container>
   )
 }
-export default Today
+export default CompletedTasksPage

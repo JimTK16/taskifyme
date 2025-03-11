@@ -2,7 +2,7 @@ import { CircularProgress, Container, Typography } from '@mui/material'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const Redirecting = () => {
+const RedirectingPage = () => {
   let navigate = useNavigate()
 
   useEffect(() => {
@@ -32,4 +32,4 @@ const Redirecting = () => {
   )
 }
 
-export default Redirecting
+export default RedirectingPage

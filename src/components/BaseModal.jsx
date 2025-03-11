@@ -7,7 +7,7 @@ const modalStyle = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: '90vw',
-  maxWidth: 650,
+  // maxWidth: 650,
   minWidth: 300,
   maxHeight: '80vh',
   overflow: 'hidden',
@@ -23,8 +23,11 @@ const BaseModal = ({
   onClose,
   children,
   ariaLabelledBy,
-  ariaDescribedBy
+  ariaDescribedBy,
+  maxWidth = 650
 }) => {
+  modalStyle.maxWidth = maxWidth
+
   return (
     <Modal
       open={open}

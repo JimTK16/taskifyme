@@ -4,38 +4,37 @@ import {
   FormControl,
   InputBase,
   Stack,
-  Divider
+  Divider,
+  Chip
 } from '@mui/material'
 import { useContext, useState } from 'react'
 import { updateTaskAPI } from '~/services'
-import { TaskContext } from '~/context/context'
-import BaseModal from './BaseModal'
-import PriorityMenu from './addTaskModal/PriorityMenu'
-import CustomizedDatePicker from './addTaskModal/CustomizedDatePicker'
+import { LabelContext, TaskContext } from '~/context/context'
+import BaseModal from '../BaseModal'
+import PriorityMenu from './PriorityMenu'
+import CustomizedDatePicker from './CustomizedDatePicker'
 import dayjs from 'dayjs'
+import LabelSelect from './LabelSelect'
 
-const EditTaskModal = ({ open, setEditingTask, task }) => {
-  const safeTask = task || {
-    title: '',
-    description: '',
-    priority: 'Priority 3',
-    dueDate: null
-  }
-
-  const [taskTitle, setTaskTitle] = useState(safeTask.title)
-  const [taskDescription, setTaskDescription] = useState(safeTask.description)
-  const [priority, setPriority] = useState(safeTask.priority)
-  const [dueDate, setDueDate] = useState(
-    safeTask.dueDate ? dayjs(safeTask.dueDate) : null
+const EditTaskModal = ({ open, onClose, task }) => {
+  const { tasks, setTasks, setEditingTask } = useContext(TaskContext)
+  const { labels, setLabels } = useContext(LabelContext)
+  const transformedLabels = labels.filter(
+    (label) => task.labels.includes(label._id) && label.deleted === false
   )
-  const { tasks, setTasks } = useContext(TaskContext)
 
-  const handleCancel = () => {
-    setEditingTask(null)
-    setTaskTitle(task.title)
-    setTaskDescription(task.description)
-    setPriority(task.priority)
-    setDueDate(task.dueDate ? dayjs(task.dueDate) : null)
+  const [taskTitle, setTaskTitle] = useState(task.title)
+  const [taskDescription, setTaskDescription] = useState(task.description)
+  const [priority, setPriority] = useState(task.priority)
+  const [selectedLabels, setSelectedLabels] = useState(transformedLabels)
+  const [dueDate, setDueDate] = useState(
+    task.dueDate ? dayjs(task.dueDate) : null
+  )
+
+  const handleRemoveLabel = (labelId) => {
+    setSelectedLabels((prevLabels) =>
+      prevLabels.filter((label) => label._id !== labelId)
+    )
   }
 
   const handleSubmit = async (e) => {
@@ -46,6 +45,7 @@ const EditTaskModal = ({ open, setEditingTask, task }) => {
       title: taskTitle,
       description: taskDescription,
       priority,
+      labels: selectedLabels.map((label) => label._id),
       dueDate: dueDate ? new Date(dueDate).getTime() : null
     }
     try {
@@ -64,7 +64,7 @@ const EditTaskModal = ({ open, setEditingTask, task }) => {
     }
   }
   return (
-    <BaseModal open={open} onClose={handleCancel}>
+    <BaseModal open={open} onClose={onClose}>
       <form onSubmit={handleSubmit}>
         <Box sx={{ p: 2 }}>
           <FormControl fullWidth>
@@ -101,12 +101,36 @@ const EditTaskModal = ({ open, setEditingTask, task }) => {
               value={taskDescription}
             ></InputBase>
           </FormControl>
+
+          {selectedLabels.length > 0 && (
+            <Stack spacing={1} direction='row' sx={{ mb: 1 }}>
+              {selectedLabels.map((label) => (
+                <Chip
+                  key={label._id}
+                  label={label.name}
+                  variant='outlined'
+                  size='small'
+                  onDelete={() => handleRemoveLabel(label._id)}
+                  sx={{
+                    borderColor: label.color,
+                    fontSize: 13
+                  }}
+                ></Chip>
+              ))}
+            </Stack>
+          )}
+
           <Stack spacing={2} direction='row' alignItems='center'>
             <CustomizedDatePicker
               value={dueDate}
               onChange={(newValue) => setDueDate(newValue)}
             />
             <PriorityMenu value={priority} onChange={setPriority} />
+
+            <LabelSelect
+              selectedLabels={selectedLabels}
+              setSelectedLabels={setSelectedLabels}
+            />
           </Stack>
         </Box>
         <Divider sx={{ m: 0 }} />
@@ -124,7 +148,7 @@ const EditTaskModal = ({ open, setEditingTask, task }) => {
               color: '#444',
               bgcolor: '#f5f5f5'
             }}
-            onClick={handleCancel}
+            onClick={onClose}
           >
             Cancel
           </Button>

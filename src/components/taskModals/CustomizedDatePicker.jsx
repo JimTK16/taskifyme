@@ -35,10 +35,9 @@ const CustomizedDatePicker = ({ value, onChange }) => {
           size: 'small',
           sx: {
             maxWidth: 180,
-            height: '40px',
-            '& .MuiInputBase-root': {
-              fontSize: '13px',
-              height: '40px'
+            '& .MuiInputBase-input': {
+              fontSize: '14px',
+              padding: '4px 8px'
             }
           }
         },

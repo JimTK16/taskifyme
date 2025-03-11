@@ -9,23 +9,30 @@ import {
 import TaskItem from './TaskItem'
 import { useContext } from 'react'
 import { TaskContext } from '~/context/context'
-import { TransitionGroup } from 'react-transition-group'
+import { isDueToday } from '~/utils/helpers'
 import ImageComponent from './ImageComponent'
 
-const Inbox = () => {
+const UpcomingPage = () => {
   const { tasks, isLoadingTasks } = useContext(TaskContext)
-  const tasksToDisplay = tasks.filter(
-    (task) => !task.deletedAt && !task.isCompleted
-  )
-  const tasksCount = `${tasksToDisplay.length} task${
-    tasksToDisplay.length > 1 ? 's' : ''
+  const upcomingTasks = tasks
+    .filter(
+      (task) =>
+        task.dueDate &&
+        !isDueToday(task.dueDate) &&
+        !task.deletedAt &&
+        !task.isCompleted
+    )
+    .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
+
+  const tasksCount = `${upcomingTasks.length} task${
+    upcomingTasks.length > 1 ? 's' : ''
   }`
 
   return (
     <Container maxWidth='md'>
       <Box>
         <Typography variant='h5' sx={{ fontWeight: 'bold' }}>
-          Inbox
+          Upcoming
         </Typography>
         <Stack direction={'row'}>
           <Typography variant='body2' sx={{ color: 'gray' }}>
@@ -37,20 +44,19 @@ const Inbox = () => {
           </Typography>
         </Stack>
         <Stack sx={{ mt: 4 }} direction='column' spacing={2}>
-          {tasksToDisplay.length === 0 && (
-            <Fade in={tasksToDisplay.length === 0}>
+          {upcomingTasks.length === 0 && (
+            <Fade in={upcomingTasks.length === 0}>
               <Box>
                 <ImageComponent
-                  imgSrc={'/src/assets/inboxPage.jpg'}
-                  text='Your inbox awaits fresh ideas — start jotting down your next big thought!'
+                  imgSrc={'/src/assets/upcomingPage.jpg'}
+                  text='Your future is waiting. Plan your next steps and make the most of your time!'
                   altText='Group meeting image'
                 />
               </Box>
             </Fade>
           )}
-
           {!isLoadingTasks &&
-            tasksToDisplay.map((task) => {
+            upcomingTasks.map((task) => {
               return <TaskItem key={task._id} task={task} />
             })}
         </Stack>
@@ -58,4 +64,4 @@ const Inbox = () => {
     </Container>
   )
 }
-export default Inbox
+export default UpcomingPage
