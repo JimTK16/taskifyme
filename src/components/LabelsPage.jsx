@@ -13,6 +13,7 @@ import { LabelContext } from '~/context/context'
 import ImageComponent from './ImageComponent'
 import LabelItem from './LabelItem'
 import AddIcon from '@mui/icons-material/Add'
+import labelPage from '~/assets/labelPage.jpg'
 const LabelsPage = () => {
   const { labels, isLoadingLabels, setAddingLabel } = useContext(LabelContext)
   const labelsToDisplay = labels.filter((label) => !label.deleted)
@@ -53,7 +54,7 @@ const LabelsPage = () => {
             <Fade in={labelsToDisplay.length === 0}>
               <Box>
                 <ImageComponent
-                  imgSrc={'/src/assets/labelPage.jpg'}
+                  imgSrc={labelPage}
                   text='Your list of labels will show up here.'
                   altText='Group meeting image'
                 />

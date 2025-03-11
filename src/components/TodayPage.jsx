@@ -1,6 +1,5 @@
 import {
   Box,
-  Collapse,
   Container,
   Fade,
   Skeleton,
@@ -12,6 +11,7 @@ import { useContext } from 'react'
 import { TaskContext } from '~/context/context'
 import { isDueToday } from '~/utils/helpers'
 import ImageComponent from './ImageComponent'
+import todayPage from '~/assets/todayPage.jpg'
 
 const TodayPage = () => {
   const { tasks, isLoadingTasks } = useContext(TaskContext)
@@ -42,7 +42,7 @@ const TodayPage = () => {
             <Fade in={todayTasks.length === 0}>
               <Box>
                 <ImageComponent
-                  imgSrc={'/src/assets/todayPage.jpg'}
+                  imgSrc={todayPage}
                   text='Nothing scheduled for today. Enjoy the calm or seize the chance to spark something new!'
                   altText='Group meeting image'
                 />

@@ -11,6 +11,7 @@ import { useContext } from 'react'
 import { TaskContext } from '~/context/context'
 import { isDueToday } from '~/utils/helpers'
 import ImageComponent from './ImageComponent'
+import upcomingPage from '~/assets/upcomingPage.jpg'
 
 const UpcomingPage = () => {
   const { tasks, isLoadingTasks } = useContext(TaskContext)
@@ -48,7 +49,7 @@ const UpcomingPage = () => {
             <Fade in={upcomingTasks.length === 0}>
               <Box>
                 <ImageComponent
-                  imgSrc={'/src/assets/upcomingPage.jpg'}
+                  imgSrc={upcomingPage}
                   text='Your future is waiting. Plan your next steps and make the most of your time!'
                   altText='Group meeting image'
                 />

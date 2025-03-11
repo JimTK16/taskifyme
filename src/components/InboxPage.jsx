@@ -10,7 +10,7 @@ import TaskItem from './TaskItem'
 import { useContext } from 'react'
 import { TaskContext } from '~/context/context'
 import ImageComponent from './ImageComponent'
-
+import inboxPage from '~/assets/inboxPage.jpg'
 const InboxPage = () => {
   const { tasks, isLoadingTasks } = useContext(TaskContext)
   const tasksToDisplay = tasks.filter(
@@ -41,7 +41,7 @@ const InboxPage = () => {
             <Fade in={tasksToDisplay.length === 0}>
               <Box>
                 <ImageComponent
-                  imgSrc={'/src/assets/inboxPage.jpg'}
+                  imgSrc={inboxPage}
                   text='Your inbox awaits fresh ideas — start jotting down your next big thought!'
                   altText='Group meeting image'
                 />

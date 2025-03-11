@@ -10,6 +10,7 @@ import TaskItem from './TaskItem'
 import { useContext } from 'react'
 import { TaskContext } from '~/context/context'
 import ImageComponent from './ImageComponent'
+import completedPage from '~/assets/completedPage.jpg'
 
 const CompletedTasksPage = () => {
   const { tasks, isLoadingTasks } = useContext(TaskContext)
@@ -40,7 +41,7 @@ const CompletedTasksPage = () => {
             <Fade in={tasksToDisplay.length === 0}>
               <Box>
                 <ImageComponent
-                  imgSrc={'/src/assets/completedPage.jpg'}
+                  imgSrc={completedPage}
                   text='Your success story starts here. Complete a task to see your progress shine!'
                   altText='Group meeting image'
                 />
