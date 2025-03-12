@@ -14,7 +14,7 @@ import { styled } from '@mui/material/styles'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { signUpAPI } from '~/services/index'
-import { IconButton, InputAdornment, OutlinedInput } from '@mui/material'
+import { CircularProgress, IconButton, InputAdornment } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { validateInputs } from '~/utils/helpers'
 
@@ -70,7 +70,7 @@ const SignUpPage = (props) => {
   const [emailErrorMessage, setEmailErrorMessage] = useState('')
   const [passwordError, setPasswordError] = useState(false)
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('')
-
+  const [isSigningUp, setIsSigningUp] = useState(false)
   const handleSubmit = async (event) => {
     event.preventDefault()
     if (
@@ -85,12 +85,22 @@ const SignUpPage = (props) => {
     ) {
       const data = { email, password }
       try {
+        setIsSigningUp(true)
+        await new Promise((resolve) => setTimeout(resolve, 3000))
         await signUpAPI(data)
-
         navigate('/redirect')
       } catch (error) {
-        setEmailError(true)
-        setEmailErrorMessage('Email already exists.')
+        if (error.response?.status === 409) {
+          setEmailError(true)
+          setEmailErrorMessage('Email already exists.')
+        } else {
+          setEmailError(true)
+          setEmailErrorMessage(
+            error.message || 'Registration failed. Please try again.'
+          )
+        }
+      } finally {
+        setIsSigningUp(false)
       }
     }
   }
@@ -189,8 +199,25 @@ const SignUpPage = (props) => {
               />
             </FormControl>
 
-            <Button type='submit' fullWidth variant='contained'>
-              Sign up
+            <Button
+              type='submit'
+              fullWidth
+              variant='contained'
+              disabled={isSigningUp}
+              sx={{
+                '&:disabled': {
+                  color: 'white'
+                }
+              }}
+            >
+              {isSigningUp ? (
+                <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                  <CircularProgress sx={{ color: 'white' }} size={14} />
+                  <span>Signing up...</span>
+                </Box>
+              ) : (
+                'Sign up'
+              )}
             </Button>
           </Box>
 

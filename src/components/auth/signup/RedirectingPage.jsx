@@ -8,7 +8,7 @@ const RedirectingPage = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigate('/signin')
-    }, 3000)
+    }, 2000)
 
     return () => {
       clearTimeout(timer)
@@ -26,8 +26,10 @@ const RedirectingPage = () => {
       }}
     >
       <Typography variant='h4'>Your account has been created.</Typography>
-      <Typography variant='h5'>Redirecting to the Sign in page.....</Typography>
-      <CircularProgress color='primary' />
+      <Typography variant='h5' aria-live='polite'>
+        Redirecting to the Sign In page...
+      </Typography>
+      <CircularProgress color='primary' role='status' />
     </Container>
   )
 }
