@@ -15,7 +15,7 @@ import { styled } from '@mui/material/styles'
 import ForgotPassword from './ForgotPassword'
 import AppTheme from './AppTheme'
 import { useEffect, useState } from 'react'
-import { IconButton, InputAdornment } from '@mui/material'
+import { CircularProgress, IconButton, InputAdornment } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { validateInputs } from '~/utils/helpers'
 import { useNavigate } from 'react-router-dom'
@@ -256,18 +256,42 @@ export default function SignInPage(props) {
               type='submit'
               fullWidth
               variant='contained'
-              disabled={isSigningIn}
+              disabled={isSigningIn || isGuestSigningIn}
+              sx={{
+                '&:disabled': {
+                  color: 'white'
+                }
+              }}
             >
-              {isSigningIn ? 'Signing in...' : 'Sign in'}
+              {isSigningIn ? (
+                <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                  <CircularProgress sx={{ color: 'white' }} size={14} />
+                  <span>Signing in...</span>
+                </Box>
+              ) : (
+                'Sign in'
+              )}
             </Button>
 
             <Button
               fullWidth
-              variant='contained'
+              variant='outlined'
               onClick={handleGuestSignIn}
-              disabled={isGuestSigningIn}
+              disabled={isGuestSigningIn || isSigningIn}
+              sx={{
+                '&:disabled': {
+                  color: 'black'
+                }
+              }}
             >
-              {isGuestSigningIn ? 'Signing in...' : 'Sign in as a guest'}
+              {isGuestSigningIn ? (
+                <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                  <CircularProgress sx={{ color: 'black' }} size={14} />
+                  <span>Signing in...</span>
+                </Box>
+              ) : (
+                'Sign in as a guest'
+              )}
             </Button>
             <Link
               component='button'
