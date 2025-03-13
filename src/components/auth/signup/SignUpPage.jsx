@@ -15,8 +15,14 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { signUpAPI } from '~/services/index'
 import { CircularProgress, IconButton, InputAdornment } from '@mui/material'
-import { Visibility, VisibilityOff } from '@mui/icons-material'
+import {
+  Visibility,
+  VisibilityOff,
+  Email as EmailIcon,
+  Lock as LockIcon
+} from '@mui/icons-material'
 import { validateInputs } from '~/utils/helpers'
+import Logo from '../login/Logo'
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -86,7 +92,6 @@ const SignUpPage = (props) => {
       const data = { email, password }
       try {
         setIsSigningUp(true)
-        await new Promise((resolve) => setTimeout(resolve, 3000))
         await signUpAPI(data)
         navigate('/redirect')
       } catch (error) {
@@ -118,10 +123,9 @@ const SignUpPage = (props) => {
 
   return (
     <AppTheme {...props}>
-      <CssBaseline enableColorScheme />
-
       <SignUpContainer direction='column' justifyContent='space-between'>
         <Card variant='outlined'>
+          <Logo width={150} />
           <Typography
             component='h1'
             variant='h4'
@@ -149,6 +153,21 @@ const SignUpPage = (props) => {
                 error={emailError}
                 helperText={emailErrorMessage}
                 color={passwordError ? 'error' : 'primary'}
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <EmailIcon
+                          sx={{
+                            color: 'text.secondary',
+                            height: 20,
+                            width: 20
+                          }}
+                        />
+                      </InputAdornment>
+                    )
+                  }
+                }}
               />
             </FormControl>
             <FormControl>
@@ -169,6 +188,17 @@ const SignUpPage = (props) => {
                 color={passwordError ? 'error' : 'primary'}
                 slotProps={{
                   input: {
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <LockIcon
+                          sx={{
+                            color: 'text.secondary',
+                            height: 20,
+                            width: 20
+                          }}
+                        />
+                      </InputAdornment>
+                    ),
                     endAdornment: (
                       <InputAdornment position='end'>
                         <IconButton

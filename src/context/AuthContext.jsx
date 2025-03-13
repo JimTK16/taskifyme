@@ -45,8 +45,11 @@ const AuthContextProvider = ({ children }) => {
   const signIn = useCallback(async (email, password) => {
     try {
       setIsSigningIn(true)
-      // Simulate a delay for 8 seconds
-      // await new Promise((resolve) => setTimeout(resolve, 8000))
+      await new Promise((resolve) => {
+        setTimeout(() => {
+          resolve()
+        }, 3000)
+      })
       const response = await signInAPI({ email, password })
       storeUserDetails(response)
     } catch (error) {
@@ -59,8 +62,12 @@ const AuthContextProvider = ({ children }) => {
   const guestSignIn = useCallback(async () => {
     try {
       setIsGuestSigningIn(true)
-      // Simulate a delay for 8 seconds
-      // await new Promise((resolve) => setTimeout(resolve, 8000))
+
+      await new Promise((resolve) => {
+        setTimeout(() => {
+          resolve()
+        }, 3000)
+      })
       const response = await signInAsGuestAPI()
       storeUserDetails(response)
     } catch (error) {
