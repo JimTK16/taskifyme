@@ -59,7 +59,7 @@ export default function Content() {
           display: { xs: 'none', md: 'flex' }
         }}
       >
-        <Logo width={200} />
+        <Logo width={140} />
       </Box>
       {items.map((item, index) => (
         <Stack key={index} direction='row' sx={{ gap: 2 }}>

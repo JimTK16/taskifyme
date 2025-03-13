@@ -146,7 +146,7 @@ export default function SignInCard(props) {
           justifyContent: 'flex-start'
         }}
       >
-        <Logo width={150} />
+        <Logo width={140} />
       </Box>
       <Typography
         component='h1'
@@ -167,7 +167,7 @@ export default function SignInCard(props) {
           display: 'flex',
           flexDirection: 'column',
           width: '100%',
-          gap: 3
+          gap: 2
         }}
       >
         <FormControl>
@@ -332,7 +332,7 @@ export default function SignInCard(props) {
           Forgot your password?
         </Link>
       </Box>
-      <Divider sx={{ my: 2, color: 'text.secondary' }}>or</Divider>
+      <Divider sx={{ color: 'text.secondary' }}>or</Divider>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Typography sx={{ textAlign: 'center' }}>
           Don't have an account?{' '}
