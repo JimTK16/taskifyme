@@ -27,13 +27,15 @@ const UserMenu = () => {
           startIcon={
             <Avatar
               sx={{
-                bgcolor: red[500],
+                bgcolor: '#4A86E8',
                 width: 24,
                 height: 24,
                 marginRight: 0.5
               }}
             >
-              {userDetails.email.charAt(0).toUpperCase()}
+              <span style={{ fontSize: '16px' }}>
+                {userDetails.email.charAt(0).toUpperCase()}
+              </span>
             </Avatar>
           }
           endIcon={<KeyboardArrowDownOutlinedIcon onClick={handleMenuOpen} />}
