@@ -15,6 +15,53 @@ import PriorityMenu from './PriorityMenu'
 import CustomizedDatePicker from './CustomizedDatePicker'
 import LabelSelect from './LabelSelect'
 
+const randomPlaceholders = [
+  'Prepare monthly expense report',
+  'Call supplier for product update',
+  'Schedule annual board meeting',
+  'Draft client contract terms',
+  'Analyze quarterly sales data',
+  'Create team performance review',
+  'Organize product launch event',
+  'Prepare pitch for new investors',
+  'Plan marketing campaign budget',
+  'Review competitor market trends',
+  'Host training for new employees',
+  'Set up vendor negotiations meeting',
+  'Evaluate customer feedback survey',
+  'Update business growth strategy',
+  'Conduct staff performance reviews',
+  'Finalize partnership agreement',
+  'Approve quarterly marketing spend',
+  'Plan team-building activity day',
+  'Present yearly growth statistics',
+  'Confirm keynote speaker for event',
+  'Buy groceries for the week',
+  'Clean up the living room',
+  'Wash the dishes after dinner',
+  'Walk the dog in the evening',
+  'Prepare lunch for tomorrow',
+  'Water the indoor plants',
+  'Do a 30-minute workout',
+  'Call a friend to catch up',
+  'Make a to-do list for the day',
+  'Fold and store clean laundry',
+  'Take out the trash and recyclables',
+  'Plan meals for the week ahead',
+  'Declutter the workspace area',
+  'Pay monthly utility bills',
+  'Charge phone and laptop overnight',
+  'Make the bed in the morning',
+  'Read a book before bedtime',
+  'Check the mail for letters',
+  'Refill the car’s fuel tank',
+  'Relax with a cup of tea'
+]
+
+const randomPlaceholder = () => {
+  const index = Math.floor(Math.random() * randomPlaceholders.length)
+  return randomPlaceholders[index]
+}
 const AddTaskModal = ({ open, onClose }) => {
   const [taskTitle, setTaskTitle] = useState('')
   const [taskDescription, setTaskDescription] = useState('')
@@ -64,7 +111,7 @@ const AddTaskModal = ({ open, onClose }) => {
         <Box sx={{ p: 2 }}>
           <FormControl fullWidth>
             <InputBase
-              placeholder='Practice math problems daily'
+              placeholder={randomPlaceholder()}
               sx={{
                 '& .MuiInputBase-input': {
                   fontSize: 20
