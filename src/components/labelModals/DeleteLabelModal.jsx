@@ -107,6 +107,7 @@ const DeleteLabelModal = ({ open, onClose, deletingLabel }) => {
             Cancel
           </Button>
           <Button
+            disabled={isSubmitting}
             variant='contained'
             color='error'
             sx={{
