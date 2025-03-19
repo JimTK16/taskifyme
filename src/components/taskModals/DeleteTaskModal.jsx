@@ -1,7 +1,7 @@
 import { Box, Typography, Button, IconButton } from '@mui/material'
 import BaseModal from '../BaseModal'
 import { deleteTaskAPI } from '~/services'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { TaskContext } from '~/context/context'
 import CloseIcon from '@mui/icons-material/Close'
 
