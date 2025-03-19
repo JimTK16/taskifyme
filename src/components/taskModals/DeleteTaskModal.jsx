@@ -101,6 +101,7 @@ const DeleteTaskModal = ({ open, onClose }) => {
             Cancel
           </Button>
           <Button
+            disabled={isSubmitting}
             variant='contained'
             color='error'
             sx={{
@@ -108,7 +109,7 @@ const DeleteTaskModal = ({ open, onClose }) => {
             }}
             onClick={handleDelete}
           >
-          {isSubmitting ? 'Deleting...' : 'Delete'}
+            {isSubmitting ? 'Deleting...' : 'Delete'}
           </Button>
         </Box>
       </Box>
