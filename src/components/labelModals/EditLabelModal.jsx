@@ -23,7 +23,7 @@ const EditLabelModal = ({ open, onClose, editingLabel }) => {
 
   const [labelName, setLabelName] = useState(editingLabel.name)
   const [selectedColor, setSelectedColor] = useState(editingLabel.color)
-
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const labelAlreadyExists = labels
     .filter((label) => label._id !== editingLabel._id)
     .some((label) => label.name === labelName && !label.deleted)
@@ -39,6 +39,7 @@ const EditLabelModal = ({ open, onClose, editingLabel }) => {
     if (labelName === '') return
     const newLabel = { ...editingLabel, name: labelName, color: selectedColor }
     try {
+      setIsSubmitting(true)
       const response = await updateLabelAPI(editingLabel._id, newLabel)
       const updatedLabels = labels.map((label) => {
         if (label._id === response._id) {
@@ -63,6 +64,7 @@ const EditLabelModal = ({ open, onClose, editingLabel }) => {
     } catch (error) {
       console.log('Error saving label:', error)
     } finally {
+      setIsSubmitting(false)
       setEditingLabel(null)
     }
   }
@@ -164,7 +166,7 @@ const EditLabelModal = ({ open, onClose, editingLabel }) => {
             Cancel
           </Button>
           <Button
-            disabled={labelAlreadyExists}
+            disabled={labelAlreadyExists || isSubmitting}
             variant='contained'
             sx={{
               textTransform: 'none',
@@ -178,7 +180,7 @@ const EditLabelModal = ({ open, onClose, editingLabel }) => {
             }}
             type='submit'
           >
-            Save
+            {isSubmitting ? 'Saving...' : 'Save'}
           </Button>
         </Box>
       </Box>

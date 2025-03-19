@@ -21,6 +21,7 @@ const AddLabelModal = ({ open, onClose }) => {
   const { labels, setLabels } = useContext(LabelContext)
   const [labelName, setLabelName] = useState('')
   const [selectedColor, setSelectedColor] = useState('#36454F')
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const labelAlreadyExists = labels.some(
     (label) => label.name === labelName && !label.deleted
   )
@@ -38,10 +39,17 @@ const AddLabelModal = ({ open, onClose }) => {
       name: labelName,
       color: selectedColor
     }
-    const response = await createNewLabelAPI(newLabel)
-    const updatedLabels = [...labels, response]
-    setLabels(updatedLabels)
-    handleCloseModal()
+    try {
+      setIsSubmitting(true)
+      const response = await createNewLabelAPI(newLabel)
+      const updatedLabels = [...labels, response]
+      setLabels(updatedLabels)
+    } catch (error) {
+      console.error('Error creating label:', error)
+    } finally {
+      setIsSubmitting(false)
+      handleCloseModal()
+    }
   }
   return (
     <BaseModal open={open} onClose={handleCloseModal} maxWidth={480}>
@@ -141,7 +149,7 @@ const AddLabelModal = ({ open, onClose }) => {
             Cancel
           </Button>
           <Button
-            disabled={labelAlreadyExists}
+            disabled={labelAlreadyExists || isSubmitting}
             variant='contained'
             sx={{
               textTransform: 'none',
@@ -155,7 +163,7 @@ const AddLabelModal = ({ open, onClose }) => {
             }}
             type='submit'
           >
-            Add
+            {isSubmitting ? 'Submitting...' : 'Add label'}
           </Button>
         </Box>
       </Box>

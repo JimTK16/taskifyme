@@ -7,10 +7,12 @@ import CloseIcon from '@mui/icons-material/Close'
 
 const DeleteLabelModal = ({ open, onClose, deletingLabel }) => {
   const { labels, setLabels } = useContext(LabelContext)
-
   const { tasks, setTasks } = useContext(TaskContext)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
   const handleDelete = async () => {
     try {
+      setIsSubmitting(true)
       const response = await deleteLabelAPI(deletingLabel._id)
 
       const updatedLabels = labels.map((label) => {
@@ -37,6 +39,7 @@ const DeleteLabelModal = ({ open, onClose, deletingLabel }) => {
     } catch (error) {
       console.error('Deletion failed:', error)
     } finally {
+      setIsSubmitting(false)
       onClose()
     }
   }
@@ -111,7 +114,7 @@ const DeleteLabelModal = ({ open, onClose, deletingLabel }) => {
             }}
             onClick={handleDelete}
           >
-            Delete
+            {isSubmitting ? 'Deleting...' : 'Delete'}
           </Button>
         </Box>
       </Box>

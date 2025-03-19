@@ -14,8 +14,10 @@ const DeleteTaskModal = ({ open, onClose }) => {
     deletingTask
   } = useContext(TaskContext)
 
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const handleDelete = async () => {
     try {
+      setIsSubmitting(true)
       const response = await deleteTaskAPI(deletingTask._id)
       const updatedTasks = tasks.map((task) => {
         if (task._id.toString() === deletingTask._id) {
@@ -28,6 +30,7 @@ const DeleteTaskModal = ({ open, onClose }) => {
     } catch (error) {
       console.error('Deletion failed:', error)
     } finally {
+      setIsSubmitting(false)
       onClose()
       setLastDeletedTaskId(deletingTask._id)
       setShowSnackBar(true)
@@ -105,7 +108,7 @@ const DeleteTaskModal = ({ open, onClose }) => {
             }}
             onClick={handleDelete}
           >
-            Delete
+          {isSubmitting ? 'Deleting...' : 'Delete'}
           </Button>
         </Box>
       </Box>

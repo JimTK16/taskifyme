@@ -71,6 +71,7 @@ const AddTaskModal = ({ open, onClose }) => {
   const [priority, setPriority] = useState('Priority 3')
   const [dueDate, setDueDate] = useState(null)
   const [selectedLabels, setSelectedLabels] = useState([])
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const { tasks, setTasks } = useContext(TaskContext)
 
   const handleCloseModal = () => {
@@ -100,11 +101,13 @@ const AddTaskModal = ({ open, onClose }) => {
     }
 
     try {
+      setIsSubmitting(true)
       const response = await createNewTaskAPI(newTask)
       setTasks([...tasks, response])
     } catch (error) {
       console.error('Error creating task:', error)
     } finally {
+      setIsSubmitting(false)
       handleCloseModal()
     }
   }
@@ -231,6 +234,7 @@ const AddTaskModal = ({ open, onClose }) => {
             Cancel
           </Button>
           <Button
+            disabled={isSubmitting}
             variant='contained'
             sx={{
               textTransform: 'none',
@@ -244,7 +248,7 @@ const AddTaskModal = ({ open, onClose }) => {
             }}
             type='submit'
           >
-            Add task
+            {isSubmitting ? 'Submitting...' : 'Add task'}
           </Button>
         </Box>
       </form>

@@ -21,7 +21,7 @@ import CloseIcon from '@mui/icons-material/Close'
 
 const EditTaskModal = ({ open, onClose, task }) => {
   const { tasks, setTasks, setEditingTask } = useContext(TaskContext)
-  const { labels, setLabels } = useContext(LabelContext)
+  const { labels } = useContext(LabelContext)
   const transformedLabels = labels.filter(
     (label) => task.labels.includes(label._id) && label.deleted === false
   )
@@ -33,6 +33,7 @@ const EditTaskModal = ({ open, onClose, task }) => {
   const [dueDate, setDueDate] = useState(
     task.dueDate ? dayjs(task.dueDate) : null
   )
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleRemoveLabel = (labelId) => {
     setSelectedLabels((prevLabels) =>
@@ -52,6 +53,7 @@ const EditTaskModal = ({ open, onClose, task }) => {
       dueDate: dueDate ? new Date(dueDate).getTime() : null
     }
     try {
+      setIsSubmitting(true)
       const response = await updateTaskAPI(task._id, newTask)
       const updatedTasks = tasks.map((task) => {
         if (task._id === response._id) {
@@ -63,6 +65,7 @@ const EditTaskModal = ({ open, onClose, task }) => {
     } catch (error) {
       console.error('Error saving task:', error)
     } finally {
+      setIsSubmitting(false)
       setEditingTask(null)
     }
   }
@@ -190,6 +193,7 @@ const EditTaskModal = ({ open, onClose, task }) => {
             Cancel
           </Button>
           <Button
+            disabled={isSubmitting}
             variant='contained'
             sx={{
               textTransform: 'none',
@@ -203,7 +207,7 @@ const EditTaskModal = ({ open, onClose, task }) => {
             }}
             type='submit'
           >
-            Save
+            {isSubmitting ? 'Saving...' : 'Save'}
           </Button>
         </Box>
       </form>

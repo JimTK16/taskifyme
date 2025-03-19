@@ -45,11 +45,7 @@ const AuthContextProvider = ({ children }) => {
   const signIn = useCallback(async (email, password) => {
     try {
       setIsSigningIn(true)
-      await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve()
-        }, 3000)
-      })
+
       const response = await signInAPI({ email, password })
       storeUserDetails(response)
     } catch (error) {
@@ -62,12 +58,6 @@ const AuthContextProvider = ({ children }) => {
   const guestSignIn = useCallback(async () => {
     try {
       setIsGuestSigningIn(true)
-
-      await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve()
-        }, 3000)
-      })
       const response = await signInAsGuestAPI()
       storeUserDetails(response)
     } catch (error) {
