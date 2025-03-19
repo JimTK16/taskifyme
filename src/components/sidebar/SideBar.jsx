@@ -1,4 +1,4 @@
-import { Box, Button } from '@mui/material'
+import { Box, Button, Divider, Typography } from '@mui/material'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
 import InboxOutlinedIcon from '@mui/icons-material/InboxOutlined'
@@ -6,7 +6,7 @@ import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlin
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
 import LensBlurOutlinedIcon from '@mui/icons-material/LensBlurOutlined'
 import { useContext, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import UserMenu from './UserMenu'
 import NotificationIcons from './NotificationIcons'
 import TaskAltIcon from '@mui/icons-material/TaskAlt'
@@ -17,7 +17,7 @@ import { TaskContext } from '~/context/context'
 const SideBar = ({ onNavItemClick }) => {
   const [searchModalOpen, setSearchModalOpen] = useState(false)
   const { setEditingTask, setAddingTask } = useContext(TaskContext)
-
+  const location = useLocation()
   const navigate = useNavigate()
 
   const NAV_ITEMS = [
@@ -41,7 +41,12 @@ const SideBar = ({ onNavItemClick }) => {
     <>
       <nav>
         {/* Sidebar header */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between'
+          }}
+        >
           <UserMenu />
           <NotificationIcons onNavItemClick={onNavItemClick} />
         </Box>
@@ -55,7 +60,9 @@ const SideBar = ({ onNavItemClick }) => {
             display: 'flex',
             justifyContent: 'flex-start'
           }}
-          startIcon={<AddCircleIcon sx={{ width: 24, height: 24 }} />}
+          startIcon={
+            <AddCircleIcon sx={{ width: 24, height: 24, color: '#4A86E8' }} />
+          }
           onClick={() => setAddingTask(true)}
         >
           Add new task
@@ -70,12 +77,16 @@ const SideBar = ({ onNavItemClick }) => {
             display: 'flex',
             justifyContent: 'flex-start'
           }}
-          startIcon={<SearchOutlinedIcon sx={{ width: 24, height: 24 }} />}
+          startIcon={
+            <SearchOutlinedIcon
+              sx={{ width: 24, height: 24, color: '#4A86E8' }}
+            />
+          }
           onClick={() => setSearchModalOpen(true)}
         >
           Search
         </Button>
-
+        <Divider sx={{ my: 1, opacity: 0.6 }} />
         {/* Modals */}
 
         <SearchModal
@@ -95,6 +106,14 @@ const SideBar = ({ onNavItemClick }) => {
             flexDirection: 'column'
           }}
         >
+          <Box sx={{ px: 1, pt: 1, pb: 0.5 }}>
+            <Typography
+              variant='caption'
+              sx={{ color: '#5F6368', letterSpacing: 0.4 }}
+            >
+              Views
+            </Typography>
+          </Box>
           {NAV_ITEMS.map((item) => (
             <NavButton
               key={item.label}
@@ -103,6 +122,7 @@ const SideBar = ({ onNavItemClick }) => {
               onClick={navigate}
               navigateTo={item.navigateTo}
               onNavItemClick={onNavItemClick}
+              isActive={location.pathname === item.navigateTo}
             />
           ))}
         </Box>

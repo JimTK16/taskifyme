@@ -66,6 +66,7 @@ export default function LabelSelect({ selectedLabels, setSelectedLabels }) {
 
   return (
     <Autocomplete
+      disablePortal={true}
       multiple
       freeSolo
       clearOnBlur
@@ -128,7 +129,6 @@ export default function LabelSelect({ selectedLabels, setSelectedLabels }) {
           </li>
         )
       }}
-      style={{ width: 300 }}
       renderInput={(params) => (
         <TextField
           {...params}
@@ -144,6 +144,7 @@ export default function LabelSelect({ selectedLabels, setSelectedLabels }) {
       )}
       size='small'
       sx={{
+        flexGrow: 1,
         '& .MuiFormControl-root': {
           display: 'flex',
           alignItems: 'center'

@@ -7,7 +7,6 @@ import Settings from '@mui/icons-material/Settings'
 import Logout from '@mui/icons-material/Logout'
 import { useAuth } from '~/hooks/useAuth'
 import { useState } from 'react'
-import { red } from '@mui/material/colors'
 
 const UserMenu = () => {
   const { userDetails, signOut } = useAuth()
@@ -24,6 +23,7 @@ const UserMenu = () => {
       <Tooltip title={userDetails.email}>
         <Button
           variant='text'
+          onClick={handleMenuOpen}
           startIcon={
             <Avatar
               sx={{
@@ -38,11 +38,19 @@ const UserMenu = () => {
               </span>
             </Avatar>
           }
-          endIcon={<KeyboardArrowDownOutlinedIcon onClick={handleMenuOpen} />}
+          endIcon={
+            <KeyboardArrowDownOutlinedIcon
+              sx={{
+                transistion: 'transform 0.2s ease',
+                transform: open ? 'rotate(180deg)' : 'rotate(0deg)'
+              }}
+            />
+          }
           sx={{
             textTransform: 'none',
-            color: 'gray',
-            '&:hover': { bgcolor: '#f0f0f0' },
+            color: '#202020',
+            py: 0.5,
+            '&:hover': { bgcolor: '#E3F2FD' }, // Updated hover color
             fontSize: 13
           }}
         >
@@ -58,6 +66,26 @@ const UserMenu = () => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         sx={{ mt: 1 }}
+        PaperProps={{
+          elevation: 2,
+          sx: {
+            mt: 1,
+            minWidth: 180,
+            borderRadius: '6px',
+            overflow: 'visible',
+            '& .MuiMenuItem-root': {
+              px: 2,
+              py: 1,
+              borderRadius: '4px',
+              mx: 0.5,
+              my: 0.25,
+              transition: 'background-color 0.2s ease',
+              '&:hover': {
+                bgcolor: 'rgba(74, 134, 232, 0.08)'
+              }
+            }
+          }
+        }}
       >
         <MenuItem>
           <ListItemIcon>

@@ -1,5 +1,12 @@
 import { CheckCircleOutline, PanoramaFishEye } from '@mui/icons-material'
-import { Box, Checkbox, Divider, Stack, Typography } from '@mui/material'
+import {
+  Box,
+  Checkbox,
+  Divider,
+  Stack,
+  Tooltip,
+  Typography
+} from '@mui/material'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import DeleteSweepOutlinedIcon from '@mui/icons-material/DeleteSweepOutlined'
 import { priorityOptions } from './taskModals/PriorityMenu'
@@ -56,19 +63,24 @@ const TaskItem = ({ task, inSearchModal, handleCloseSearchModal }) => {
   }
 
   return (
-    <Box>
-      <Stack
-        direction={'row'}
-        sx={{ cursor: 'pointer' }}
-        onMouseOver={() => !inSearchModal && setShowOptions(true)}
-        onMouseLeave={() => !inSearchModal && setShowOptions(false)}
-        onClick={() => {
-          if (inSearchModal) {
-            handleCloseSearchModal()
-            setEditingTask(task)
-          }
-        }}
-      >
+    <Box
+      sx={{
+        cursor: 'pointer',
+        p: 1,
+        borderRadius: 1,
+        '&:hover': { bgcolor: 'action.hover' },
+        transition: 'background-color 0.2s'
+      }}
+      onMouseOver={() => !inSearchModal && setShowOptions(true)}
+      onMouseLeave={() => !inSearchModal && setShowOptions(false)}
+      onClick={() => {
+        if (inSearchModal) {
+          handleCloseSearchModal()
+          setEditingTask(task)
+        }
+      }}
+    >
+      <Stack direction={'row'}>
         <Box>
           <TaskCircleIcon
             iconColor={iconColor}
@@ -78,30 +90,44 @@ const TaskItem = ({ task, inSearchModal, handleCloseSearchModal }) => {
         </Box>
 
         <Stack direction={'column'} sx={{ ml: 1, gap: 0.25 }}>
-          <Typography sx={{ color: 'black', fontSize: '14px' }}>
+          <Typography
+            sx={{ fontSize: '14px', fontWeight: '500' }}
+            variant='body1'
+          >
             {task.title}
           </Typography>
-          <Typography sx={{ color: 'gray', fontSize: '12px' }}>
+          <Typography
+            sx={{ color: 'text.secondary', fontSize: '12px' }}
+            variant='body2'
+          >
             {task.description}
           </Typography>
           {task.dueDate && !inSearchModal && (
-            <Typography sx={{ color: 'gray', fontSize: '12px' }}>
+            <Typography
+              variant='body2'
+              sx={{ color: 'text.secondary', fontSize: '12px' }}
+            >
               {dateFormatter(task.dueDate)}
             </Typography>
           )}
           {task.labelDetails?.length > 0 && (
-            <Box sx={{ display: 'flex', gap: 1 }}>
+            <Box sx={{ display: 'flex', gap: 1, mt: 0.25 }}>
               {task.labelDetails?.map((item) => (
                 <Box
                   key={item._id}
-                  sx={{ display: 'flex', gap: 0.25, alignItems: 'center' }}
+                  sx={{
+                    display: 'flex',
+                    gap: 0.5,
+                    alignItems: 'center',
+                    justifyContent: 'flex-start'
+                  }}
                 >
                   <SellOutlinedIcon
                     sx={{
                       color: item.color,
                       transform: 'rotate(90deg)',
-                      width: '12px',
-                      height: '12px'
+                      width: '14px',
+                      height: '14px'
                     }}
                   />
                   <Typography sx={{ fontSize: '12px' }}>{item.name}</Typography>
@@ -111,9 +137,16 @@ const TaskItem = ({ task, inSearchModal, handleCloseSearchModal }) => {
           )}
         </Stack>
         {showOptions && (
-          <Stack direction={'row'} sx={{ ml: 'auto', color: 'gray', gap: 2 }}>
-            <EditOutlinedIcon onClick={() => setEditingTask(task)} />
-            <DeleteSweepOutlinedIcon onClick={() => setDeletingTask(task)} />
+          <Stack
+            direction={'row'}
+            sx={{ ml: 'auto', color: 'action.active', gap: 2 }}
+          >
+            <Tooltip title='Edit Task'>
+              <EditOutlinedIcon onClick={() => setEditingTask(task)} />
+            </Tooltip>
+            <Tooltip title='Delete Task'>
+              <DeleteSweepOutlinedIcon onClick={() => setDeletingTask(task)} />
+            </Tooltip>
           </Stack>
         )}
       </Stack>

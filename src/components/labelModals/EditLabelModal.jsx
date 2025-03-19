@@ -36,6 +36,7 @@ const EditLabelModal = ({ open, onClose, editingLabel }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (labelName === '') return
     const newLabel = { ...editingLabel, name: labelName, color: selectedColor }
     try {
       const response = await updateLabelAPI(editingLabel._id, newLabel)
@@ -77,7 +78,7 @@ const EditLabelModal = ({ open, onClose, editingLabel }) => {
           py: 1
         }}
       >
-        <Typography variant='h1' sx={{ fontSize: '16px', fontWeight: '600' }}>
+        <Typography variant='h6' sx={{ color: '#4A86E8', fontWeight: 600 }}>
           Edit label
         </Typography>
         <IconButton sx={{ p: 0.25 }} onClick={handleCloseModal}>
@@ -108,6 +109,7 @@ const EditLabelModal = ({ open, onClose, editingLabel }) => {
               )}
             </Box>
             <TextField
+              autoFocus
               error={labelAlreadyExists}
               size='small'
               id='name'
@@ -143,27 +145,36 @@ const EditLabelModal = ({ open, onClose, editingLabel }) => {
           }}
         >
           <Button
+            variant='text'
             sx={{
               textTransform: 'none',
               color: '#444',
-              bgcolor: '#f5f5f5'
+              fontSize: '14px',
+              borderRadius: '4px',
+              px: 2,
+              py: 0.75,
+              transition: 'background-color 0.2s ease',
+              bgcolor: 'rgba(0, 0, 0, 0.04)',
+              '&:hover': {
+                bgcolor: 'rgba(0, 0, 0, 0.08)'
+              }
             }}
             onClick={handleCloseModal}
           >
             Cancel
           </Button>
           <Button
-            disabled={labelName === '' || labelAlreadyExists}
+            disabled={labelAlreadyExists}
+            variant='contained'
             sx={{
               textTransform: 'none',
               color: 'white',
-              bgcolor: '#39485e',
+              bgcolor: labelName === '' ? 'rgba(0,0,0,0.3)' : '#4A86E8',
               position: 'relative',
-
-              '&:disabled': {
-                bgcolor: 'gray',
-                color: 'white'
-              }
+              '&:hover': {
+                bgcolor: labelName === '' ? 'rgba(0,0,0,0.3)' : '#3b78e7'
+              },
+              cursor: labelName === '' ? 'not-allowed' : 'pointer'
             }}
             type='submit'
           >

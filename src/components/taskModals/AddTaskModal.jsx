@@ -5,7 +5,9 @@ import {
   InputBase,
   Stack,
   Divider,
-  Chip
+  Chip,
+  IconButton,
+  Typography
 } from '@mui/material'
 import { useContext, useState } from 'react'
 import { createNewTaskAPI } from '~/services'
@@ -14,6 +16,7 @@ import BaseModal from '../BaseModal'
 import PriorityMenu from './PriorityMenu'
 import CustomizedDatePicker from './CustomizedDatePicker'
 import LabelSelect from './LabelSelect'
+import CloseIcon from '@mui/icons-material/Close'
 
 const randomPlaceholders = [
   'Prepare monthly expense report',
@@ -109,13 +112,31 @@ const AddTaskModal = ({ open, onClose }) => {
     <BaseModal open={open} onClose={handleCloseModal}>
       <form onSubmit={handleSubmit}>
         <Box sx={{ p: 2 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              mb: 2
+            }}
+          >
+            <Typography variant='h6' sx={{ color: '#4A86E8', fontWeight: 600 }}>
+              Add New Task
+            </Typography>
+            <IconButton onClick={handleCloseModal} size='small'>
+              <CloseIcon fontSize='small' />
+            </IconButton>
+          </Box>
           <FormControl fullWidth>
             <InputBase
+              autoFocus
               placeholder={randomPlaceholder()}
               sx={{
                 '& .MuiInputBase-input': {
-                  fontSize: 20
+                  fontSize: 20,
+                  fontWeight: 500
                 },
+
                 '& .MuiInputBase-input::placeholder': {
                   color: '#202020',
                   fontWeight: '600'
@@ -127,8 +148,14 @@ const AddTaskModal = ({ open, onClose }) => {
           </FormControl>
           <FormControl fullWidth>
             <InputBase
+              multiline
+              minRows={3}
               placeholder='Description'
               sx={{
+                border: '1px solid #ccc',
+                borderRadius: 1,
+                p: 1,
+                mt: 1,
                 '& .MuiInputBase-input': {
                   fontSize: 13
                 },
@@ -159,7 +186,11 @@ const AddTaskModal = ({ open, onClose }) => {
               ))}
             </Stack>
           )}
-          <Stack spacing={2} direction='row' alignItems='center'>
+          <Stack
+            spacing={2}
+            direction={{ xs: 'column', sm: 'row' }}
+            alignItems={{ xs: 'stretch', sm: 'center' }}
+          >
             <CustomizedDatePicker
               value={dueDate}
               onChange={(newValue) => setDueDate(newValue)}
@@ -171,7 +202,7 @@ const AddTaskModal = ({ open, onClose }) => {
             />
           </Stack>
         </Box>
-        <Divider sx={{ m: 0 }} />
+        <Divider sx={{ m: 0, opacity: 0.6 }} />
         <Box
           sx={{
             p: 2,
@@ -181,23 +212,33 @@ const AddTaskModal = ({ open, onClose }) => {
           }}
         >
           <Button
+            variant='text'
             sx={{
               textTransform: 'none',
               color: '#444',
-              bgcolor: '#f5f5f5'
+              fontSize: '14px',
+              borderRadius: '4px',
+              px: 2,
+              py: 0.75,
+              transition: 'background-color 0.2s ease',
+              bgcolor: 'rgba(0, 0, 0, 0.04)',
+              '&:hover': {
+                bgcolor: 'rgba(0, 0, 0, 0.08)'
+              }
             }}
             onClick={handleCloseModal}
           >
             Cancel
           </Button>
           <Button
+            variant='contained'
             sx={{
               textTransform: 'none',
               color: 'white',
-              bgcolor: taskTitle === '' ? 'gray' : '#39485e',
+              bgcolor: taskTitle === '' ? 'rgba(0,0,0,0.3)' : '#4A86E8',
               position: 'relative',
               '&:hover': {
-                bgcolor: taskTitle === '' ? 'gray' : '#2a374a'
+                bgcolor: taskTitle === '' ? 'rgba(0,0,0,0.3)' : '#3b78e7'
               },
               cursor: taskTitle === '' ? 'not-allowed' : 'pointer'
             }}

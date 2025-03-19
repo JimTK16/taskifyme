@@ -28,7 +28,7 @@ const InboxPage = () => {
           Inbox
         </Typography>
         <Stack direction={'row'}>
-          <Typography variant='body2' sx={{ color: 'gray' }}>
+          <Typography variant='body2' sx={{ color: 'text.secondary' }}>
             {isLoadingTasks ? (
               <Skeleton variant='text' width={30} />
             ) : (

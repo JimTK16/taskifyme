@@ -1,4 +1,4 @@
-import { Box, Divider, Stack, Typography } from '@mui/material'
+import { Box, Divider, Stack, Tooltip, Typography } from '@mui/material'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import DeleteSweepOutlinedIcon from '@mui/icons-material/DeleteSweepOutlined'
 import { useContext, useState } from 'react'
@@ -10,13 +10,18 @@ const LabelItem = ({ label }) => {
   const [showOptions, setShowOptions] = useState(false)
   const { setEditingLabel, setDeletingLabel } = useContext(LabelContext)
   return (
-    <Box>
-      <Stack
-        direction={'row'}
-        sx={{ cursor: 'pointer' }}
-        onMouseOver={() => setShowOptions(true)}
-        onMouseLeave={() => setShowOptions(false)}
-      >
+    <Box
+      sx={{
+        cursor: 'pointer',
+        p: 0.5,
+        borderRadius: 1,
+        '&:hover': { bgcolor: 'action.hover' },
+        transition: 'background-color 0.2s'
+      }}
+      onMouseOver={() => setShowOptions(true)}
+      onMouseLeave={() => setShowOptions(false)}
+    >
+      <Stack direction={'row'}>
         <Box sx={{ display: 'flex', gap: 1 }}>
           <SellOutlinedIcon
             sx={{ color: iconColor, transform: 'rotate(90deg)' }}
@@ -25,8 +30,14 @@ const LabelItem = ({ label }) => {
         </Box>
         {showOptions && (
           <Stack direction={'row'} sx={{ ml: 'auto', color: 'gray', gap: 2 }}>
-            <EditOutlinedIcon onClick={() => setEditingLabel(label)} />
-            <DeleteSweepOutlinedIcon onClick={() => setDeletingLabel(label)} />
+            <Tooltip title='Edit Label'>
+              <EditOutlinedIcon onClick={() => setEditingLabel(label)} />
+            </Tooltip>
+            <Tooltip title='Delete Label'>
+              <DeleteSweepOutlinedIcon
+                onClick={() => setDeletingLabel(label)}
+              />
+            </Tooltip>
           </Stack>
         )}
       </Stack>

@@ -34,7 +34,7 @@ const CustomizedDatePicker = ({ value, onChange }) => {
           placeholder: 'Date',
           size: 'small',
           sx: {
-            maxWidth: 180,
+            minWidth: 180,
             '& .MuiInputBase-input': {
               fontSize: '14px',
               padding: '4px 8px'
@@ -49,7 +49,8 @@ const CustomizedDatePicker = ({ value, onChange }) => {
         openPickerIcon: {
           sx: {
             width: 24,
-            height: 24
+            height: 24,
+            color: '#4A86E8'
           }
         }
       }}

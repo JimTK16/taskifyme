@@ -1,5 +1,12 @@
 import { Outlet } from 'react-router-dom'
-import { Fade, Grid2, Slide, useMediaQuery, useTheme } from '@mui/material'
+import {
+  Fade,
+  Grid2,
+  Slide,
+  Tooltip,
+  useMediaQuery,
+  useTheme
+} from '@mui/material'
 import { useState, useContext, useEffect } from 'react'
 import { LabelContext, TaskContext } from '~/context/context'
 import SideBar from './sidebar/SideBar'
@@ -58,27 +65,32 @@ const Layout = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Grid2 container>
-        <IconButton
-          aria-label='toggle sidebar'
-          sx={{
-            position: 'fixed',
-            left: showSideBar ? '240px' : '40px',
-            top: 8,
-            zIndex: 1300,
-            borderRadius: '10%',
-            transition: {
-              xs: 'none',
-              sm: 'left 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
-            },
-            '&:hover': { backgroundColor: 'action.hover' },
-            p: 0,
-            width: 32,
-            height: 32
-          }}
-          onClick={handleSideBarToggle}
-        >
-          <ViewSidebarOutlinedIcon fontSize='small' />
-        </IconButton>
+        <Tooltip title='Toggle Sidebar'>
+          <IconButton
+            aria-label='toggle sidebar'
+            sx={{
+              position: 'fixed',
+              left: showSideBar ? '240px' : '40px',
+              top: 8,
+              zIndex: 1300,
+              borderRadius: '10%',
+              transition: {
+                xs: 'none',
+                sm: 'left 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+              },
+              '&:hover': { backgroundColor: 'action.hover' },
+              p: 0,
+              width: 32,
+              height: 32
+            }}
+            onClick={handleSideBarToggle}
+          >
+            <ViewSidebarOutlinedIcon
+              fontSize='small'
+              sx={{ color: '#424242' }}
+            />
+          </IconButton>
+        </Tooltip>
         {/* Backdrop for mobile */}
         {isMobile && showSideBar && (
           <Fade in={showSideBar} mountOnEnter unmountOnExit>
@@ -108,11 +120,11 @@ const Layout = () => {
               position: 'fixed',
               top: 0,
               left: 0,
-              boxShadow: 3,
+              boxShadow: '0 0 10px rgba(0, 0, 0, 0.04)',
               p: 1,
               height: '100vh',
               width: 280,
-              bgcolor: '#FAFAFA',
+              bgcolor: '#F0F7FF',
               zIndex: 1200,
               ...(isMobile && {
                 position: 'fixed',

@@ -1,8 +1,9 @@
-import { Box, Typography, Button } from '@mui/material'
+import { Box, Typography, Button, IconButton } from '@mui/material'
 import BaseModal from '../BaseModal'
 import { deleteTaskAPI } from '~/services'
 import { useContext } from 'react'
 import { TaskContext } from '~/context/context'
+import CloseIcon from '@mui/icons-material/Close'
 
 const DeleteTaskModal = ({ open, onClose }) => {
   const {
@@ -41,13 +42,25 @@ const DeleteTaskModal = ({ open, onClose }) => {
       maxWidth={480}
     >
       <Box sx={{ p: 2 }}>
-        <Typography
-          variant='h6'
-          id='delete-modal-title'
-          sx={{ fontWeight: 400 }}
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            mb: 2
+          }}
         >
-          Delete task?
-        </Typography>
+          <Typography
+            variant='h6'
+            id='delete-modal-title'
+            sx={{ color: '#4A86E8', fontWeight: 600 }}
+          >
+            Delete task?
+          </Typography>
+          <IconButton onClick={onClose} size='small'>
+            <CloseIcon fontSize='small' />
+          </IconButton>
+        </Box>
 
         <Typography
           variant='body2'
@@ -66,24 +79,29 @@ const DeleteTaskModal = ({ open, onClose }) => {
           }}
         >
           <Button
+            variant='text'
             sx={{
               textTransform: 'none',
               color: '#444',
-              bgcolor: '#f5f5f5'
+              fontSize: '14px',
+              borderRadius: '4px',
+              px: 2,
+              py: 0.75,
+              transition: 'background-color 0.2s ease',
+              bgcolor: 'rgba(0, 0, 0, 0.04)',
+              '&:hover': {
+                bgcolor: 'rgba(0, 0, 0, 0.08)'
+              }
             }}
             onClick={onClose}
           >
             Cancel
           </Button>
           <Button
+            variant='contained'
+            color='error'
             sx={{
-              textTransform: 'none',
-              color: 'white',
-              bgcolor: '#39485e',
-              position: 'relative',
-              '&:hover': {
-                bgcolor: '#2a374a'
-              }
+              textTransform: 'none'
             }}
             onClick={handleDelete}
           >
