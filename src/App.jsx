@@ -17,11 +17,11 @@ import LabelsPage from './components/LabelsPage'
 import LabelContextProvider from './context/LabelContext'
 function App() {
   return (
-    <AuthContextProvider>
-      <TaskContextProvider>
-        <LabelContextProvider>
-          <NotificationContextProvider>
-            <BrowserRouter>
+    <BrowserRouter>
+      <AuthContextProvider>
+        <TaskContextProvider>
+          <LabelContextProvider>
+            <NotificationContextProvider>
               <Routes>
                 <Route path='/signin' element={<SignInPage />} />
                 <Route path='/redirect' element={<RedirectingPage />} />
@@ -41,11 +41,11 @@ function App() {
                   </Route>
                 </Route>
               </Routes>
-            </BrowserRouter>
-          </NotificationContextProvider>
-        </LabelContextProvider>
-      </TaskContextProvider>
-    </AuthContextProvider>
+            </NotificationContextProvider>
+          </LabelContextProvider>
+        </TaskContextProvider>
+      </AuthContextProvider>
+    </BrowserRouter>
   )
 }
 

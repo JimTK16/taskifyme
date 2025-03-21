@@ -93,7 +93,7 @@ const UserMenu = () => {
           </ListItemIcon>
           Settings
         </MenuItem>
-        <MenuItem onClick={signOut}>
+        <MenuItem onClick={() => signOut('manual')}>
           <ListItemIcon>
             <Logout fontSize='small' />
           </ListItemIcon>

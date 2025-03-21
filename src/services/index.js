@@ -9,12 +9,34 @@ export const signUpAPI = async (userData) => {
 }
 
 export const signInAPI = async (userData) => {
-  const response = await axios.post(`${API_ROOT}/v1/users/signin`, userData)
+  const response = await axios.post(`${API_ROOT}/v1/users/signin`, userData, {
+    withCredentials: true
+  })
   return response.data
 }
 
 export const signInAsGuestAPI = async () => {
-  const response = await axios.post(`${API_ROOT}/v1/users/guest`)
+  const response = await axios.post(`${API_ROOT}/v1/users/guest`, null, {
+    withCredentials: true
+  })
+  return response.data
+}
+
+export const signOutAPI = async () => {
+  const response = await axios.post(`${API_ROOT}/v1/users/signout`, null, {
+    withCredentials: true
+  })
+  return response.data
+}
+
+export const refreshTokenAPI = async () => {
+  const response = await axios.post(
+    `${API_ROOT}/v1/users/refresh`,
+    {},
+    {
+      withCredentials: true
+    }
+  )
   return response.data
 }
 
