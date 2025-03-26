@@ -1,13 +1,17 @@
-import { CircularProgress } from '@mui/material'
+import { Box, CircularProgress } from '@mui/material'
 import { Navigate, Outlet } from 'react-router-dom'
 import { useAuth } from '~/hooks/useAuth'
 
 const ProtectedRoute = () => {
   const { isAuthenticated, isLoading } = useAuth()
   if (isLoading) {
-    return <CircularProgress />
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+        <CircularProgress />
+      </Box>
+    )
   }
-  console.log('isAuthenticated', isAuthenticated)
+
   return isAuthenticated ? <Outlet /> : <Navigate to='/signin' />
 }
 export default ProtectedRoute

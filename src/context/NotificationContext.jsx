@@ -6,14 +6,18 @@ import { getNotifications } from '~/services'
 const NotificationContextProvider = ({ children }) => {
   const [notifications, setNotifications] = useState([])
   const [isLoadingNotifications, setIsLoadingNotifications] = useState(true)
-  const { userDetails, isLoading: isLoadingUser } = useAuth()
+  const {
+    isLoading: isLoadingUser,
+    token,
+    isSigningIn,
+    isGuestSigningIn
+  } = useAuth()
   const unreadCount = notifications.filter(
     (notification) => !notification.isRead
   ).length
 
   useEffect(() => {
-    if (isLoadingUser) return
-    if (!userDetails || !userDetails.userId) return
+    if (isLoadingUser || isSigningIn || isGuestSigningIn || !token) return
 
     const fetchNotifications = async () => {
       try {
@@ -28,7 +32,7 @@ const NotificationContextProvider = ({ children }) => {
       }
     }
     fetchNotifications()
-  }, [userDetails, isLoadingUser])
+  }, [isLoadingUser, token, isSigningIn, isGuestSigningIn])
 
   const value = {
     notifications,

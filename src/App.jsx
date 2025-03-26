@@ -28,7 +28,7 @@ function App() {
                 <Route path='/signup' element={<SignUpPage />} />
                 <Route element={<ProtectedRoute />}>
                   <Route path='/' element={<Layout />}>
-                    <Route index element={<Navigate to='today' replace />} />
+                    <Route index element={<Navigate to='inbox' replace />} />
                     <Route
                       path='notifications'
                       element={<NotificationPage />}

@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 export const validateInputs = (
   email,
   password,
@@ -75,4 +77,76 @@ export const formatRelativeTime = (createdAt) => {
   // Otherwise, calculate how many full weeks have passed.
   const diffInWeeks = Math.floor(diffInDays / 7)
   return diffInWeeks === 1 ? '1 week ago' : `${diffInWeeks} weeks ago`
+}
+
+export const isCriticalRequest = (config) => {
+  // Normalize the method to uppercase for consistent comparison
+  const method = config.method.toUpperCase()
+  const url = config.url
+
+  // Check if the request is a data-modifying method
+  if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(method)) {
+    // Exclude authentication-related endpoints
+    if (
+      url.includes('/users/signout') ||
+      url.includes('/users/refresh') ||
+      url.includes('/users/signin') ||
+      url.includes('/users/signup') ||
+      url.includes('/users/guest')
+    ) {
+      return false
+    }
+    // If not excluded, it’s a critical request
+    return true
+  }
+  // Non-modifying methods (e.g., GET) are not critical
+  return false
+}
+
+export const processRetryQueue = async (
+  retryQueue,
+  setRetryQueue,
+  setTasks,
+  setTriggerRetry,
+  isProcessingQueue
+) => {
+  const queue = [...retryQueue]
+  setRetryQueue([]) // Clear the queue immediately to avoid duplicate processing
+  try {
+    for (const request of queue) {
+      try {
+        const response = await axios(request)
+        // Check if the request is related to tasks
+        if (request.url.includes('/tasks')) {
+          const updatedTask = response.data // Assuming the response contains the task data
+          setTasks((prevTasks) => {
+            const taskId = updatedTask._id // Assuming the task has an '_id' field
+            const method = request.method.toUpperCase()
+
+            if (method === 'POST') {
+              // For task creation, append the new task
+              return [...prevTasks, updatedTask]
+            } else if (method === 'PUT' || method === 'PATCH') {
+              // For task updates, replace the existing task
+              return prevTasks.map((task) =>
+                task._id === taskId ? updatedTask : task
+              )
+            } else if (method === 'DELETE') {
+              // For task deletion, remove the task
+              return prevTasks.filter((task) => task._id !== taskId)
+            }
+            return prevTasks // No change if method is unrecognized
+          })
+        }
+      } catch (error) {
+        console.error('Retry failed:', error)
+        // Optionally, add logic to re-queue or handle persistent failures
+      }
+    }
+  } catch (error) {
+    console.error('Error processing retry queue:', error)
+  } finally {
+    isProcessingQueue.current = false
+    setTriggerRetry(false) // Reset the trigger
+  }
 }

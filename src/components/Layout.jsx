@@ -8,12 +8,10 @@ import {
   useTheme
 } from '@mui/material'
 import { useState, useContext, useEffect } from 'react'
-import { LabelContext, TaskContext } from '~/context/context'
+import { AuthContext, LabelContext, TaskContext } from '~/context/context'
 import SideBar from './sidebar/SideBar'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import AppSnackBar from './AppSnackBar'
-
 import { IconButton } from '@mui/material'
 import ViewSidebarOutlinedIcon from '@mui/icons-material/ViewSidebarOutlined'
 import AddLabelModal from './labelModals/AddLabelModal'
@@ -22,6 +20,8 @@ import DeleteLabelModal from './labelModals/DeleteLabelModal'
 import AddTaskModal from './taskModals/AddTaskModal'
 import EditTaskModal from './taskModals/EditTaskModal'
 import DeleteTaskModal from './taskModals/DeleteTaskModal'
+import DeleteSnackBar from './DeleteSnackBar'
+import ServerStatusSnackBar from './ServerStatusSnackBar'
 const Layout = () => {
   const {
     setShowSnackBar,
@@ -41,6 +41,8 @@ const Layout = () => {
     deletingLabel,
     setDeletingLabel
   } = useContext(LabelContext)
+
+  const { serverStatusMessage } = useContext(AuthContext)
   const [showSideBar, setShowSideBar] = useState(true)
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
@@ -62,6 +64,7 @@ const Layout = () => {
       setShowSideBar(true)
     }
   }, [isMobile])
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Grid2 container>
@@ -157,10 +160,13 @@ const Layout = () => {
           <Outlet />
         </Grid2>
       </Grid2>
-      <AppSnackBar
+      <DeleteSnackBar
         setShowSnackBar={setShowSnackBar}
         showSnackBar={showSnackBar}
       />
+      {serverStatusMessage !== '' && (
+        <ServerStatusSnackBar message={serverStatusMessage} />
+      )}
       {addingLabel && (
         <AddLabelModal open={true} onClose={() => setAddingLabel(false)} />
       )}

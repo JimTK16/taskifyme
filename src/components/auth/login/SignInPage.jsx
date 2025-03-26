@@ -2,7 +2,11 @@ import Stack from '@mui/material/Stack'
 import AppTheme from './AppTheme'
 import Content from './Content'
 import SignInCard from './SignInCard'
+import { useContext } from 'react'
+import { AuthContext } from '~/context/context'
+import ServerStatusSnackBar from '~/components/ServerStatusSnackBar'
 export default function SignInPage(props) {
+  const { serverStatusMessage } = useContext(AuthContext)
   return (
     <AppTheme {...props}>
       <Stack
@@ -55,6 +59,9 @@ export default function SignInPage(props) {
             <SignInCard />
           </Stack>
         </Stack>
+        {serverStatusMessage !== '' && (
+          <ServerStatusSnackBar message={serverStatusMessage} />
+        )}
       </Stack>
     </AppTheme>
   )

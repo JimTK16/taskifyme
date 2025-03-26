@@ -4,7 +4,7 @@ import { updateTaskAPI } from '~/services'
 import { useContext } from 'react'
 import { TaskContext } from '~/context/context'
 
-export default function AppSnackBar({ showSnackBar, setShowSnackBar }) {
+export default function DeleteSnackBar({ showSnackBar, setShowSnackBar }) {
   const { lastDeletedTaskId, setLastDeletedTaskId, tasks, setTasks } =
     useContext(TaskContext)
   const handleClose = (event, reason) => {

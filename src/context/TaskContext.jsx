@@ -3,9 +3,20 @@ import { useState, useEffect } from 'react'
 import { getTasks } from '~/services'
 import { TaskContext } from './context'
 import { useAuth } from '~/hooks/useAuth'
+import { processRetryQueue } from '~/utils/helpers'
 
 export default function TaskContextProvider({ children }) {
-  const { userDetails, isLoading } = useAuth()
+  const {
+    isLoading: isLoadingUser,
+    isSigningIn,
+    isGuestSigningIn,
+    token,
+    isProcessingQueue,
+    retryQueue,
+    setRetryQueue,
+    triggerRetry,
+    setTriggerRetry
+  } = useAuth()
   const [editingTask, setEditingTask] = useState(null)
   const [addingTask, setAddingTask] = useState(false)
   const [deletingTask, setDeletingTask] = useState(null)
@@ -15,9 +26,7 @@ export default function TaskContextProvider({ children }) {
   const [lastDeletedTaskId, setLastDeletedTaskId] = useState(null)
 
   useEffect(() => {
-    if (isLoading) return
-    if (!userDetails || !userDetails.userId) return
-
+    if (isLoadingUser || isSigningIn || isGuestSigningIn || !token) return
     const fetchTasks = async () => {
       try {
         setIsLoadingTasks(true)
@@ -30,7 +39,20 @@ export default function TaskContextProvider({ children }) {
       }
     }
     fetchTasks()
-  }, [userDetails, isLoading])
+  }, [isLoadingUser, isSigningIn, isGuestSigningIn, token])
+
+  useEffect(() => {
+    if (triggerRetry) {
+      isProcessingQueue.current = true
+      processRetryQueue(
+        retryQueue,
+        setRetryQueue,
+        setTasks,
+        setTriggerRetry,
+        isProcessingQueue
+      )
+    }
+  }, [triggerRetry])
 
   const value = {
     tasks,

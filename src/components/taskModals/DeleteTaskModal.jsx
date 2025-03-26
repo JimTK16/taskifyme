@@ -27,13 +27,13 @@ const DeleteTaskModal = ({ open, onClose }) => {
       })
 
       setTasks(updatedTasks)
+      setLastDeletedTaskId(deletingTask._id)
+      setShowSnackBar(true)
     } catch (error) {
       console.error('Deletion failed:', error)
     } finally {
       setIsSubmitting(false)
       onClose()
-      setLastDeletedTaskId(deletingTask._id)
-      setShowSnackBar(true)
     }
   }
   return (

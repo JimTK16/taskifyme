@@ -9,11 +9,15 @@ const LabelContextProvider = ({ children }) => {
   const [addingLabel, setAddingLabel] = useState(false)
   const [editingLabel, setEditingLabel] = useState(null)
   const [deletingLabel, setDeletingLabel] = useState(null)
-  const { userDetails, isLoading: isLoadingUser } = useAuth()
+  const {
+    isLoading: isLoadingUser,
+    token,
+    isSigningIn,
+    isGuestSigningIn
+  } = useAuth()
 
   useEffect(() => {
-    if (isLoadingUser) return
-    if (!userDetails || !userDetails.userId) return
+    if (isLoadingUser || isSigningIn || isGuestSigningIn || !token) return
 
     const fetchLabels = async () => {
       try {
@@ -28,7 +32,7 @@ const LabelContextProvider = ({ children }) => {
       }
     }
     fetchLabels()
-  }, [userDetails, isLoadingUser])
+  }, [isLoadingUser, token, isSigningIn, isGuestSigningIn])
 
   const value = {
     labels,
