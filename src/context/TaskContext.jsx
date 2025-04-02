@@ -10,12 +10,7 @@ export default function TaskContextProvider({ children }) {
     isLoading: isLoadingUser,
     isSigningIn,
     isGuestSigningIn,
-    token,
-    isProcessingQueue,
-    retryQueue,
-    setRetryQueue,
-    triggerRetry,
-    setTriggerRetry
+    token
   } = useAuth()
   const [editingTask, setEditingTask] = useState(null)
   const [addingTask, setAddingTask] = useState(false)
@@ -39,20 +34,7 @@ export default function TaskContextProvider({ children }) {
       }
     }
     fetchTasks()
-  }, [isLoadingUser, isSigningIn, isGuestSigningIn, token])
-
-  useEffect(() => {
-    if (triggerRetry) {
-      isProcessingQueue.current = true
-      processRetryQueue(
-        retryQueue,
-        setRetryQueue,
-        setTasks,
-        setTriggerRetry,
-        isProcessingQueue
-      )
-    }
-  }, [triggerRetry])
+  }, [isLoadingUser, isSigningIn, isGuestSigningIn])
 
   const value = {
     tasks,

@@ -15,6 +15,7 @@ import SignUpPage from './components/auth/signup/SignUpPage'
 import SignInPage from './components/auth/login/SignInPage'
 import LabelsPage from './components/LabelsPage'
 import LabelContextProvider from './context/LabelContext'
+import LabelDetailsPage from './components/LabelDetailsPage'
 function App() {
   return (
     <BrowserRouter>
@@ -37,7 +38,10 @@ function App() {
                     <Route path='today' element={<TodayPage />} />
                     <Route path='inbox' element={<InboxPage />} />
                     <Route path='completed' element={<CompletedTasksPage />} />
-                    <Route path='labels' element={<LabelsPage />} />
+                    <Route path='labels'>
+                      <Route index element={<LabelsPage />} />
+                      <Route path=':labelId' element={<LabelDetailsPage />} />
+                    </Route>
                   </Route>
                 </Route>
               </Routes>

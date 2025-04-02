@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useAuth } from '~/hooks/useAuth'
-import { LabelContext } from './context'
+import { LabelContext, TaskContext } from './context'
 import { getLabelsAPI } from '~/services'
+import { processRetryQueue } from '~/utils/helpers'
 
 const LabelContextProvider = ({ children }) => {
   const [labels, setLabels] = useState([])
@@ -13,9 +14,15 @@ const LabelContextProvider = ({ children }) => {
     isLoading: isLoadingUser,
     token,
     isSigningIn,
-    isGuestSigningIn
+    isGuestSigningIn,
+    isProcessingQueue,
+    retryQueue,
+    setRetryQueue,
+    triggerRetry,
+    setTriggerRetry
   } = useAuth()
 
+  const { setTasks } = useContext(TaskContext)
   useEffect(() => {
     if (isLoadingUser || isSigningIn || isGuestSigningIn || !token) return
 
@@ -32,8 +39,21 @@ const LabelContextProvider = ({ children }) => {
       }
     }
     fetchLabels()
-  }, [isLoadingUser, token, isSigningIn, isGuestSigningIn])
+  }, [isLoadingUser, isSigningIn, isGuestSigningIn])
 
+  useEffect(() => {
+    if (triggerRetry) {
+      isProcessingQueue.current = true
+      processRetryQueue(
+        retryQueue,
+        setRetryQueue,
+        setTasks,
+        setTriggerRetry,
+        isProcessingQueue,
+        setLabels
+      )
+    }
+  }, [triggerRetry])
   const value = {
     labels,
     setLabels,

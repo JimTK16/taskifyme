@@ -32,7 +32,7 @@ const NotificationContextProvider = ({ children }) => {
       }
     }
     fetchNotifications()
-  }, [isLoadingUser, token, isSigningIn, isGuestSigningIn])
+  }, [isLoadingUser, isSigningIn, isGuestSigningIn])
 
   const value = {
     notifications,

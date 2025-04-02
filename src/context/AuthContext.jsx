@@ -12,7 +12,7 @@ import { AuthContext } from './context'
 import { isCriticalRequest } from '~/utils/helpers'
 import ServerStatusSnackBar from '~/components/ServerStatusSnackBar'
 
-const INACTIVITY_TIMEOUT = 10 * 60 * 1000 // 1 hour
+const INACTIVITY_TIMEOUT = 30 * 60 * 1000 // 30 minutes
 const TOKEN_REFRESH_MARGIN = 5 * 60 * 1000 // 5 minutes
 const MAX_OFFLINE_TIMEOUT = 15 * 60 * 1000 // 15 minutes
 
@@ -101,7 +101,6 @@ const AuthContextProvider = ({ children }) => {
   const isProcessingQueue = useRef(false)
   const navigate = useNavigate()
 
-
   //Keep tokenRef updated with the latest token for our Axios interceptor
   useEffect(() => {
     tokenRef.current = state.token
@@ -145,7 +144,7 @@ const AuthContextProvider = ({ children }) => {
   }, [])
 
   // -------------------------------
-  // 9. Action Functions
+  // 4. Action Functions
   // -------------------------------
   const signIn = useCallback(async (email, password) => {
     dispatch({ type: 'SIGN_IN_REQUEST' })
@@ -219,7 +218,7 @@ const AuthContextProvider = ({ children }) => {
   }, [])
 
   // -------------------------------
-  // 4. Setup Axios Interceptor
+  // 5. Setup Axios Interceptor
   // -------------------------------
   useEffect(() => {
     // Attach token to every outgoing request
@@ -301,7 +300,7 @@ const AuthContextProvider = ({ children }) => {
   }, [])
 
   // -------------------------------
-  // 5. Auto-refresh token before expiration
+  // 6. Auto-refresh token before expiration
   // -------------------------------
   useEffect(() => {
     if (!state.token) return
@@ -335,31 +334,32 @@ const AuthContextProvider = ({ children }) => {
   }, [state.token])
 
   // -------------------------------
-  // 6. Inactivity Auto logout
+  // 7. Inactivity Auto logout
   // -------------------------------
   const inactivityTimerRef = useRef()
+
   const resetTimer = useCallback(() => {
     clearTimeout(inactivityTimerRef.current)
     inactivityTimerRef.current = setTimeout(() => {
       signOut('inactivity')
     }, INACTIVITY_TIMEOUT)
   }, [signOut])
-  useEffect(() => {
-    // if (state.serverStatus === 'offline') return
-    if (!state.token) return
 
-    const events = ['click', 'mousemove', 'keydown', 'scroll', 'touchstart']
-    const handleInactivity = () => resetTimer()
-    events.forEach((event) => addEventListener(event, handleInactivity))
-    resetTimer()
-    return () => {
-      events.forEach((event) => removeEventListener(event, handleInactivity))
-      clearTimeout(inactivityTimerRef.current)
+  useEffect(() => {
+    if (state.user) {
+      const events = ['click', 'mousemove', 'keydown', 'scroll', 'touchstart']
+      const handleInactivity = () => resetTimer()
+      events.forEach((event) => addEventListener(event, handleInactivity))
+      resetTimer()
+      return () => {
+        events.forEach((event) => removeEventListener(event, handleInactivity))
+        clearTimeout(inactivityTimerRef.current)
+      }
     }
-  }, [resetTimer, state.token])
+  }, [state.user, resetTimer])
 
   // -------------------------------
-  // 7. Offline Timeout Logout
+  // 8. Offline Timeout Logout
   // -------------------------------
 
   useEffect(() => {
@@ -378,7 +378,7 @@ const AuthContextProvider = ({ children }) => {
   }, [state.serverStatus, state.offlineTimestamp])
 
   // -------------------------------
-  // 8. Redirect after Sign out
+  // 9. Redirect after Sign out
   // -------------------------------
   useEffect(() => {
     if (state.signOutReason && !state.token) {
@@ -398,7 +398,6 @@ const AuthContextProvider = ({ children }) => {
     isGuestSigningIn: state.isGuestSigningIn,
     isProcessingQueue,
     retryQueue,
-    retryQueueRef,
     setRetryQueue,
     triggerRetry,
     setTriggerRetry,

@@ -66,7 +66,6 @@ export default function LabelSelect({ selectedLabels, setSelectedLabels }) {
 
   return (
     <Autocomplete
-      disablePortal={true}
       multiple
       freeSolo
       clearOnBlur

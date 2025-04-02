@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getTasks, updateLabelAPI } from '~/services'
 
 export const validateInputs = (
   email,
@@ -108,10 +109,12 @@ export const processRetryQueue = async (
   setRetryQueue,
   setTasks,
   setTriggerRetry,
-  isProcessingQueue
+  isProcessingQueue,
+  setLabels
 ) => {
   const queue = [...retryQueue]
   setRetryQueue([]) // Clear the queue immediately to avoid duplicate processing
+  let shouldFetchTasks = false
   try {
     for (const request of queue) {
       try {
@@ -137,11 +140,35 @@ export const processRetryQueue = async (
             }
             return prevTasks // No change if method is unrecognized
           })
+        } else if (request.url.includes('/labels')) {
+          const updatedLabel = response.data
+          setLabels((prevLabels) => {
+            const labelId = updatedLabel._id
+            const method = request.method.toUpperCase()
+
+            if (method === 'POST') {
+              // For task creation, append the new task
+              return [...prevLabels, updatedLabel]
+            } else if (method === 'PUT' || method === 'PATCH') {
+              shouldFetchTasks = true
+              return prevLabels.map((label) =>
+                label._id === labelId ? updatedLabel : label
+              )
+            } else if (method === 'DELETE') {
+              shouldFetchTasks = true
+              return prevLabels.filter((label) => label._id !== labelId)
+            }
+            return prevLabels // No change if method is unrecognized
+          })
         }
       } catch (error) {
         console.error('Retry failed:', error)
         // Optionally, add logic to re-queue or handle persistent failures
       }
+    }
+    if (shouldFetchTasks) {
+      const updatedTasks = await getTasks()
+      setTasks(updatedTasks)
     }
   } catch (error) {
     console.error('Error processing retry queue:', error)
