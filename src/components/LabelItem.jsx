@@ -1,10 +1,9 @@
 import { Box, Divider, Stack, Tooltip, Typography } from '@mui/material'
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
-import DeleteSweepOutlinedIcon from '@mui/icons-material/DeleteSweepOutlined'
 import { useContext, useState } from 'react'
 import SellOutlinedIcon from '@mui/icons-material/SellOutlined'
 import { LabelContext } from '~/context/context'
 import { useNavigate } from 'react-router-dom'
+import { Pencil, Trash2 } from 'lucide-react'
 
 const LabelItem = ({ label }) => {
   const navigate = useNavigate()
@@ -14,11 +13,14 @@ const LabelItem = ({ label }) => {
   return (
     <Box
       sx={{
-        cursor: 'pointer',
-        p: 0.5,
-        borderRadius: 1,
-        '&:hover': { bgcolor: 'action.hover' },
-        transition: 'background-color 0.2s'
+        p: '12px',
+        borderRadius: '8px',
+        transition: 'background-color 0.2s',
+        '&:hover': {
+          backgroundColor: '#eaf4fb80',
+          borderColor: '#eaf4fb'
+        },
+        border: '1px solid transparent'
       }}
       onMouseOver={() => setShowOptions(true)}
       onMouseLeave={() => setShowOptions(false)}
@@ -34,19 +36,21 @@ const LabelItem = ({ label }) => {
         {showOptions && (
           <Stack direction={'row'} sx={{ ml: 'auto', color: 'gray', gap: 2 }}>
             <Tooltip title='Edit Label'>
-              <EditOutlinedIcon
+              <Pencil
                 onClick={(e) => {
                   e.stopPropagation()
                   setEditingLabel(label)
                 }}
+                style={{ width: '20px', height: '20px', color: '#3b82f6' }}
               />
             </Tooltip>
             <Tooltip title='Delete Label'>
-              <DeleteSweepOutlinedIcon
+              <Trash2
                 onClick={(e) => {
                   e.stopPropagation()
                   setDeletingLabel(label)
                 }}
+                style={{ width: '20px', height: '20px', color: '#ef4444' }}
               />
             </Tooltip>
           </Stack>

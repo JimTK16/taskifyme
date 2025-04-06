@@ -16,6 +16,8 @@ import SignInPage from './components/auth/login/SignInPage'
 import LabelsPage from './components/LabelsPage'
 import LabelContextProvider from './context/LabelContext'
 import LabelDetailsPage from './components/LabelDetailsPage'
+import { LogContextProvider } from './context/LogContext'
+import ActivityLogsPage from './components/ActivityLogsPage'
 function App() {
   return (
     <BrowserRouter>
@@ -23,28 +25,37 @@ function App() {
         <TaskContextProvider>
           <LabelContextProvider>
             <NotificationContextProvider>
-              <Routes>
-                <Route path='/signin' element={<SignInPage />} />
-                <Route path='/redirect' element={<RedirectingPage />} />
-                <Route path='/signup' element={<SignUpPage />} />
-                <Route element={<ProtectedRoute />}>
-                  <Route path='/' element={<Layout />}>
-                    <Route index element={<Navigate to='inbox' replace />} />
-                    <Route
-                      path='notifications'
-                      element={<NotificationPage />}
-                    />
-                    <Route path='upcoming' element={<UpcomingPage />} />
-                    <Route path='today' element={<TodayPage />} />
-                    <Route path='inbox' element={<InboxPage />} />
-                    <Route path='completed' element={<CompletedTasksPage />} />
-                    <Route path='labels'>
-                      <Route index element={<LabelsPage />} />
-                      <Route path=':labelId' element={<LabelDetailsPage />} />
+              <LogContextProvider>
+                <Routes>
+                  <Route path='/signin' element={<SignInPage />} />
+                  <Route path='/redirect' element={<RedirectingPage />} />
+                  <Route path='/signup' element={<SignUpPage />} />
+                  <Route element={<ProtectedRoute />}>
+                    <Route path='/' element={<Layout />}>
+                      <Route index element={<Navigate to='inbox' replace />} />
+                      <Route
+                        path='notifications'
+                        element={<NotificationPage />}
+                      />
+                      <Route path='upcoming' element={<UpcomingPage />} />
+                      <Route path='today' element={<TodayPage />} />
+                      <Route path='inbox' element={<InboxPage />} />
+                      <Route
+                        path='completed'
+                        element={<CompletedTasksPage />}
+                      />
+                      <Route path='labels'>
+                        <Route index element={<LabelsPage />} />
+                        <Route path=':labelId' element={<LabelDetailsPage />} />
+                      </Route>
+                      <Route
+                        path='activity-logs'
+                        element={<ActivityLogsPage />}
+                      />
                     </Route>
                   </Route>
-                </Route>
-              </Routes>
+                </Routes>
+              </LogContextProvider>
             </NotificationContextProvider>
           </LabelContextProvider>
         </TaskContextProvider>

@@ -7,6 +7,7 @@ import Settings from '@mui/icons-material/Settings'
 import Logout from '@mui/icons-material/Logout'
 import { useAuth } from '~/hooks/useAuth'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const UserMenu = () => {
   const { userDetails, signOut } = useAuth()
@@ -18,6 +19,7 @@ const UserMenu = () => {
   const handleMenuClose = () => {
     setAnchorEl(null)
   }
+  const navigate = useNavigate()
   return (
     <>
       <Tooltip title={userDetails.email}>
@@ -87,11 +89,15 @@ const UserMenu = () => {
           }
         }}
       >
-        <MenuItem>
+        <MenuItem
+          onClick={() => {
+            navigate('activity-logs')
+          }}
+        >
           <ListItemIcon>
             <Settings fontSize='small' />
           </ListItemIcon>
-          Settings
+          Activity Logs
         </MenuItem>
         <MenuItem onClick={() => signOut('manual')}>
           <ListItemIcon>

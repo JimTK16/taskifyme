@@ -1,4 +1,5 @@
-import { Box, Divider, Fade, InputBase, Typography } from '@mui/material'
+import { Box, Divider, IconButton, InputBase, Typography } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
 import SearchIcon from '@mui/icons-material/Search'
 import BaseModal from './BaseModal'
 import TaskAltIcon from '@mui/icons-material/TaskAlt'
@@ -36,7 +37,7 @@ const NavItemComponent = ({ icon, text, navigateTo, onClick }) => {
         pl: 2,
         gap: 1,
         cursor: 'pointer',
-        '&:hover': { bgcolor: '#f0f0f0' }
+        '&:hover': { backgroundColor: '#eaf4fb80' }
       }}
       onClick={() => {
         onClick()
@@ -85,22 +86,33 @@ const SearchModal = ({ open, onClose }) => {
       >
         <Box
           sx={{
-            px: 2,
-            py: 1,
             display: 'flex',
-            alignItems: 'center',
-            gap: 2,
-            maxWidth: 650
+            justifyContent: 'space-between',
+            alignItems: 'center'
           }}
         >
-          <SearchIcon />
-          <InputBase
-            placeholder='Search...'
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            fullWidth
-            autoFocus
-          />
+          <Box
+            sx={{
+              px: 2,
+              py: 1,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 2,
+              maxWidth: 650
+            }}
+          >
+            <SearchIcon />
+            <InputBase
+              placeholder='Search...'
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              fullWidth
+              autoFocus
+            />
+          </Box>
+          <IconButton onClick={handleCloseSearchModal} size='small'>
+            <CloseIcon fontSize='small' />
+          </IconButton>
         </Box>
         <Box sx={{ flex: 1, overflow: 'auto', width: '100%' }}>
           {searchTerm.trim() && (

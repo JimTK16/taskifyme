@@ -1,4 +1,6 @@
 import { CheckCircleOutline, PanoramaFishEye } from '@mui/icons-material'
+import { Pencil } from 'lucide-react'
+import { Trash2 } from 'lucide-react'
 import {
   Box,
   Checkbox,
@@ -7,8 +9,6 @@ import {
   Tooltip,
   Typography
 } from '@mui/material'
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
-import DeleteSweepOutlinedIcon from '@mui/icons-material/DeleteSweepOutlined'
 import { priorityOptions } from './taskModals/PriorityMenu'
 import { dateFormatter } from '~/utils/helpers'
 import { useContext, useState } from 'react'
@@ -65,11 +65,14 @@ const TaskItem = ({ task, inSearchModal, handleCloseSearchModal }) => {
   return (
     <Box
       sx={{
-        cursor: 'pointer',
-        p: 1,
-        borderRadius: 1,
-        '&:hover': { bgcolor: 'action.hover' },
-        transition: 'background-color 0.2s'
+        p: '12px',
+        borderRadius: '8px',
+        transition: 'background-color 0.2s',
+        '&:hover': {
+          backgroundColor: '#eaf4fb80',
+          borderColor: '#eaf4fb'
+        },
+        border: '1px solid transparent'
       }}
       onMouseOver={() => !inSearchModal && setShowOptions(true)}
       onMouseLeave={() => !inSearchModal && setShowOptions(false)}
@@ -142,10 +145,16 @@ const TaskItem = ({ task, inSearchModal, handleCloseSearchModal }) => {
             sx={{ ml: 'auto', color: 'action.active', gap: 2 }}
           >
             <Tooltip title='Edit Task'>
-              <EditOutlinedIcon onClick={() => setEditingTask(task)} />
+              <Pencil
+                onClick={() => setEditingTask(task)}
+                style={{ width: '20px', height: '20px', color: '#3b82f6' }}
+              />
             </Tooltip>
             <Tooltip title='Delete Task'>
-              <DeleteSweepOutlinedIcon onClick={() => setDeletingTask(task)} />
+              <Trash2
+                onClick={() => setDeletingTask(task)}
+                style={{ width: '20px', height: '20px', color: '#ef4444' }}
+              />
             </Tooltip>
           </Stack>
         )}

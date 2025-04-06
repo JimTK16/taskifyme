@@ -118,3 +118,11 @@ export const updateLabelAPI = async (labelId, updateData) => {
   )
   return response.data
 }
+
+// Activity Logs API
+export const getLogsAPI = async (page, limit) => {
+  const response = await axios.get(`${API_ROOT}/v1/activity-logs`, {
+    params: { page, limit }
+  })
+  return response.data
+}
