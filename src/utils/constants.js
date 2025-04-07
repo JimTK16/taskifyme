@@ -6,7 +6,7 @@ if (process.env.BUILD_MODE === 'dev') {
 
 if (process.env.BUILD_MODE === 'production') {
   // apiRoot = 'https://taskify-backend-v89k.onrender.com'
-  apiRoot = 'https://158.179.25.168:3000'
+  apiRoot = 'https://158.179.25.168'
 }
 
 export const API_ROOT = apiRoot
