@@ -5,8 +5,8 @@ if (process.env.BUILD_MODE === 'dev') {
 }
 
 if (process.env.BUILD_MODE === 'production') {
-  apiRoot = 'https://taskify-backend-v89k.onrender.com'
-  // apiRoot = 'https://taskify.store'
+  // apiRoot = 'https://taskify-backend-v89k.onrender.com'
+  apiRoot = 'https://taskify.store'
 }
 
 export const API_ROOT = apiRoot
