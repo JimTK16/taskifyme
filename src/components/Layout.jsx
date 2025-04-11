@@ -22,6 +22,7 @@ import EditTaskModal from './taskModals/EditTaskModal'
 import DeleteTaskModal from './taskModals/DeleteTaskModal'
 import DeleteSnackBar from './DeleteSnackBar'
 import ServerStatusSnackBar from './ServerStatusSnackBar'
+import ToggleSideBarButton from './sidebar/ToggleSideBarButton'
 const Layout = () => {
   const {
     setShowSnackBar,
@@ -68,32 +69,11 @@ const Layout = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Grid2 container>
-        <Tooltip title='Toggle Sidebar'>
-          <IconButton
-            aria-label='toggle sidebar'
-            sx={{
-              position: 'fixed',
-              left: showSideBar ? '240px' : '40px',
-              top: 8,
-              zIndex: 1300,
-              borderRadius: '10%',
-              transition: {
-                xs: 'none',
-                sm: 'left 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
-              },
-              '&:hover': { backgroundColor: 'action.hover' },
-              p: 0,
-              width: 32,
-              height: 32
-            }}
-            onClick={handleSideBarToggle}
-          >
-            <ViewSidebarOutlinedIcon
-              fontSize='small'
-              sx={{ color: '#424242' }}
-            />
-          </IconButton>
-        </Tooltip>
+        <ToggleSideBarButton
+          showSideBar={showSideBar}
+          onToggle={handleSideBarToggle}
+        />
+
         {/* Backdrop for mobile */}
         {isMobile && showSideBar && (
           <Fade in={showSideBar} mountOnEnter unmountOnExit>

@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Typography } from '@mui/material'
+import { Box, Button, Divider, Typography, useTheme } from '@mui/material'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
 import InboxOutlinedIcon from '@mui/icons-material/InboxOutlined'
@@ -19,6 +19,7 @@ const SideBar = ({ onNavItemClick }) => {
   const { setEditingTask, setAddingTask } = useContext(TaskContext)
   const location = useLocation()
   const navigate = useNavigate()
+  const theme = useTheme()
 
   const NAV_ITEMS = [
     { icon: InboxOutlinedIcon, label: 'Inbox', navigateTo: '/inbox' },
@@ -44,7 +45,9 @@ const SideBar = ({ onNavItemClick }) => {
         <Box
           sx={{
             display: 'flex',
-            justifyContent: 'space-between'
+            justifyContent: 'space-between',
+            alignItems: 'center', // Vertically center the children
+            height: theme.spacing(6) // 48px, a common header height
           }}
         >
           <UserMenu />
