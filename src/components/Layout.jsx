@@ -1,20 +1,10 @@
 import { Outlet } from 'react-router-dom'
-import {
-  Fade,
-  Grid2,
-  Slide,
-  Tooltip,
-  useMediaQuery,
-  useTheme
-} from '@mui/material'
+import { Fade, Grid2, Slide, useMediaQuery, useTheme } from '@mui/material'
 import { useState, useContext, useEffect } from 'react'
 import { AuthContext, LabelContext, TaskContext } from '~/context/context'
 import SideBar from './sidebar/SideBar'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { IconButton } from '@mui/material'
-import ViewSidebarOutlinedIcon from '@mui/icons-material/ViewSidebarOutlined'
-import AddLabelModal from './labelModals/AddLabelModal'
 import EditLabelModal from './labelModals/EditLabelModal'
 import DeleteLabelModal from './labelModals/DeleteLabelModal'
 import AddTaskModal from './taskModals/AddTaskModal'
@@ -23,6 +13,7 @@ import DeleteTaskModal from './taskModals/DeleteTaskModal'
 import DeleteSnackBar from './DeleteSnackBar'
 import ServerStatusSnackBar from './ServerStatusSnackBar'
 import ToggleSideBarButton from './sidebar/ToggleSideBarButton'
+import AddLabelModal from './labelModals/AddLabelModal'
 const Layout = () => {
   const {
     setShowSnackBar,

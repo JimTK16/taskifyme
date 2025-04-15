@@ -4,11 +4,13 @@ import { deleteLabelAPI } from '~/services'
 import { useContext, useState } from 'react'
 import { LabelContext, TaskContext } from '~/context/context'
 import CloseIcon from '@mui/icons-material/Close'
+import { useNavigate } from 'react-router-dom'
 
 const DeleteLabelModal = ({ open, onClose, deletingLabel }) => {
   const { labels, setLabels } = useContext(LabelContext)
   const { tasks, setTasks } = useContext(TaskContext)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  let navigate = useNavigate()
 
   const handleDelete = async () => {
     try {
@@ -41,6 +43,7 @@ const DeleteLabelModal = ({ open, onClose, deletingLabel }) => {
     } finally {
       setIsSubmitting(false)
       onClose()
+      navigate('labels')
     }
   }
   return (

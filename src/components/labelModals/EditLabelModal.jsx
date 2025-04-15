@@ -16,10 +16,12 @@ import LabelColorPicker from './LabelColorPicker'
 import { updateLabelAPI } from '~/services'
 import CharCount from './CharCount'
 import { MAX_LABEL_NAME_LENGTH } from '~/utils/constants'
+import { useNavigate } from 'react-router-dom'
 
 const EditLabelModal = ({ open, onClose, editingLabel }) => {
   const { labels, setLabels, setEditingLabel } = useContext(LabelContext)
   const { tasks, setTasks } = useContext(TaskContext)
+  let navigate = useNavigate()
 
   const [labelName, setLabelName] = useState(editingLabel.name)
   const [selectedColor, setSelectedColor] = useState(editingLabel.color)
@@ -66,6 +68,7 @@ const EditLabelModal = ({ open, onClose, editingLabel }) => {
     } finally {
       setIsSubmitting(false)
       setEditingLabel(null)
+      navigate('labels')
     }
   }
 

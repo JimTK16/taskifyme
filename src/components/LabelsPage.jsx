@@ -3,7 +3,6 @@ import {
   Container,
   Fade,
   IconButton,
-  Skeleton,
   Stack,
   Tooltip,
   Typography
@@ -13,6 +12,7 @@ import { LabelContext } from '~/context/context'
 import ImageComponent from './ImageComponent'
 import LabelItem from './LabelItem'
 import AddIcon from '@mui/icons-material/Add'
+import Skeleton from '@mui/material/Skeleton'
 import labelPage from '~/assets/labelPage.jpg'
 const LabelsPage = () => {
   const { labels, isLoadingLabels, setAddingLabel } = useContext(LabelContext)

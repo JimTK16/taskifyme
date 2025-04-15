@@ -24,10 +24,16 @@ const InboxPage = () => {
   return (
     <Container maxWidth='md'>
       <Box>
-        <Typography variant='h5' sx={{ fontWeight: 'bold' }}>
-          Inbox
-        </Typography>
-        <Stack direction={'row'}>
+        <Box>
+          <Typography
+            variant='h5'
+            sx={{
+              fontWeight: 'bold'
+            }}
+          >
+            Inbox
+          </Typography>
+
           <Typography variant='body2' sx={{ color: 'text.secondary' }}>
             {isLoadingTasks ? (
               <Skeleton variant='text' width={30} />
@@ -35,7 +41,7 @@ const InboxPage = () => {
               tasksCount
             )}
           </Typography>
-        </Stack>
+        </Box>
         <Stack sx={{ mt: 4 }} direction='column' spacing={2}>
           {tasksToDisplay.length === 0 && (
             <Fade in={tasksToDisplay.length === 0}>
