@@ -23,20 +23,46 @@ const TodayPage = () => {
   }`
 
   return (
-    <Container maxWidth='md'>
-      <Box>
-        <Typography variant='h5' sx={{ fontWeight: 'bold' }}>
-          Today
-        </Typography>
-        <Stack direction={'row'}>
-          <Typography variant='body2' sx={{ color: 'gray' }}>
-            {isLoadingTasks ? (
-              <Skeleton variant='text' width={30} />
-            ) : (
-              tasksCount
-            )}
+    <>
+      <Box
+        sx={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 1,
+          py: 2,
+          backgroundColor: 'white',
+          pl: {
+            xs: 0,
+            md: 10
+          }
+        }}
+      >
+        <Container
+          maxWidth='md'
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: {
+              xs: 'center',
+              md: 'flex-start'
+            }
+          }}
+        >
+          <Typography variant='h5' sx={{ fontWeight: 'bold' }}>
+            Today
           </Typography>
-        </Stack>
+          <Stack direction={'row'}>
+            <Typography variant='body2' sx={{ color: 'gray' }}>
+              {isLoadingTasks ? (
+                <Skeleton variant='text' width={30} />
+              ) : (
+                tasksCount
+              )}
+            </Typography>
+          </Stack>
+        </Container>
+      </Box>
+      <Container maxWidth='md' sx={{ mt: 1 }}>
         <Stack sx={{ mt: 4 }} direction='column' spacing={2}>
           {todayTasks.length === 0 && (
             <Fade in={todayTasks.length === 0}>
@@ -54,8 +80,8 @@ const TodayPage = () => {
               return <TaskItem key={task._id} task={task} />
             })}
         </Stack>
-      </Box>
-    </Container>
+      </Container>
+    </>
   )
 }
 export default TodayPage

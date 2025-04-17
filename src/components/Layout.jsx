@@ -116,8 +116,10 @@ const Layout = () => {
         <Grid2
           sx={{
             flexGrow: 1,
-            px: 5,
-            pt: 7,
+            height: '100vh',
+            overflowY: 'auto',
+            px: 0,
+            pt: 0,
             marginLeft: {
               xs: 0,
               sm: showSideBar ? '280px' : 0

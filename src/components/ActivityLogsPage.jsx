@@ -19,28 +19,48 @@ const ActivityLogsPage = () => {
   const showingText =
     total > 0 ? `Showing ${start} to ${end} of ${total} logs` : ''
   return (
-    <Container maxWidth='md'>
-      <Box>
-        <Box
+    <>
+      <Box
+        sx={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 1,
+          py: 2,
+          backgroundColor: 'white',
+          width: '100%',
+          pl: {
+            xs: 0,
+            md: 10
+          }
+        }}
+      >
+        <Container
+          maxWidth='md'
           sx={{
             display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
+            flexDirection: 'column',
+            alignItems: {
+              xs: 'center',
+              md: 'flex-start'
+            }
           }}
         >
           <Typography variant='h5' sx={{ fontWeight: 'bold' }}>
             Activity Logs
           </Typography>
-        </Box>
-        <Stack direction='row' justifyContent='space-between' sx={{ mt: 2 }}>
-          <Typography variant='body2' sx={{ color: 'gray' }}>
-            {isLoadingLogs ? (
-              <Skeleton variant='text' width={100} />
-            ) : (
-              showingText
-            )}
-          </Typography>
-        </Stack>
+
+          <Stack direction='row' justifyContent='space-between' sx={{ mt: 2 }}>
+            <Typography variant='body2' sx={{ color: 'gray' }}>
+              {isLoadingLogs ? (
+                <Skeleton variant='text' width={100} />
+              ) : (
+                showingText
+              )}
+            </Typography>
+          </Stack>
+        </Container>
+      </Box>
+      <Container maxWidth='md' sx={{ px: 0 }}>
         <Stack sx={{ mt: 4 }} direction='column' spacing={2}>
           {isLoadingLogs ? (
             <Stack direction='column' spacing={2}>
@@ -66,8 +86,8 @@ const ActivityLogsPage = () => {
             />
           </Box>
         )}
-      </Box>
-    </Container>
+      </Container>
+    </>
   )
 }
 export default ActivityLogsPage

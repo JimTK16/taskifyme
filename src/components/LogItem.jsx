@@ -1,4 +1,12 @@
-import { Box, Stack, Typography, Chip, Tooltip, useTheme } from '@mui/material'
+import {
+  Box,
+  Stack,
+  Typography,
+  Chip,
+  Tooltip,
+  useTheme,
+  useMediaQuery
+} from '@mui/material'
 import { Plus, Edit, Trash2, CheckCircle, Calendar } from 'lucide-react'
 
 // Helper functions for date formatting
@@ -92,7 +100,8 @@ const LogItem = ({ log }) => {
     bgColor,
     label
   } = getActionDetails(log.action)
-
+  const theme = useTheme()
+  const isMediumUp = useMediaQuery(theme.breakpoints.up('md'))
   return (
     <Box
       sx={{
@@ -115,28 +124,28 @@ const LogItem = ({ log }) => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            borderRadius: '50%'
+            borderRadius: '50%',
+            flexShrink: 0
           }}
         >
           <ActionIcon style={{ color, height: '16px', width: '16px' }} />
         </Box>
         <Stack spacing={1}>
           <Stack direction='row' alignItems='center' spacing={1}>
-            <Typography variant='body2'>
-              <Box component='span' sx={{ fontWeight: 'medium' }}>
-                You {log.action}
-              </Box>{' '}
-              a task:{' '}
-              <Box component='span' sx={{ fontWeight: 'bold', ml: 0.5 }}>
-                {log.taskTitle}
-              </Box>
+            <Typography
+              variant='body2'
+              sx={{ textWrap: 'wrap', overflowWrap: 'anywhere' }}
+            >
+              You {log.action} a task: {log.taskTitle}
             </Typography>
-            <Chip
-              label={label}
-              sx={{ color: color, borderColor: bgColor }}
-              variant='outlined'
-              size='small'
-            />
+            {isMediumUp && (
+              <Chip
+                label={label}
+                sx={{ color: color, borderColor: bgColor }}
+                variant='outlined'
+                size='small'
+              />
+            )}
           </Stack>
           <Tooltip title={getFullDate(log.createdAt)}>
             <Typography

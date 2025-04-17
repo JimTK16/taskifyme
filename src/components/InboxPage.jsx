@@ -11,29 +11,45 @@ import { useContext } from 'react'
 import { TaskContext } from '~/context/context'
 import ImageComponent from './ImageComponent'
 import inboxPage from '~/assets/inboxPage.jpg'
+
 const InboxPage = () => {
   const { tasks, isLoadingTasks } = useContext(TaskContext)
   const tasksToDisplay = tasks.filter(
     (task) => !task.deletedAt && !task.isCompleted
   )
-
   const tasksCount = `${tasksToDisplay.length} task${
     tasksToDisplay.length > 1 ? 's' : ''
   }`
 
   return (
-    <Container maxWidth='md'>
-      <Box>
-        <Box>
-          <Typography
-            variant='h5'
-            sx={{
-              fontWeight: 'bold'
-            }}
-          >
+    <>
+      <Box
+        sx={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 1,
+          py: 2,
+          backgroundColor: 'white',
+          pl: {
+            xs: 0,
+            md: 10
+          }
+        }}
+      >
+        <Container
+          maxWidth='md'
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: {
+              xs: 'center',
+              md: 'flex-start'
+            }
+          }}
+        >
+          <Typography variant='h5' sx={{ fontWeight: 'bold' }}>
             Inbox
           </Typography>
-
           <Typography variant='body2' sx={{ color: 'text.secondary' }}>
             {isLoadingTasks ? (
               <Skeleton variant='text' width={30} />
@@ -41,8 +57,12 @@ const InboxPage = () => {
               tasksCount
             )}
           </Typography>
-        </Box>
-        <Stack sx={{ mt: 4 }} direction='column' spacing={2}>
+        </Container>
+      </Box>
+
+      {/* Task List */}
+      <Container maxWidth='md' sx={{ mt: 1 }}>
+        <Stack direction='column' spacing={2}>
           {tasksToDisplay.length === 0 && (
             <Fade in={tasksToDisplay.length === 0}>
               <Box>
@@ -54,14 +74,14 @@ const InboxPage = () => {
               </Box>
             </Fade>
           )}
-
           {!isLoadingTasks &&
-            tasksToDisplay.map((task) => {
-              return <TaskItem key={task._id} task={task} />
-            })}
+            tasksToDisplay.map((task) => (
+              <TaskItem key={task._id} task={task} />
+            ))}
         </Stack>
-      </Box>
-    </Container>
+      </Container>
+    </>
   )
 }
+
 export default InboxPage

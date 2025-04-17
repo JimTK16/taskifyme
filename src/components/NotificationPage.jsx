@@ -54,34 +54,57 @@ const NotificationPage = () => {
     setActiveModal({ isOpen: false, message: null, modalTitle: null })
   }
   return (
-    <Container maxWidth='md'>
-      <Box>
-        <Typography variant='h5' sx={{ fontWeight: 'bold' }}>
-          Notifications
-        </Typography>
-        <Box
+    <>
+      <Box
+        sx={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 1,
+          py: 2,
+          backgroundColor: 'white',
+          pl: 0
+        }}
+      >
+        <Container
+          maxWidth='md'
           sx={{
             display: 'flex',
-            gap: 0,
-            backgroundColor: '#f5f5f5',
-            maxWidth: 'fit-content',
-            borderRadius: '100px',
-            p: 0.5,
-            mt: 2
+            flexDirection: 'column',
+            alignItems: {
+              xs: 'center',
+              md: 'flex-start'
+            }
           }}
         >
-          <ToggleButton
-            label={'All'}
-            isSelected={selectAll}
-            onClick={() => setSelectAll(true)}
-          />
-          <ToggleButton
-            label={'Unread'}
-            isSelected={!selectAll}
-            onClick={() => setSelectAll(false)}
-            unreadCount={unreadCount}
-          />
-        </Box>
+          <Typography variant='h5' sx={{ fontWeight: 'bold' }}>
+            Notifications
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              gap: 0,
+              backgroundColor: '#f5f5f5',
+              maxWidth: 'fit-content',
+              borderRadius: '100px',
+              p: 0.5,
+              mt: 2
+            }}
+          >
+            <ToggleButton
+              label={'All'}
+              isSelected={selectAll}
+              onClick={() => setSelectAll(true)}
+            />
+            <ToggleButton
+              label={'Unread'}
+              isSelected={!selectAll}
+              onClick={() => setSelectAll(false)}
+              unreadCount={unreadCount}
+            />
+          </Box>
+        </Container>
+      </Box>
+      <Container maxWidth='md' sx={{ mt: 2 }}>
         <Box sx={{ mt: 2 }}>
           {unreadCount === 0 && !selectAll && (
             <Fade in={unreadCount === 0 && !selectAll}>
@@ -108,14 +131,14 @@ const NotificationPage = () => {
             />
           ))}
         </Box>
-      </Box>
-      <NotificationModal
-        modalTitle={activeModal.modalTitle}
-        message={activeModal.message}
-        showNotificationModal={activeModal.isOpen}
-        handleCloseNotificationModal={handleCloseModal}
-      />
-    </Container>
+        <NotificationModal
+          modalTitle={activeModal.modalTitle}
+          message={activeModal.message}
+          showNotificationModal={activeModal.isOpen}
+          handleCloseNotificationModal={handleCloseModal}
+        />
+      </Container>
+    </>
   )
 }
 export default NotificationPage
