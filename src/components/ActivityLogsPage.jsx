@@ -69,7 +69,13 @@ const ActivityLogsPage = () => {
               ))}
             </Stack>
           ) : logs.length === 0 ? (
-            <Typography variant='body2' sx={{ color: 'gray' }}>
+            <Typography
+              variant='body1'
+              sx={{
+                color: 'gray',
+                pl: 5
+              }}
+            >
               No logs found
             </Typography>
           ) : (

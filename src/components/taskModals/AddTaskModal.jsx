@@ -17,6 +17,7 @@ import PriorityMenu from './PriorityMenu'
 import CustomizedDatePicker from './CustomizedDatePicker'
 import LabelSelect from './LabelSelect'
 import CloseIcon from '@mui/icons-material/Close'
+import { useNavigate } from 'react-router-dom'
 
 const randomPlaceholders = [
   'Prepare monthly expense report',
@@ -73,6 +74,7 @@ const AddTaskModal = ({ open, onClose }) => {
   const [selectedLabels, setSelectedLabels] = useState([])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { tasks, setTasks } = useContext(TaskContext)
+  let navigate = useNavigate()
 
   const handleCloseModal = () => {
     onClose()
@@ -109,6 +111,7 @@ const AddTaskModal = ({ open, onClose }) => {
     } finally {
       setIsSubmitting(false)
       handleCloseModal()
+      navigate('/inbox')
     }
   }
   return (
